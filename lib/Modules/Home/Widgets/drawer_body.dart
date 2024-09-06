@@ -1,25 +1,26 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../../../Shared/Services/Routing/routes_base.dart';
 import '../../../Shared/Services/l10n/assets/l10n_resources.dart';
 import '../../../Shared/Styles/adaptive_icons.dart';
 import '../utilities/helper_methods.dart';
 
-class OurDrawerBody extends StatelessWidget {
+class OurDrawerBody extends ConsumerWidget {
   const OurDrawerBody({super.key});
 
-  static List<String> titles = [
-    // [0,3]
-    L10nR.tHomePageTitle.toUpperCase(),
-    'MAP',
-    'CHATS',
-    L10nR.tSettings.toUpperCase(),
-    // [4-7]
-    L10nR.tPrivacyPolicy,
-    L10nR.tTermsOfUse,
-    L10nR.tContactUs,
-    L10nR.tAbout,
-  ];
+  static List<String> titles(WidgetRef ref) => [
+        // [0,3]
+        L10nR.tHomePageTitle(ref).toUpperCase(),
+        'MAP',
+        'CHATS',
+        L10nR.tSettings(ref).toUpperCase(),
+        // [4-7]
+        L10nR.tPrivacyPolicy(ref),
+        L10nR.tTermsOfUse(ref),
+        L10nR.tContactUs(ref),
+        L10nR.tAbout(ref),
+      ];
   static List<IconData> iconData = [
     // [0,3]
     AdaptiveIcons.home,
@@ -46,13 +47,13 @@ class OurDrawerBody extends StatelessWidget {
   ];
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
     return Column(
       children: [
         ...List.generate(
           4,
           (index) => _OurDrawerItem(
-            title: titles[index],
+            title: titles(ref)[index],
             iconData: iconData[index],
             onPressed: () => regularHandler(context, index),
             selected: RoutesBase.currentRoute == paths[index],
@@ -62,7 +63,7 @@ class OurDrawerBody extends StatelessWidget {
         ...List.generate(
           4,
           (index) => _OurDrawerItem(
-            title: titles[index + 4],
+            title: titles(ref)[index + 4],
             iconData: iconData[index + 4],
             onPressed: () => regularHandler(context, index + 4),
             selected: RoutesBase.currentRoute == paths[index + 4],

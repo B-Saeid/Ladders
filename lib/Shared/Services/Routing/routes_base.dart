@@ -4,6 +4,7 @@ import 'package:go_router/go_router.dart';
 
 import '../../../Modules/Home/home_screen.dart';
 import '../../../Modules/Settings/settings_screen.dart';
+import '../l10n/l10n_service.dart';
 import 'routes.dart';
 
 export 'routes.dart';
@@ -38,7 +39,7 @@ abstract class RoutesBase {
         name: RootRoute.name,
         path: RootRoute.path,
         // redirect: _topLevelRedirect,
-        redirect: (_, __) => _Home.redirect,
+        builder: (context, state) => const _SplashScreen(),
         // redirect: (_, __) => '/Test',
       );
 
@@ -57,4 +58,17 @@ abstract class RoutesBase {
 //     ),
 //   ],
 // );
+}
+
+class _SplashScreen extends StatelessWidget {
+  const _SplashScreen();
+
+  @override
+  Widget build(BuildContext context) {
+    Future(() {
+      L10nService.init(context);
+      RoutesBase.router.go(_Home.redirect);
+    });
+    return const Scaffold();
+  }
 }

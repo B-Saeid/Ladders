@@ -13,23 +13,14 @@ class SettingsProvider extends ChangeNotifier {
   /// Since [SettingsProvider] is not abstract and It is crated in the [MultiProviders]
   /// and Since we DO INITIALIZE THAT late property BEFORE [runApp] is called
   /// i.e. before [SettingsProvider] is created .. SO IT is Safe and OK IN THIS CASE.
-  LocaleSetting localeSettings = L10nService.localeSettings;
+  LocaleSetting localeSettings = LocaleSetting.auto;
 
-  void scheduleLocaleSettingUpdate(LocaleSetting newSetting) {
+  void setLocaleSetting(LocaleSetting newSetting) {
     HiveService.settings.put(SettingsKeys.locale, newSetting.name);
-    if (newSetting == localeSettings) return;
-
-    ///This && is for allowing selection of a locale that is == deviceLocale
-    if (localeSettings.isAuto && newSetting.locale! == localeSettings.locale!) {
+    final notInitialized = !L10nService.initialized;
+    if (newSetting != localeSettings || notInitialized) {
       localeSettings = newSetting;
       notifyListeners();
-    } else if (newSetting.isAuto) {
-      final deviceLocale = L10nService.handleDeviceLocale();
-      if (deviceLocale == null) return;
-      localeSettings = newSetting;
-      notifyListeners();
-    } else {
-      L10nService.showRelaunchRequiredDialogue(setting: newSetting);
     }
   }
 

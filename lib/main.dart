@@ -25,41 +25,21 @@ class Ladders extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    SessionData.init(context);
     return Consumer(
       builder: (BuildContext context, WidgetRef ref, Widget? child) => MaterialApp.router(
         title: GlobalConstants.appName,
-        theme: LaddersStyles.light,
-        darkTheme: LaddersStyles.dark,
-        themeMode: ref.watch(settingProvider.select((value) => value.themeMode)),
+        theme: ref.watch(stylesProvider.select((p) => p.light)),
+        darkTheme: ref.watch(stylesProvider.select((p) => p.dark)),
+        themeMode: ref.watch(settingProvider.select((p) => p.themeMode)),
         builder: (context, child) {
-          // As this is the first context under MaterialApp that have Localization
-          /// Copied From this attribute Docs
-          // from the BuildContext passed to this method,
-          // the Directionality, Localizations, DefaultTextStyle, MediaQuery, etc,
-          // are all available
-          // Internet.context = context;
           SessionData.init(context);
-          L10nService.initDeviceLocalIfAuto(context);
-          // The Above For Assuring localeSettings not null even if set to auto
-          return child!; // This is [RoutesBase.router]
+          return child!;
         },
         routerConfig: RoutesBase.router,
         localizationsDelegates: L10nService.delegates,
-        locale: L10nService.localeSettings.locale,
+        locale: ref.watch(settingProvider).localeSettings.locale,
         supportedLocales: L10nService.supportedLocales,
-      ),
-    );
-  }
-}
-
-class HomePage extends StatelessWidget {
-  const HomePage({super.key});
-
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        title: Text(L10nR.tHomePageTitle),
       ),
     );
   }

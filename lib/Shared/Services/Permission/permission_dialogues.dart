@@ -11,21 +11,21 @@ abstract class PermissionDialogues {
     Function recursiveCall,
   ) =>
       MyDialogue(
-        title: L10nR.tPermissionDenied,
+        title: L10nR.tPermissionDenied(),
         content: dialogueMessage,
-        actionTitle: L10nR.tAllow,
+        actionTitle: L10nR.tAllow(),
         actionFunction: () {
           Navigator.of(context).pop();
           recursiveCall();
         },
-        dismissTitle: L10nR.tDismiss,
+        dismissTitle: L10nR.tDismiss(),
         dismissFunction: () => Navigator.of(context).pop(),
       );
 
   static MyDialogue toSettings(BuildContext context, MyPermission permission) => MyDialogue(
-        title: L10nR.tPermissionDenied,
+        title: L10nR.tPermissionDenied(),
         content: L10nR.permissionSettingMessage(permission.readableName, permission.reason),
-        actionTitle: L10nR.tSettings,
+        actionTitle: L10nR.tSettings(),
         actionFunction: () async {
           /// TODO : FIX BUG: App terminates when we change the status of the permission to true
           /// MAY BE AN ISOLATE ISSUE TRY RUN IT ON A DIFFERENT ISOLATE
@@ -34,7 +34,7 @@ abstract class PermissionDialogues {
           PermissionsService.myOpenAppSettings();
           Navigator.of(context).pop();
         },
-        dismissTitle: L10nR.tDismiss,
+        dismissTitle: L10nR.tDismiss(),
         dismissFunction: () => Navigator.of(context).pop(),
       );
 }

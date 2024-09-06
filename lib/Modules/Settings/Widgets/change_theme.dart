@@ -18,12 +18,12 @@ class ChangeThemeMode extends ConsumerWidget {
       children: [
         if (AppColors.isDarkModeSupported)
           ChoiceChip(
-            label: Text(L10nR.tAutomatic),
+            label: Text(L10nR.tAutomatic(ref)),
             selected: themeMode.isAuto,
             onSelected: (_) => provider.setThemeMode(ThemeMode.system),
           ),
         ChoiceChip(
-          label: Text(L10nR.tLight),
+          label: Text(L10nR.tLight(ref)),
 
           /// This is for showing the selection on light mode by default for ANDROID devices
           /// that do not support dark mode they are the same devices which do not
@@ -32,7 +32,7 @@ class ChangeThemeMode extends ConsumerWidget {
           onSelected: (_) => provider.setThemeMode(ThemeMode.light),
         ),
         ChoiceChip(
-          label: Text(L10nR.tDark),
+          label: Text(L10nR.tDark(ref)),
           selected: themeMode.isDark,
           onSelected: (_) => provider.setThemeMode(ThemeMode.dark),
         ),

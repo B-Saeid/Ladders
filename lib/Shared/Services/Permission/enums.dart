@@ -21,18 +21,18 @@ enum MyPermission {
   videos;
 
   String get readableName => switch (this) {
-        MyPermission.locationAlways => L10nR.tLocationAlwaysReadableName,
+        MyPermission.locationAlways => L10nR.tLocationAlwaysReadableName(),
         _ => name.upperFirstLetter
       };
 
   String get reason => switch (this) {
-        MyPermission.camera => L10nR.tCameraReason,
-        MyPermission.microphone => L10nR.tMicrophoneReason,
-        MyPermission.photos => L10nR.tPhotosReason,
-        MyPermission.storage => L10nR.tPhotosReason,
+        MyPermission.camera => L10nR.tCameraReason(),
+        MyPermission.microphone => L10nR.tMicrophoneReason(),
+        MyPermission.photos => L10nR.tPhotosReason(),
+        MyPermission.storage => L10nR.tPhotosReason(),
         MyPermission.location => throw UnimplementedError(),
         MyPermission.locationWhenInUse => throw UnimplementedError(),
-        MyPermission.locationAlways => L10nR.tLocationAlwaysReason,
+        MyPermission.locationAlways => L10nR.tLocationAlwaysReason(),
         MyPermission.notification => throw UnimplementedError(),
         MyPermission.scheduleExactAlarm => throw UnimplementedError(),
         MyPermission.sensors => throw UnimplementedError(),

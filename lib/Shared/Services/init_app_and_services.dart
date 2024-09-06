@@ -5,7 +5,6 @@ import 'package:flutter_native_splash/flutter_native_splash.dart';
 
 import 'Database/Hive/hive_service.dart';
 import 'Routing/routes_base.dart';
-import 'l10n/l10n_service.dart';
 
 Future<void> initServices() async {
   Timeline.startSync('initServices including startScreenSelector');
@@ -21,19 +20,13 @@ Future<void> initServices() async {
 
 Future<String> startPathSelector() async {
   await HiveService.init();
-  L10nService.init();
 
   // final flnLaunchDetails = await NotificationService.getFLNAppLaunchDetails();
   // if (flnLaunchDetails?.didNotificationLaunchApp ?? false) {
   //   return await _handleAppLaunchedFromFLNPlugin(response: flnLaunchDetails!.notificationResponse);
   // } else {
-  /// TODO : DO your logic to navigate the user to the proper screen
 
   return RootRoute.path;
-
-  /// TODO : This [if] is To be removed
-
-  // }
 }
 
 // Future<String> _handleAppLaunchedFromFLNPlugin({NotificationResponse? response}) async {

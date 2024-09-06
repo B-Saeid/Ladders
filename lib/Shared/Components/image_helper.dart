@@ -62,7 +62,7 @@ abstract class ImageHelper {
         .then((file) => file)
         .catchError((error) {
       print('error while pickImage ---> ${error.toString()}');
-      Toast.showError(L10nR.tToastDefaultError);
+      Toast.showError(L10nR.tToastDefaultError());
       return null;
     });
     if (xFile == null || xFile.path.isEmpty) {

@@ -1,6 +1,7 @@
 import 'dart:ui';
 
 import 'package:collection/collection.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../l10n_service.dart';
 
@@ -11,8 +12,8 @@ enum LocaleSetting {
 
   Locale? get locale => switch (this) {
         LocaleSetting.auto => L10nService.deviceLocale,
-        LocaleSetting.arabic => const Locale('ar'),
-        LocaleSetting.english => const Locale('en'),
+        LocaleSetting.arabic => Locale(SupportedLocale.ar.name),
+        LocaleSetting.english => Locale(SupportedLocale.en.name),
       };
 
   bool get isArabic => this == LocaleSetting.arabic;
@@ -21,10 +22,10 @@ enum LocaleSetting {
 
   bool get isAuto => this == LocaleSetting.auto;
 
-  static LocaleSetting? fromStored(value) =>
-      LocaleSetting.values.firstWhereOrNull((element) => value == element.name);
+  static LocaleSetting fromStored(value) =>
+      LocaleSetting.values.firstWhereOrNull((element) => value == element.name) ?? LocaleSetting.auto;
 
-  String get displayName => L10nR.localeDisplayName(this);
+   String displayName(WidgetRef ref) => L10nR.localeDisplayName(this, ref);
 }
 
 enum SupportedLocale {
@@ -39,8 +40,8 @@ enum SupportedLocale {
   /// and if can't find any IT WILL THEN TAKE THE first locale in THIS list.
   ///
   /// THe above talk is experienced on both iOS 17.4 and Android 10
-  static const list = [
-    Locale('en'),
-    Locale('ar'),
+  static final list = [
+    Locale(SupportedLocale.en.name),
+    Locale(SupportedLocale.ar.name),
   ];
 }

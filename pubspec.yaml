@@ -112,6 +112,9 @@ flutter:
   # see https://flutter.dev/custom-fonts/#from-packages
 
 
+  assets:
+    #     Images
+    - lib/Assets/images/
   fonts:
      # Arabic & English
      - family: Cairo
