@@ -22,3 +22,12 @@ class Selector<T> extends StatelessWidget {
         child: child,
       );
 }
+
+class RefWidget extends ConsumerWidget {
+  final Widget Function(WidgetRef ref) builder;
+
+  const RefWidget(this.builder, {super.key});
+
+  @override
+  Widget build(BuildContext context, WidgetRef ref) => builder(ref);
+}

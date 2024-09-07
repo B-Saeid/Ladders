@@ -1,36 +1,40 @@
 import 'dart:async';
 
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../../Extensions/time_package.dart';
 import '../../Services/Routing/routes_base.dart';
 import '../../Styles/app_colors.dart';
-import '../../Utilities/session_data.dart';
+import '../../Utilities/SessionData/session_data.dart';
+import '../../Widgets/riverpod_helper_widgets.dart';
 
 part 'package.dart';
 
 abstract class Toast {
   static Widget _buildChild(_ToastState toastState, String message) => LayoutBuilder(
         builder: (context, constraints) {
-          return Container(
-            constraints: constraints,
-            padding: const EdgeInsets.symmetric(vertical: 10, horizontal: 15),
-            decoration: ShapeDecoration(
-              color: toastState.color(context),
-              shape: const StadiumBorder(),
-            ),
-            child: FittedBox(
-              fit: BoxFit.scaleDown,
-              child: Text(
-                message,
-                style: SessionData.textTheme.bodyMedium!.copyWith(
-                  /// Here we use hard coded color as we know the background color form the sate
-                  /// so we know what will look good regardless of theme being dark or light
-                  color: toastState == _ToastState.warning
-                      ? Colors.black
-                      : AppColors.isLight(context) && toastState == _ToastState.regular
-                          ? Colors.black
-                          : Colors.white,
+          return RefWidget(
+            (ref) => Container(
+              constraints: constraints,
+              padding: const EdgeInsets.symmetric(vertical: 10, horizontal: 15),
+              decoration: ShapeDecoration(
+                color: toastState.color(ref),
+                shape: const StadiumBorder(),
+              ),
+              child: FittedBox(
+                fit: BoxFit.scaleDown,
+                child: Text(
+                  message,
+                  style: LiveData.textTheme(ref).bodyMedium!.copyWith(
+                        /// Here we use hard coded color as we know the background color form the sate
+                        /// so we know what will look good regardless of theme being dark or light
+                        color: toastState == _ToastState.warning
+                            ? Colors.black
+                            : LiveData.isLight(ref) && toastState == _ToastState.regular
+                                ? Colors.black
+                                : Colors.white,
+                      ),
                 ),
               ),
             ),
@@ -144,8 +148,8 @@ enum _ToastState {
   warning,
   error;
 
-  Color color(BuildContext context) => switch (this) {
-        _ToastState.regular => AppColors.adaptiveGrey(context),
+  Color color(WidgetRef ref) => switch (this) {
+        _ToastState.regular => AppColors.adaptiveGrey(ref),
         _ToastState.success => AppColors.primary,
         _ToastState.warning => const Color(0xFFFFC038),
         _ToastState.error => const Color(0xFF980B0B),

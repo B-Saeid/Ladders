@@ -3,7 +3,6 @@ import 'dart:io';
 import 'package:device_info_plus/device_info_plus.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 
-
 export 'boxes_keys/stored_cache_keys.dart';
 
 part 'boxes_keys/settings_keys.dart';
@@ -29,7 +28,6 @@ abstract class HiveService {
     await _setDeviceInfoBox();
   }
 
-
   static bool _deviceInfoSet = false;
 
   static Future<void> _setDeviceInfoBox() async {
@@ -39,14 +37,15 @@ abstract class HiveService {
         if (Platform.isAndroid) {
           final info = await DeviceInfoPlugin().androidInfo;
           await androidInfo!._setInfoFromPlugin(info);
-        } else {
+        } /*else {
           final info = await DeviceInfoPlugin().iosInfo;
           await iosInfo!._setInfoFromPlugin(info);
-        }
+        }*/
       } else {
         Platform.isAndroid
             ? androidInfo!._setInfoFromBox(_deviceInfo)
-            : iosInfo!._setInfoFromBox(_deviceInfo);
+            : null;
+            // : iosInfo!._setInfoFromBox(_deviceInfo);
       }
     }
   }

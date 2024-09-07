@@ -1,8 +1,12 @@
+import 'dart:io';
+
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../Constants/assets_strings.dart';
 import '../Styles/app_colors.dart';
+import 'riverpod_helper_widgets.dart';
 
 class MyDialogue extends StatelessWidget {
   final String title;
@@ -36,7 +40,7 @@ class MyDialogue extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final isAndroid = Theme.of(context).platform == TargetPlatform.android;
+    final isAndroid = Platform.isAndroid;
     return AlertDialog.adaptive(
       contentPadding: isAndroid ? EdgeInsets.zero : null,
       title: buildTitle(isAndroid),
@@ -131,7 +135,7 @@ class MyDialogue extends StatelessWidget {
   }
 }
 
-class AndroidDialogueAction extends StatelessWidget {
+class AndroidDialogueAction extends ConsumerWidget {
   const AndroidDialogueAction({
     super.key,
     required this.title,
@@ -144,13 +148,12 @@ class AndroidDialogueAction extends StatelessWidget {
   final bool encouraged;
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
     return TextButton(
       onPressed: onPressed,
       child: Text(
         title,
-        style:
-            encouraged ? AppColors.positiveChoiceStyle(context) : AppColors.negativeChoiceStyle(context),
+        style: encouraged ? AppColors.positiveChoiceStyle(ref) : AppColors.negativeChoiceStyle(ref),
       ),
     );
   }
@@ -193,7 +196,7 @@ class AdaptiveDialogueAction extends StatelessWidget {
   final bool? encouraged;
 
   @override
-  Widget build(BuildContext context) => Theme.of(context).platform == TargetPlatform.iOS
+  Widget build(BuildContext context) => Platform.isIOS
       ? CupertinoDialogAction(
           textStyle: const TextStyle(fontFamily: AssetFonts.cairo),
           onPressed: onPressed,
@@ -203,11 +206,13 @@ class AdaptiveDialogueAction extends StatelessWidget {
         )
       : TextButton(
           onPressed: onPressed,
-          child: Text(
-            title,
-            style: encouraged ?? true
-                ? AppColors.positiveChoiceStyle(context)
-                : AppColors.negativeChoiceStyle(context),
+          child: RefWidget(
+            (ref) => Text(
+              title,
+              style: encouraged ?? true
+                  ? AppColors.positiveChoiceStyle(ref)
+                  : AppColors.negativeChoiceStyle(ref),
+            ),
           ),
         );
 }

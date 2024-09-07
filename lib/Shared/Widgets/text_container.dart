@@ -1,8 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../Styles/app_colors.dart';
 
-class TextContainer extends StatelessWidget {
+class TextContainer extends ConsumerWidget {
   const TextContainer({
     super.key,
     required this.child,
@@ -21,7 +22,7 @@ class TextContainer extends StatelessWidget {
   final EdgeInsetsGeometry? margin;
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
     final container = animated
         ? AnimatedContainer(
             duration: const Duration(milliseconds: 500),
@@ -30,7 +31,7 @@ class TextContainer extends StatelessWidget {
             padding: padding ?? const EdgeInsets.symmetric(vertical: 6, horizontal: 24),
             decoration: BoxDecoration(
               borderRadius: BorderRadius.circular(6),
-              color: color ?? AppColors.adaptiveGrey(context),
+              color: color ?? AppColors.adaptiveGrey(ref),
             ),
             child: AnimatedSize(
               duration: const Duration(milliseconds: 300),
@@ -43,7 +44,7 @@ class TextContainer extends StatelessWidget {
             padding: padding ?? const EdgeInsets.symmetric(vertical: 6, horizontal: 24),
             decoration: BoxDecoration(
               borderRadius: BorderRadius.circular(6),
-              color: color ?? AppColors.adaptiveGrey(context),
+              color: color ?? AppColors.adaptiveGrey(ref),
             ),
             child: child,
           );

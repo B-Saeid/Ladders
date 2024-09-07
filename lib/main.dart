@@ -8,7 +8,7 @@ import 'Shared/Services/Routing/routes_base.dart';
 import 'Shared/Services/init_app_and_services.dart';
 import 'Shared/Services/l10n/l10n_service.dart';
 import 'Shared/Styles/app_themes.dart';
-import 'Shared/Utilities/session_data.dart';
+import 'Shared/Utilities/SessionData/session_data.dart';
 
 Future<void> main() async {
   await initServices();
@@ -20,27 +20,22 @@ Future<void> main() async {
   );
 }
 
-class Ladders extends StatelessWidget {
+class Ladders extends ConsumerWidget {
   const Ladders({super.key});
 
   @override
-  Widget build(BuildContext context) {
-    SessionData.init(context);
-    return Consumer(
-      builder: (BuildContext context, WidgetRef ref, Widget? child) => MaterialApp.router(
+  Widget build(BuildContext context, WidgetRef ref) => MaterialApp.router(
         title: GlobalConstants.appName,
         theme: ref.watch(stylesProvider.select((p) => p.light)),
         darkTheme: ref.watch(stylesProvider.select((p) => p.dark)),
         themeMode: ref.watch(settingProvider.select((p) => p.themeMode)),
         builder: (context, child) {
-          SessionData.init(context);
+          Future(() => ref.read(liveData).keepSynced(context));
           return child!;
         },
         routerConfig: RoutesBase.router,
         localizationsDelegates: L10nService.delegates,
         locale: ref.watch(settingProvider).localeSettings.locale,
         supportedLocales: L10nService.supportedLocales,
-      ),
-    );
-  }
+      );
 }

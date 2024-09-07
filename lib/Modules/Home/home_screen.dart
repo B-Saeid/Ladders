@@ -5,7 +5,7 @@ import '../../Shared/Extensions/time_package.dart';
 import '../../Shared/Services/l10n/assets/l10n_resources.dart';
 import '../../Shared/Services/l10n/helper_widgets.dart';
 import '../../Shared/Styles/app_colors.dart';
-import '../../Shared/Utilities/session_data.dart';
+import '../../Shared/Utilities/SessionData/session_data.dart';
 import '../../Shared/Widgets/custom_animated_size.dart';
 import '../../Shared/Widgets/text_container.dart';
 import 'Widgets/home_drawer.dart';
@@ -25,13 +25,13 @@ class HomeScreen extends ConsumerWidget {
             origin: Alignment.bottomLeft,
             child: TextContainer(
               animated: false,
-              color: AppColors.adaptiveGreen(context),
+              color: AppColors.adaptiveGreen(ref),
               child: L10nRText(
                 L10nR.tHomePageTitle,
-                style: SessionData.textTheme.titleLarge,
+                style: LiveData.textTheme(ref).titleLarge,
               ),
             ),
-          )
+          ),
         ],
       ),
     );

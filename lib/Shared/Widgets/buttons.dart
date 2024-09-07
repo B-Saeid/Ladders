@@ -3,8 +3,9 @@ import 'dart:io';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
-import '../Utilities/session_data.dart';
+import '../Utilities/SessionData/session_data.dart';
 import 'neat_circular_indicator.dart';
+import 'riverpod_helper_widgets.dart';
 
 enum CustomButtonType { filled, outlined, text, elevated }
 
@@ -75,8 +76,6 @@ class CustomButton extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    if (iconExists) SessionData.watchScalePercentage(context);
-
     /// Priority Order regarding button wrappers
     // hidden or not ... i.e. if hidden != null
     // we have to wrap with opacity to hide and show according to hidden bool
@@ -127,11 +126,11 @@ class CustomButton extends StatelessWidget {
     final textPart = FittedBox(
       child: child is String ? Text(child as String, style: textStyle) : child as Widget,
     );
-    final iconPart = SizedBox(
-      width: SessionData.getScaledValue(32, maxValue: 50),
-      height: SessionData.getScaledValue(32, maxValue: 50),
-      child: FittedBox(child: icon),
-    );
+    final iconPart = RefWidget((ref) => SizedBox(
+          width: LiveData.getScaledValue(ref, baseValue: 32, maxValue: 50),
+          height: LiveData.getScaledValue(ref, baseValue: 32, maxValue: 50),
+          child: FittedBox(child: icon),
+        ));
     final zChild = Padding(
       padding: padding ?? EdgeInsets.zero,
       child: SizedBox(
@@ -195,18 +194,18 @@ class CustomButton extends StatelessWidget {
       child: child is String ? Text(child as String, style: textStyle) : child as Widget,
     );
 
-    final iconPart = SizedBox(
-      width: SessionData.getScaledValue(32, maxValue: 50),
-      height: SessionData.getScaledValue(32, maxValue: 50),
-      child: FittedBox(child: icon),
-    );
+    final iconPart = RefWidget((ref) => SizedBox(
+          width: LiveData.getScaledValue(ref, baseValue: 32, maxValue: 50),
+          height: LiveData.getScaledValue(ref, baseValue: 32, maxValue: 50),
+          child: FittedBox(child: icon),
+        ));
 
     final zChild = Padding(
       padding: padding ?? const EdgeInsets.symmetric(horizontal: 12, vertical: 10),
-      child: SizedBox(
-        height: SessionData.getScaledValue(childHeight ?? 28),
-        child: textPart,
-      ),
+      child: RefWidget((ref) => SizedBox(
+            height: LiveData.getScaledValue(ref, baseValue: childHeight ?? 28),
+            child: textPart,
+          )),
     );
 
     final filledStyle = FilledButton.styleFrom(

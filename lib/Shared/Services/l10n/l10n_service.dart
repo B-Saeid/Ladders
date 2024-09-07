@@ -37,7 +37,7 @@ abstract class L10nService {
     final userCachedLocale = LocaleSetting.fromStored(cachedSettings);
     print('userCachedLocale $userCachedLocale');
 
-    context.read(settingProvider).setLocaleSetting(userCachedLocale ?? LocaleSetting.auto);
+    context.read(settingProvider).setLocaleSetting(userCachedLocale);
     print('End localeSettings ${context.read(settingProvider).localeSettings}');
     _initialized = true;
   }

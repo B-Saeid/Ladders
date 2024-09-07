@@ -236,15 +236,14 @@ class _ToastWidgetState extends State<_ToastWidget> with SingleTickerProviderSta
       // SWEET Observation:
       // on both Android & iOS: When the keyboard is dismissed while the
       // toast is shown it animates down nicely with the keyboard.
-      return ValueListenableBuilder(
-        valueListenable: SessionData.viewInsetsListenable,
-        builder: (_, currentViewInsets, child) => Padding(
+      return Consumer(
+        builder: (_, ref, child) => Padding(
           padding: EdgeInsets.only(
             bottom: widget.gravity.isBottomSafe
-                ? currentViewInsets.bottom
-                : currentViewInsets.bottom == 0
-                    ? SessionData.viewPadding.bottom
-                    : currentViewInsets.bottom,
+                ? LiveData.viewInsets(ref).bottom
+                : LiveData.viewInsets(ref).bottom == 0
+                    ? LiveData.viewPadding(ref).bottom
+                    : LiveData.viewInsets(ref).bottom,
           ),
           child: child!,
         ),
@@ -308,15 +307,19 @@ enum ToastGravity {
         //           }
         //         }
         /// However sometimes it works and sometimes it does not
-        /// and we Already discussed the cause of this bug but to recap
+        /// and we already discussed the cause of this bug but to recap
         /// when MediaQuery.of(context) is called from some deeply nested widget
-        /// especially in build methods with const widgets it may not reflect current values.
-        /// So we use here our [SessionData] ValueListenables as we use the context of the root app
-        /// to keep it updated so no chance In Sha' Allah for anything to go wrong.
+        /// especially in build methods with CONST widgets it may not
+        /// register a callback to these build methods and that results in
+        /// NOT reflecting current MediaQueryData values.
+        ///
+        /// So we use here our [LiveData] class - upgrade to sessionData using Riverpod -
+        /// and we use the context of the root app to keep it updated
+        /// so no chance In Sha' Allah for anything to go wrong.
         ToastGravity.bottomSafe => Positioned(
             // this 50.0 is the default space used by the plugin when
             // [ToastGravity.BOTTOM] is used.
-            bottom: /* This is handled in the widget /// SessionData.viewInsets.bottom + */ 50.0,
+            bottom: /* This is handled in the widget /// LiveData.viewInsets(ref).bottom + */ 50.0,
             left: 16.0,
             right: 16.0,
             child: child,

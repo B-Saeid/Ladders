@@ -3,9 +3,10 @@ import 'package:flutter/material.dart';
 import '../../../Shared/Constants/assets_strings.dart';
 import '../../../Shared/Services/Routing/routes_base.dart';
 import '../../../Shared/Styles/app_colors.dart';
-import '../../../Shared/Utilities/session_data.dart';
+import '../../../Shared/Utilities/SessionData/session_data.dart';
 import '../../../Shared/Widgets/card_well.dart';
 import '../../../Shared/Widgets/profile_avatar.dart';
+import '../../../Shared/Widgets/riverpod_helper_widgets.dart';
 import '../utilities/helper_methods.dart';
 
 class NameRatingCard extends StatelessWidget {
@@ -32,12 +33,14 @@ class NameRatingCard extends StatelessWidget {
         padding: const EdgeInsets.all(8.0),
         child: Row(
           children: [
-            ProfileHero(
-              radius: SessionData.deviceWidth * 0.08,
+            RefWidget(
+              (ref) => ProfileHero(
+                radius: LiveData.deviceWidth(ref) * 0.08,
 
-              /// TODO :fix this png and it is recommended to go for SVG
-              path: ImageAssets.defaultProfileAvatar,
-              backgroundColor: AppColors.scaffoldBackground(context),
+                /// TODO :fix this png and it is recommended to go for SVG
+                path: ImageAssets.defaultProfileAvatar,
+                backgroundColor: AppColors.scaffoldBackground(ref),
+              ),
             ),
             const SizedBox(width: 20),
             const Expanded(

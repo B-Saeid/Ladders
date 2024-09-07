@@ -3,69 +3,69 @@ import 'dart:io';
 import 'package:colorful_iconify_flutter/icons/logos.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:iconify_flutter/iconify_flutter.dart';
 import 'package:iconify_flutter/icons/bi.dart';
 import 'package:iconify_flutter/icons/fa.dart';
 import 'package:iconify_flutter/icons/game_icons.dart';
 import 'package:iconify_flutter/icons/healthicons.dart';
 
-import '../Services/Routing/routes_base.dart';
-import 'app_colors.dart';
+import '../Utilities/SessionData/session_data.dart';
 
 abstract class AdaptiveIcons {
   static bool get isIOS => Platform.isIOS;
 
-  static Color _adaptiveColor([BuildContext? context]) =>
-      AppColors.isLight(context ?? RoutesBase.activeContext!) ? Colors.black : Colors.white;
+  static Color _adaptiveColor([WidgetRef? ref]) =>
+      (ref != null ? LiveData.isLight(ref) : StaticData.isLight) ? Colors.black : Colors.white;
 
   static Widget wGoogleLogo({double? size}) => Iconify(
         Logos.google_icon,
         size: size ?? 25,
       );
 
-  static Widget wAppleLogo({BuildContext? context, Color? color, double? size}) => SizedBox.square(
+  static Widget wAppleLogo({WidgetRef? ref, Color? color, double? size}) => SizedBox.square(
         dimension: size ?? 25,
         child: Iconify(
           Logos.apple,
-          color: color ?? _adaptiveColor(context),
+          color: color ?? _adaptiveColor(ref),
           size: size ?? 25,
         ),
       );
 
-  static Widget wSandTimer({BuildContext? context, Color? color, double? size}) => Iconify(
+  static Widget wSandTimer({WidgetRef? ref, Color? color, double? size}) => Iconify(
         GameIcons.sands_of_time,
-        color: color ?? _adaptiveColor(context),
+        color: color ?? _adaptiveColor(ref),
         size: size,
       );
 
-  static Widget wTraveller({BuildContext? context, Color? color, double? size}) => Iconify(
+  static Widget wTraveller({WidgetRef? ref, Color? color, double? size}) => Iconify(
         Healthicons.travel_alt,
-        color: color ?? _adaptiveColor(context),
+        color: color ?? _adaptiveColor(ref),
         size: size,
       );
 
-  static Widget wCardList({BuildContext? context, Color? color, double? size}) => Iconify(
+  static Widget wCardList({WidgetRef? ref, Color? color, double? size}) => Iconify(
         Bi.card_list,
         size: size ?? 32,
-        color: color ?? _adaptiveColor(context),
+        color: color ?? _adaptiveColor(ref),
       );
 
-  static Widget wCardHeading({BuildContext? context, Color? color, double? size}) => Iconify(
+  static Widget wCardHeading({WidgetRef? ref, Color? color, double? size}) => Iconify(
         Bi.card_heading,
         size: size ?? 32,
-        color: color ?? _adaptiveColor(context),
+        color: color ?? _adaptiveColor(ref),
       );
 
-  static Widget wDrivingLicenseOutline({BuildContext? context, Color? color, double? size}) => Iconify(
+  static Widget wDrivingLicenseOutline({WidgetRef? ref, Color? color, double? size}) => Iconify(
         Fa.drivers_license_o,
-        color: color ?? _adaptiveColor(context),
+        color: color ?? _adaptiveColor(ref),
         size: size,
       );
 
-  static Widget wDrivingLicense({BuildContext? context, Color? color, double? size}) => Iconify(
+  static Widget wDrivingLicense({WidgetRef? ref, Color? color, double? size}) => Iconify(
         Fa.drivers_license,
         size: size ?? 32,
-        color: color ?? _adaptiveColor(context),
+        color: color ?? _adaptiveColor(ref),
       );
 
   static IconData get home => isIOS ? CupertinoIcons.home : Icons.home_rounded;
