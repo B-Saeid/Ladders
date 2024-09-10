@@ -10,14 +10,14 @@ class Selector<T> extends StatelessWidget {
   });
 
   final ProviderListenable<T> selector;
-  final Widget Function(BuildContext context, T liveValue) builder;
+  final Widget Function(BuildContext context, T liveValue, Widget? child) builder;
   final Widget? child;
 
   @override
   Widget build(BuildContext context) => Consumer(
         builder: (context, ref, child) {
           final lifeValue = ref.watch(selector);
-          return builder(context, lifeValue);
+          return builder(context, lifeValue, child);
         },
         child: child,
       );

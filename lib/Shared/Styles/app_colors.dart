@@ -21,8 +21,9 @@ abstract class AppColors {
       LiveData.textTheme(ref).bodyMedium?.copyWith(color: negativeColor(ref));
 
   static Color negativeColor(WidgetRef ref) => LiveData.themeData(ref).colorScheme.error;
+  static Color whileDarkLightBlack(WidgetRef ref) => LiveData.isLight(ref) ? Colors.black:Colors.white;
 
-  static const primary = Color(0xFF3c6ab3);
+  static const primary = Color(0xff55361f);
 
   static LinearGradient opacityGradient([Color? color, (double from, double to)? bounds]) =>
       LinearGradient(
@@ -35,14 +36,13 @@ abstract class AppColors {
       );
 
   static Color adaptivePrimary(WidgetRef ref) =>
-      LiveData.isLight(ref) ? const Color(0xff88b2ff) : const Color(0xFF3c6ab3);
+      LiveData.isLight(ref) ? const Color(0xffcc9b76) : const Color(0xff55361f);
 
   static Color get green => Colors.green.shade700;
 
   static Color get greenLight => Colors.green.shade400;
 
-  static Color adaptiveGreen(WidgetRef ref) =>
-      LiveData.isLight(ref) ? Colors.green.shade400 : Colors.green.shade700;
+  static Color adaptiveGreen(WidgetRef ref) => LiveData.isLight(ref) ? greenLight : green;
 
   static Color get grey => const Color(0xff4b4b4b);
 
@@ -55,15 +55,19 @@ abstract class AppColors {
 
   static Color get yellowLight => const Color(0xfffff799);
 
-  static Color adaptiveYellow(WidgetRef ref) =>
-      LiveData.isLight(ref) ? const Color(0xfffff799) : const Color(0xffb3973c);
+  static Color adaptiveYellow(WidgetRef ref) => LiveData.isLight(ref) ? yellowLight : yellow;
 
   static Color get red => const Color(0xffb33c3c);
 
   static Color get redLight => const Color(0xffff9999);
 
-  static Color adaptiveRed(WidgetRef ref) =>
-      LiveData.isLight(ref) ? const Color(0xffff9999) : const Color(0xffb33c3c);
+  static Color adaptiveRed(WidgetRef ref) => LiveData.isLight(ref) ? redLight : red;
+
+  static Color get blue => const Color(0xFF3c6ab3);
+
+  static Color get blueLight => const Color(0xff88b2ff);
+
+  static Color adaptiveBlue(WidgetRef ref) => LiveData.isLight(ref) ? blueLight : blue;
 
   static Color textField(WidgetRef ref) => LiveData.isLight(ref) ? Colors.white : Colors.grey.shade800;
 

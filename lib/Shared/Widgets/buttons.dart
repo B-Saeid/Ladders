@@ -127,8 +127,8 @@ class CustomButton extends StatelessWidget {
       child: child is String ? Text(child as String, style: textStyle) : child as Widget,
     );
     final iconPart = RefWidget((ref) => SizedBox(
-          width: LiveData.getScaledValue(ref, baseValue: 32, maxValue: 50),
-          height: LiveData.getScaledValue(ref, baseValue: 32, maxValue: 50),
+          width: 32.scalable(ref, maxValue: 50),
+          height: 32.scalable(ref, maxValue: 50),
           child: FittedBox(child: icon),
         ));
     final zChild = Padding(
@@ -195,15 +195,15 @@ class CustomButton extends StatelessWidget {
     );
 
     final iconPart = RefWidget((ref) => SizedBox(
-          width: LiveData.getScaledValue(ref, baseValue: 32, maxValue: 50),
-          height: LiveData.getScaledValue(ref, baseValue: 32, maxValue: 50),
+          width: 32.scalable(ref, maxValue: 50),
+          height: 32.scalable(ref, maxValue: 50),
           child: FittedBox(child: icon),
         ));
 
     final zChild = Padding(
       padding: padding ?? const EdgeInsets.symmetric(horizontal: 12, vertical: 10),
       child: RefWidget((ref) => SizedBox(
-            height: LiveData.getScaledValue(ref, baseValue: childHeight ?? 28),
+            height: (childHeight ?? 28).scalable(ref),
             child: textPart,
           )),
     );

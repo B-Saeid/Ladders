@@ -8,7 +8,7 @@ import 'package:iconify_flutter/iconify_flutter.dart';
 import 'package:iconify_flutter/icons/bi.dart';
 import 'package:iconify_flutter/icons/fa.dart';
 import 'package:iconify_flutter/icons/game_icons.dart';
-import 'package:iconify_flutter/icons/healthicons.dart';
+import 'package:iconify_flutter/icons/ion.dart';
 
 import '../Utilities/SessionData/session_data.dart';
 
@@ -38,8 +38,20 @@ abstract class AdaptiveIcons {
         size: size,
       );
 
-  static Widget wTraveller({WidgetRef? ref, Color? color, double? size}) => Iconify(
-        Healthicons.travel_alt,
+  static Widget wTraining({WidgetRef? ref, Color? color, double? size}) => Iconify(
+        GameIcons.weight_lifting_up,
+        color: color ?? _adaptiveColor(ref),
+        size: size,
+      );
+
+  static Widget wFlatBar({WidgetRef? ref, Color? color, double? size}) => Iconify(
+        Ion.ios_fitness,
+        color: color ?? _adaptiveColor(ref),
+        size: size,
+      );
+
+  static Widget wResting({WidgetRef? ref, Color? color, double? size}) => Iconify(
+        GameIcons.weight_lifting_down,
         color: color ?? _adaptiveColor(ref),
         size: size,
       );

@@ -167,55 +167,104 @@ class LiveData extends ChangeNotifier {
 
   /// Watcher static methods
 
+  static AlwaysAliveProviderListenable<double> scalePercentageSelector(WidgetRef ref) => liveData.select(
+        (value) => value._scalePercentage,
+      );
+
   static double scalePercentage(WidgetRef ref) => ref.watch(
         liveData.select((p) => p._scalePercentage),
+      );
+
+  static AlwaysAliveProviderListenable<MediaQueryData> mediaQuerySelector(WidgetRef ref) =>
+      liveData.select(
+        (value) => value._mediaQuery,
       );
 
   static MediaQueryData mediaQuery(WidgetRef ref) => ref.watch(
         liveData.select((p) => p._mediaQuery),
       );
 
+  static AlwaysAliveProviderListenable<Size> sizeQuerySelector(WidgetRef ref) => liveData.select(
+        (value) => value._sizeQuery,
+      );
+
   static Size sizeQuery(WidgetRef ref) => ref.watch(
         liveData.select((p) => p._sizeQuery),
+      );
+
+  static AlwaysAliveProviderListenable<double> deviceWidthSelector(WidgetRef ref) => liveData.select(
+        (value) => value._deviceWidth,
       );
 
   static double deviceWidth(WidgetRef ref) => ref.watch(
         liveData.select((p) => p._deviceWidth),
       );
 
+  static AlwaysAliveProviderListenable<double> deviceHeightSelector(WidgetRef ref) => liveData.select(
+        (value) => value._deviceHeight,
+      );
+
   static double deviceHeight(WidgetRef ref) => ref.watch(
         liveData.select((p) => p._deviceHeight),
+      );
+
+  static AlwaysAliveProviderListenable<EdgeInsets> viewPaddingSelector(WidgetRef ref) => liveData.select(
+        (value) => value._viewPadding,
       );
 
   static EdgeInsets viewPadding(WidgetRef ref) => ref.watch(
         liveData.select((p) => p._viewPadding),
       );
 
+  static AlwaysAliveProviderListenable<EdgeInsets> viewInsetsSelector(WidgetRef ref) => liveData.select(
+        (value) => value._viewInsets,
+      );
+
   static EdgeInsets viewInsets(WidgetRef ref) => ref.watch(
         liveData.select((p) => p._viewInsets),
+      );
+
+  static AlwaysAliveProviderListenable<EdgeInsets> paddingSelector(WidgetRef ref) => liveData.select(
+        (value) => value._padding,
       );
 
   static EdgeInsets padding(WidgetRef ref) => ref.watch(
         liveData.select((p) => p._padding),
       );
 
+  static AlwaysAliveProviderListenable<bool> isPortraitSelector(WidgetRef ref) => liveData.select(
+        (value) => value._isPortrait,
+      );
+
   static bool isPortrait(WidgetRef ref) => ref.watch(
         liveData.select((p) => p._isPortrait),
+      );
+
+  static AlwaysAliveProviderListenable<ThemeData> themeDataSelector(WidgetRef ref) => liveData.select(
+        (value) => value._themeData,
       );
 
   static ThemeData themeData(WidgetRef ref) => ref.watch(
         liveData.select((p) => p._themeData),
       );
 
+  static AlwaysAliveProviderListenable<TextTheme> textThemeSelector(WidgetRef ref) => liveData.select(
+        (value) => value._textTheme,
+      );
+
   static TextTheme textTheme(WidgetRef ref) => ref.watch(
         liveData.select((p) => p._textTheme),
+      );
+
+  static AlwaysAliveProviderListenable<bool> isLightSelector(WidgetRef ref) => liveData.select(
+        (value) => value._isLight,
       );
 
   static bool isLight(WidgetRef ref) => ref.watch(
         liveData.select((p) => p._isLight),
       );
 
-  static double getScaledValue(
+  static double _getScaledValue(
     WidgetRef ref, {
     required double baseValue,
     bool allowBelow = true,
@@ -230,4 +279,20 @@ class LiveData extends ChangeNotifier {
       return scaledValue.clamp(baseValue, maxValue ?? scaledValue);
     }
   }
+}
+
+extension LiveScaledValue on num {
+  double scalable(
+    WidgetRef ref, {
+    bool allowBelow = true,
+    double? maxValue,
+    double? maxPercentage,
+  }) =>
+      LiveData._getScaledValue(
+        ref,
+        baseValue: toDouble(),
+        allowBelow: allowBelow,
+        maxPercentage: maxPercentage,
+        maxValue: maxValue,
+      );
 }

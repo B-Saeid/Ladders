@@ -1,5 +1,7 @@
 import 'package:intl/intl.dart';
 
+import 'on_num.dart';
+
 extension NumTimeExtension<T extends num> on T {
   /// Returns a Duration represented in weeks
   Duration get weeks => days * DurationTimeExtension.daysPerWeek;
@@ -361,4 +363,54 @@ extension DurationTimeExtension on Duration {
     final secondsPart = inSeconds - (minutesPart * 60) - (inHours * 3600);
     return (inHours, minutesPart, secondsPart);
   }
+
+  (String, String, String) get nMMnSSnFF {
+    final minutesPart = (inMinutes - (inHours * 60));
+    final secondsPart = inSeconds - (minutesPart * 60) - (inHours * 3600);
+    return (minutesPart.padLeftSingles, secondsPart.padLeftSingles, moment());
+  }
+
+  String get hhColonMMColonSS => toString().split('.').first.padLeft(8, '0');
+
+  String get mmColonSS => toString().split('.').first.padLeft(8, '0');
+
+  String moment({FractionPrecision precision = FractionPrecision.moment}) {
+    late int moments;
+    final microSeconds = int.parse(toString().split('.')[1]);
+    switch (precision) {
+      case FractionPrecision.moment:
+        final moments0 = microSeconds / 10000;
+        moments = int.parse(moments0.toStringAsFixed(2).split('.').first);
+      case FractionPrecision.milli:
+      // TODO: Handle this case.
+      case FractionPrecision.micro:
+      // TODO: Handle this case.
+    }
+    return moments.padLeftSingles;
+  }
+
+  String get dynamicColonSeparated {
+    /// d = const Duration(hours: 1, minutes: 10, microseconds: 500);
+    /// print(d.toString()); // 1:10:00.000500
+
+    final components = toString().split('.').first.split(':');
+    final hours = int.parse(components[0]);
+    final minutes = int.parse(components[1]);
+    final seconds = int.parse(components[2]);
+
+    /// Pads this string on the left if it is shorter than width.
+    // ignore: prefer_interpolation_to_compose_strings
+    final string = (hours == 0 ? '' : hours.padLeftSingles + ':') +
+        minutes.padLeftSingles +
+        ':' +
+        seconds.padLeftSingles;
+
+    return string;
+  }
+}
+
+enum FractionPrecision {
+  moment,
+  milli,
+  micro;
 }

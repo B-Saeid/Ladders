@@ -55,7 +55,6 @@ abstract class L10nR {
         LocaleSetting.english => 'English',
       };
 
-
   /// Toasts
   static String tThemeChangeCoolDown([WidgetRef? ref]) => switch (_currentLocale(ref)) {
         SupportedLocale.en => 'Theme change cooling down',
@@ -1631,10 +1630,43 @@ abstract class L10nR {
 //         SupportedLocale.ar => 'إكمال',
 //       };
 //
-//   static String get tViewProfile => switch (_currentLocale) {
-//         SupportedLocale.en => 'View Profile',
-//         SupportedLocale.ar => 'عرض البيانات الشخصية',
-//       };
+  static String tViewProfile([WidgetRef? ref]) => switch (_currentLocale(ref)) {
+        SupportedLocale.en => 'View Profile',
+        SupportedLocale.ar => 'عرض البيانات الشخصية',
+      };
+  static String tSetTotalTime([WidgetRef? ref]) => switch (_currentLocale(ref)) {
+        SupportedLocale.en => 'Set Total Time',
+        SupportedLocale.ar => 'حدد الوقت الإجمالي',
+      };
+  static String tPleaseDetermineLadderTime([WidgetRef? ref]) => switch (_currentLocale(ref)) {
+        SupportedLocale.en => 'Please determine ladder time',
+        SupportedLocale.ar => 'قد بتحديد وقت السلم',
+      };
+  static String tGo([WidgetRef? ref]) => switch (_currentLocale(ref)) {
+        SupportedLocale.en => 'Go',
+        SupportedLocale.ar => 'إبدأ',
+      };
+  static String tStart([WidgetRef? ref]) => switch (_currentLocale(ref)) {
+        SupportedLocale.en => 'START',
+        SupportedLocale.ar => 'إبدأ',
+      };
+  static String tPause([WidgetRef? ref]) => switch (_currentLocale(ref)) {
+        SupportedLocale.en => 'Pause',
+        SupportedLocale.ar => 'إيقاف',
+      };
+  static String tResume([WidgetRef? ref]) => switch (_currentLocale(ref)) {
+        SupportedLocale.en => 'Resume',
+        SupportedLocale.ar => 'إكمال',
+      };
+  static String tAbort([WidgetRef? ref]) => switch (_currentLocale(ref)) {
+        SupportedLocale.en => 'Abort',
+        SupportedLocale.ar => 'إنهاء',
+      };
+  static String tRest([WidgetRef? ref]) => switch (_currentLocale(ref)) {
+        SupportedLocale.en => 'Rest',
+        SupportedLocale.ar => 'راحة',
+      };
+
 //
 //   /// In App Scaffold Bodies
 //
