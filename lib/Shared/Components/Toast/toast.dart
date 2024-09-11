@@ -17,7 +17,7 @@ abstract class Toast {
           return RefWidget(
             (ref) => Container(
               constraints: constraints,
-              padding: const EdgeInsets.symmetric(vertical: 10, horizontal: 15),
+              padding: const EdgeInsets.symmetric(vertical: 10, horizontal: 30),
               decoration: ShapeDecoration(
                 color: toastState.color(ref),
                 shape: const StadiumBorder(),

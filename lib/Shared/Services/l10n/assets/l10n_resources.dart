@@ -1634,34 +1634,51 @@ abstract class L10nR {
         SupportedLocale.en => 'View Profile',
         SupportedLocale.ar => 'عرض البيانات الشخصية',
       };
+
   static String tSetTotalTime([WidgetRef? ref]) => switch (_currentLocale(ref)) {
         SupportedLocale.en => 'Set Total Time',
         SupportedLocale.ar => 'حدد الوقت الإجمالي',
       };
-  static String tPleaseDetermineLadderTime([WidgetRef? ref]) => switch (_currentLocale(ref)) {
-        SupportedLocale.en => 'Please determine ladder time',
-        SupportedLocale.ar => 'قد بتحديد وقت السلم',
+
+  static String tPleaseSetTotalTime([WidgetRef? ref]) => switch (_currentLocale(ref)) {
+        SupportedLocale.en => 'Please set total time',
+        SupportedLocale.ar => 'قد بتحديد وقت الكلي',
       };
+
+  static String tMin([WidgetRef? ref]) => switch (_currentLocale(ref)) {
+        SupportedLocale.en => 'min',
+        SupportedLocale.ar => 'دقيقة',
+      };
+  static String tSec([WidgetRef? ref]) => switch (_currentLocale(ref)) {
+        SupportedLocale.en => 'sec',
+        SupportedLocale.ar => 'ثانية',
+      };
+
   static String tGo([WidgetRef? ref]) => switch (_currentLocale(ref)) {
         SupportedLocale.en => 'Go',
         SupportedLocale.ar => 'إبدأ',
       };
+
   static String tStart([WidgetRef? ref]) => switch (_currentLocale(ref)) {
         SupportedLocale.en => 'START',
         SupportedLocale.ar => 'إبدأ',
       };
+
   static String tPause([WidgetRef? ref]) => switch (_currentLocale(ref)) {
         SupportedLocale.en => 'Pause',
         SupportedLocale.ar => 'إيقاف',
       };
+
   static String tResume([WidgetRef? ref]) => switch (_currentLocale(ref)) {
         SupportedLocale.en => 'Resume',
         SupportedLocale.ar => 'إكمال',
       };
+
   static String tAbort([WidgetRef? ref]) => switch (_currentLocale(ref)) {
         SupportedLocale.en => 'Abort',
         SupportedLocale.ar => 'إنهاء',
       };
+
   static String tRest([WidgetRef? ref]) => switch (_currentLocale(ref)) {
         SupportedLocale.en => 'Rest',
         SupportedLocale.ar => 'راحة',
@@ -2223,6 +2240,11 @@ abstract class L10nR {
   static String tAbout([WidgetRef? ref]) => switch (_currentLocale(ref)) {
         SupportedLocale.en => 'About',
         SupportedLocale.ar => 'عن التطبيق',
+      };
+
+  static String tRateUs([WidgetRef? ref]) => switch (_currentLocale(ref)) {
+        SupportedLocale.en => 'Rate Us',
+        SupportedLocale.ar => 'قيمنا',
       };
 //
 //   static String get tVersion => switch (_currentLocale) {

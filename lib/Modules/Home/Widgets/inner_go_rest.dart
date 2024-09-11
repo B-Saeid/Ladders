@@ -52,88 +52,50 @@ class _GoRestTimer extends ConsumerWidget {
   const _GoRestTimer();
 
   @override
-  Widget build(BuildContext context, WidgetRef ref) => LayoutBuilder(builder: (context, constraints) {
-        final hPadding = 30.scalable(ref, maxValue: 50);
-        final freeWidth = constraints.maxWidth - hPadding * 2;
-        final twoDigitMaxWidth = _calculateWidth('00').scalable(
-          ref,
-          maxValue: (freeWidth / 20) * 6,
-        );
-        final colonWidth = _calculateWidth(':').scalable(
-          ref,
-          maxValue: freeWidth / 20,
-        );
-        return Container(
-          height: min(60.scalable(ref), freeWidth / 2.5),
-          padding: EdgeInsets.symmetric(horizontal: hPadding),
-          child: ValueListenableBuilder(
-            valueListenable: ref.read(homeProvider).timerDuration,
-            builder: (_, value, __) {
-              final (mintue, second, moment) = value.nMMnSSnFF;
-              return Row(
-                mainAxisSize: MainAxisSize.min,
-                children: [
-                  Container(
-                    alignment: Alignment.centerRight,
-                    width: twoDigitMaxWidth,
-                    child: FittedBox(
-                      child: Text(
-                        mintue,
-                        style: LiveData.textTheme(ref).displaySmall!.copyWith(letterSpacing: 2),
-                      ),
-                    ),
-                  ),
-                  SizedBox(
-                    width: colonWidth,
-                    child: FittedBox(
-                      child: Text(
-                        ':',
-                        style: LiveData.textTheme(ref).displaySmall!.copyWith(letterSpacing: 2),
-                      ),
-                    ),
-                  ),
-                  Container(
-                    alignment: Alignment.center,
-                    width: twoDigitMaxWidth,
-                    child: FittedBox(
-                      child: Text(
-                        second,
-                        style: LiveData.textTheme(ref).displaySmall!.copyWith(letterSpacing: 2),
-                      ),
-                    ),
-                  ),
-                  SizedBox(
-                    width: colonWidth,
-                    child: FittedBox(
-                      child: Text(
-                        ':',
-                        style: LiveData.textTheme(ref).displaySmall!.copyWith(letterSpacing: 2),
-                      ),
-                    ),
-                  ),
-                  Container(
-                    alignment: Alignment.centerLeft,
-                    width: twoDigitMaxWidth,
-                    child: FittedBox(
-                      child: Text(
-                        moment,
-                        style: LiveData.textTheme(ref).displaySmall!.copyWith(letterSpacing: 2),
-                      ),
-                    ),
-                  ),
-                ],
+  Widget build(BuildContext context, WidgetRef ref) => LayoutBuilder(
+        builder: (context, constraints) {
+          final hPadding = 30.scalable(ref, maxValue: 50);
+          final freeWidth = constraints.maxWidth - hPadding * 2;
+          final textStyle = LiveData.textTheme(ref).displaySmall!.copyWith(letterSpacing: 2);
+          final twoDigitMaxWidth = '00'.getWidth(textStyle).scalable(
+                ref,
+                maxValue: (freeWidth / 20) * 6,
               );
-            },
-          ),
-        );
-      });
+          final colonWidth = ':'.getWidth(textStyle).scalable(
+                ref,
+                maxValue: freeWidth / 20,
+              );
+          return Container(
+            height: min(60.scalable(ref), freeWidth / 2.5),
+            padding: EdgeInsets.symmetric(horizontal: hPadding),
+            child: ValueListenableBuilder(
+              valueListenable: ref.read(homeProvider).timerDuration,
+              builder: (_, value, __) {
+                final (minute, second, moment) = value.nMMnSSnFF;
+                return Row(
+                  textDirection: TextDirection.ltr,
+                  mainAxisSize: MainAxisSize.min,
+                  children: [
+                    twoDigits(twoDigitMaxWidth, minute, textStyle),
+                    colon(colonWidth, textStyle),
+                    twoDigits(twoDigitMaxWidth, second, textStyle),
+                    colon(colonWidth, textStyle),
+                    twoDigits(twoDigitMaxWidth, moment, textStyle),
+                  ],
+                );
+              },
+            ),
+          );
+        },
+      );
 
-  static double _calculateWidth(String value) {
-    final textSpan = TextSpan(
-      text: value,
-      style: StaticData.textTheme.displaySmall!.copyWith(letterSpacing: 2),
-    );
-    final tp = TextPainter(text: textSpan, textDirection: TextDirection.ltr)..layout();
-    return tp.width;
-  }
+  SizedBox twoDigits(double twoDigitMaxWidth, String digits, TextStyle style) => SizedBox(
+        width: twoDigitMaxWidth,
+        child: FittedBox(child: Text(digits, style: style)),
+      );
+
+  SizedBox colon(double colonWidth, TextStyle style) => SizedBox(
+        width: colonWidth,
+        child: FittedBox(child: Text(':', style: style)),
+      );
 }

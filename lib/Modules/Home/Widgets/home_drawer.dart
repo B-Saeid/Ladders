@@ -1,28 +1,32 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
+import '../../../Shared/Constants/assets_strings.dart';
 import '../../../Shared/Services/Routing/routes_base.dart';
 import '../../../Shared/Services/l10n/assets/l10n_resources.dart';
 import '../../../Shared/Styles/adaptive_icons.dart';
 import '../../../Shared/Utilities/SessionData/session_data.dart';
 import '../utilities/helper_methods.dart';
-import 'name_rating_card.dart';
 
 class HomeDrawer extends ConsumerWidget {
   const HomeDrawer({super.key});
 
   @override
-  Widget build(BuildContext context, WidgetRef ref) => const SizedBox(
+  Widget build(BuildContext context, WidgetRef ref) => SizedBox(
         width: 220,
         child: Drawer(
           child: Column(
             children: [
               DrawerHeader(
-                child: Center(
-                  child: NameAndImage(),
+                padding: EdgeInsets.zero,
+                decoration: const BoxDecoration(
+                  image: DecorationImage(
+                    image: AssetImage(ImageAssets.defaultProfileAvatar),
+                  ),
                 ),
+                child: Container(color: Colors.transparent),
               ),
-              _DrawerBody(),
+              const _DrawerBody(),
             ],
           ),
         ),
@@ -32,107 +36,84 @@ class HomeDrawer extends ConsumerWidget {
 class _DrawerBody extends ConsumerWidget {
   const _DrawerBody();
 
-  static List<String> titles(WidgetRef ref) => [
-        // [0,3]
-        L10nR.tHomePageTitle(ref).toUpperCase(),
-        'MAP',
-        'CHATS',
-        L10nR.tSettings(ref).toUpperCase(),
-        // [4-7]
-        L10nR.tPrivacyPolicy(ref),
-        L10nR.tTermsOfUse(ref),
-        L10nR.tContactUs(ref),
-        L10nR.tAbout(ref),
+  static List<_DrawerItem> mainGroup(WidgetRef ref) => [
+        _DrawerItem(
+          title: L10nR.tHomePageTitle(ref).toUpperCase(),
+          iconData: AdaptiveIcons.home,
+          path: Routes.home.path,
+        ),
+        _DrawerItem(
+          title: L10nR.tSettings(ref).toUpperCase(),
+          iconData: AdaptiveIcons.settings,
+          path: Routes.settings.path,
+        ),
       ];
-  static List<IconData> iconData = [
-    // [0,3]
-    AdaptiveIcons.home,
-    AdaptiveIcons.sms,
-    AdaptiveIcons.sms,
-    AdaptiveIcons.settings,
-    // [4-7]
-    AdaptiveIcons.sms,
-    AdaptiveIcons.sms,
-    AdaptiveIcons.sms,
-    AdaptiveIcons.info,
-  ];
-  static List<String> paths = [
-    // [0,3]
-    Routes.home.path,
-    Routes.home.path,
-    Routes.home.path,
-    Routes.settings.path,
-    // [4-7]
-    Routes.home.path,
-    Routes.home.path,
-    Routes.home.path,
-    Routes.home.path,
-  ];
+
+  static List<_DrawerItem> subGroup(WidgetRef ref) => [
+        _DrawerItem(
+          title: L10nR.tRateUs(ref),
+          iconData: AdaptiveIcons.star,
+          path: Routes.home.path, // todo
+        ),
+        _DrawerItem(
+          title: L10nR.tAbout(ref),
+          iconData: AdaptiveIcons.info,
+          path: Routes.home.path, // todo
+        ),
+      ];
 
   @override
   Widget build(BuildContext context, WidgetRef ref) => Expanded(
         child: CustomScrollView(
           slivers: [
             SliverList(
-              delegate: SliverChildBuilderDelegate(
-                (context, index) => _OurDrawerItem(
-                  title: titles(ref)[index],
-                  iconData: iconData[index],
-                  onPressed: () => onTileTapped(context, index),
-                  selected: RoutesBase.currentRoute == paths[index],
-                ),
-                childCount: 4,
+              delegate: SliverChildListDelegate(
+                mainGroup(ref).map((e) => _OurDrawerItem(e)).toList(),
               ),
             ),
             const SliverToBoxAdapter(child: Divider(height: 20)),
             SliverList(
-              delegate: SliverChildBuilderDelegate(
-                (context, index) => _OurDrawerItem(
-                  title: titles(ref)[index + 4],
-                  iconData: iconData[index + 4],
-                  onPressed: () => onTileTapped(context, index + 4),
-                  selected: RoutesBase.currentRoute == paths[index + 4],
-                ),
-                childCount: 4,
+              delegate: SliverChildListDelegate(
+                subGroup(ref).map((e) => _OurDrawerItem(e)).toList(),
               ),
             ),
           ],
         ),
       );
+}
 
-  void onTileTapped(
-    BuildContext context,
-    int index,
-  ) =>
-      InAppHelpers.adaptiveDrawerNavigation(
-        context,
-        to: paths[index],
-      );
+class _DrawerItem {
+  final String title;
+  final IconData iconData;
+  final String path;
+
+  _DrawerItem({required this.title, required this.iconData, required this.path});
 }
 
 class _OurDrawerItem extends ConsumerWidget {
-  const _OurDrawerItem({
-    required this.title,
-    required this.iconData,
-    this.selected,
-    this.onPressed,
-  });
+  const _OurDrawerItem(this.item);
 
-  final String title;
-  final IconData iconData;
-  final bool? selected;
-  final VoidCallback? onPressed;
+  final _DrawerItem item;
 
   @override
   Widget build(BuildContext context, WidgetRef ref) => Padding(
         padding: const EdgeInsets.symmetric(horizontal: 3),
         child: ListTile(
-          leading: FittedBox(child: Icon(iconData, size: 24.scalable(ref, maxPercentage: 1.5))),
-          title: FittedBox(fit: BoxFit.scaleDown, child: Text(title)),
-          selected: selected ?? false,
+          leading: FittedBox(child: Icon(item.iconData, size: 24.scalable(ref, maxPercentage: 1.5))),
+          title: FittedBox(fit: BoxFit.scaleDown, child: Text(item.title)),
+          selected: Scaffold.of(context).hasDrawer ? RoutesBase.currentRoute == item.path : false,
           style: ListTileStyle.drawer,
           shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(9)),
-          onTap: onPressed,
+          onTap: () => onTileTapped(context, item.path),
         ),
+      );
+
+  void onTileTapped(
+    BuildContext context,
+    String to,
+  ) =>
+      InAppHelpers.adaptiveDrawerNavigation(
+        context,
+        to: to,
       );
 }

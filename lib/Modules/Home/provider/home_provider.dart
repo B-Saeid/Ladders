@@ -48,6 +48,11 @@ class HomeProvider extends ChangeNotifier {
 
   Timer? _ladderTimer;
 
+  void refreshPositions() {
+    minuteController.jumpToItem(minute);
+    secondController.jumpToItem(second);
+  }
+
   /// Main Logic to run the timer and animate the wheels
   void _timerLogic(_) {
     if (second == 0) {
@@ -77,7 +82,7 @@ class HomeProvider extends ChangeNotifier {
   /// Start
   Future<void> startLadder() async {
     /// Making Sure of actual time existence
-    if (second == 0 && minute == 0) return Toast.show(L10nR.tPleaseDetermineLadderTime());
+    if (second == 0 && minute == 0) return Toast.show(L10nR.tPleaseSetTotalTime());
 
     /// Saving for convenience
     await HiveService.storedCache.putAll({

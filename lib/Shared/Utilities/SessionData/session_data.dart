@@ -296,3 +296,14 @@ extension LiveScaledValue on num {
         maxValue: maxValue,
       );
 }
+
+extension LiveStringWidth on String {
+  double getWidth(TextStyle style) {
+    final textSpan = TextSpan(
+      text: this,
+      style: style,
+    );
+    final tp = TextPainter(text: textSpan, textDirection: TextDirection.ltr)..layout();
+    return tp.width;
+  }
+}
