@@ -18,32 +18,21 @@ class StartAbortButton extends ConsumerWidget {
       Selector<({TotalState total, LadderState ladder})>(
         selector: homeProvider.select((p) => (total: p.totalState, ladder: p.ladderState)),
         builder: (_, state, __) => CustomAnimatedSize(
-          child: FittedBox(
-            child: Row(
-              mainAxisSize: MainAxisSize.min,
-              children: [
-                if (!state.total.isStopped) ...[
-                  _PauseResumeIcon(state.total),
-                  const SizedBox(width: 25),
-                ],
-                _StartRestButton(state),
-                if (!state.total.isStopped) ...[
-                  const SizedBox(width: 25),
-                  const _StopIcon(),
-                ]
+          child: Row(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              if (!state.total.isStopped) ...[
+                _PauseResumeIcon(state.total),
+                const SizedBox(width: 25),
               ],
-            ),
+              Flexible(child: _StartRestButton(state)),
+              if (!state.total.isStopped) ...[
+                const SizedBox(width: 25),
+                const _StopIcon(),
+              ]
+            ],
           ),
         ),
-
-        /// It looked great on normal scale however it weirdly behaved above 3x device scale
-        // builder: (_, state, __) => Column(
-        //   children: [
-        //     _StartRestButton(state),
-        //     SizedBox(height: 10.scalable(ref)),
-        //     _SplitButton(state),
-        //   ],
-        // ),
       );
 }
 
@@ -94,48 +83,3 @@ class _StartRestButton extends ConsumerWidget {
 
   HomeProvider provider(WidgetRef ref) => ref.read(homeProvider);
 }
-
-// class _SplitButton extends ConsumerWidget {
-//   const _SplitButton(this.state);
-//
-//   final ({LadderState ladder, TotalState total}) state;
-//
-//   @override
-//   Widget build(BuildContext context, WidgetRef ref) => CustomAnimatedSize(
-//         child: state.total.isStopped
-//             ? const SizedBox()
-//             : SegmentedButton<TotalState>(
-//                 style: SegmentedButton.styleFrom(
-//                   padding: const EdgeInsets.symmetric(horizontal: 20),
-//                   textStyle: LiveData.textTheme(ref).titleLarge,
-//                   shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
-//                 ),
-//                 onSelectionChanged: (Set<TotalState> value) => value.first.delegateAction(ref)(),
-//                 emptySelectionAllowed: true,
-//                 showSelectedIcon: false,
-//                 segments: [
-//                   ButtonSegment(
-//                     icon: Icon(
-//                       state.total.isRunning ? AdaptiveIcons.pause : AdaptiveIcons.play,
-//                       size: 24.scalable(ref, maxPercentage: 1.6),
-//                     ),
-//                     value: state.total.isRunning ? TotalState.paused : TotalState.running,
-//                     label: FittedBox(
-//                       child: Text(
-//                         state.total.isRunning ? L10nR.tPause(ref) : L10nR.tResume(ref),
-//                       ),
-//                     ),
-//                   ),
-//                   ButtonSegment(
-//                     icon: Icon(
-//                       AdaptiveIcons.stop,
-//                       size: 24.scalable(ref, maxPercentage: 1.6),
-//                     ),
-//                     value: TotalState.stopped,
-//                     label: FittedBox(child: Text(L10nR.tAbort(ref))),
-//                   )
-//                 ],
-//                 selected: const {},
-//               ),
-//       );
-// }

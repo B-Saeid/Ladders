@@ -24,7 +24,7 @@ class LaddersStyles {
 
   late final ThemeData light = ThemeData(
     colorSchemeSeed: AppColors.primary,
-    fontFamily: _topLevelFamily,
+    fontFamily: topLevelFamily,
 
     /// T O D O : Semi DONE!  BUG cupertinoButton does not reed font family
     /// Not all widgets read it ... for example [CupertinoDialogAction] I have to set
@@ -33,7 +33,7 @@ class LaddersStyles {
     cupertinoOverrideTheme: _cupertinoThemeData,
   );
 
-  CupertinoThemeData get _cupertinoThemeData => const CupertinoThemeData(
+  CupertinoThemeData get _cupertinoThemeData => CupertinoThemeData(
         applyThemeToAll: true,
         textTheme: CupertinoTextThemeData(
           textStyle: _overriddenFontFamilyStyle,
@@ -47,17 +47,17 @@ class LaddersStyles {
         ),
       );
 
-  static const TextStyle _overriddenFontFamilyStyle = TextStyle(fontFamily: AssetFonts.cairo);
+  late final TextStyle _overriddenFontFamilyStyle = TextStyle(fontFamily: topLevelFamily);
 
   late final ThemeData dark = ThemeData(
     brightness: Brightness.dark,
     colorSchemeSeed: AppColors.primary,
-    fontFamily: _topLevelFamily,
+    fontFamily: topLevelFamily,
     // textTheme: ThemeData.dark().textTheme.copyWith(displaySmall: const TextStyle(fontWeight: FontWeight.w800))
     cupertinoOverrideTheme: _cupertinoThemeData,
   );
 
-  String? get _topLevelFamily {
+  String? get topLevelFamily {
     if (locale == null) return null;
 
     final supportedLocale = SupportedLocale.fromLocale(locale!);

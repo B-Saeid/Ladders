@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
+typedef StringRef = String Function([WidgetRef? ref]);
+
 class L10nRText extends ConsumerWidget {
   const L10nRText(
     this.stringFromRef, {
@@ -8,7 +10,7 @@ class L10nRText extends ConsumerWidget {
     this.style,
   });
 
-  final String Function([WidgetRef? ref]) stringFromRef;
+  final StringRef stringFromRef;
   final TextStyle? style;
 
   @override

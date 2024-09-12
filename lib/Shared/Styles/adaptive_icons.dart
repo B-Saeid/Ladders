@@ -84,6 +84,8 @@ abstract class AdaptiveIcons {
 
   static IconData get star => isIOS ? CupertinoIcons.star_fill : Icons.star_rounded;
 
+  static IconData get language => isIOS ? CupertinoIcons.globe : Icons.language_rounded;
+
   static IconData get info => isIOS ? CupertinoIcons.info_circle_fill : Icons.info_rounded;
 
   static IconData get settings => isIOS ? CupertinoIcons.settings : Icons.settings;
