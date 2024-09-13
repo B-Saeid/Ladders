@@ -1,24 +1,24 @@
 import 'package:flutter/cupertino.dart';
 
+import '../../../../../Shared/Utilities/device_platform.dart';
 import '../../settings_ui.dart';
 
 class ThemeProvider {
   static SettingsThemeData getTheme({
-    required BuildContext context,
     required DevicePlatform platform,
-    required Brightness brightness,
+    required bool isLight,
   }) {
     switch (platform) {
       case DevicePlatform.android:
       case DevicePlatform.fuchsia:
       case DevicePlatform.linux:
-        return _androidTheme(context: context, brightness: brightness);
+        return _androidTheme(isLight);
       case DevicePlatform.iOS:
       case DevicePlatform.macOS:
       case DevicePlatform.windows:
-        return _iosTheme(context: context, brightness: brightness);
+        return _iosTheme(isLight);
       case DevicePlatform.web:
-        return _webTheme(context: context, brightness: brightness);
+        return _webTheme(isLight);
       case DevicePlatform.device:
         throw Exception(
           'You can\'t use the DevicePlatform.device in this context. '
@@ -27,15 +27,12 @@ class ThemeProvider {
     }
   }
 
-  static SettingsThemeData _androidTheme({
-    required BuildContext context,
-    required Brightness brightness,
-  }) {
+  static SettingsThemeData _androidTheme(bool isLight) {
     const lightLeadingIconsColor = Color.fromARGB(255, 70, 70, 70);
     const darkLeadingIconsColor = Color.fromARGB(255, 197, 197, 197);
 
-    const lightSettingsListBackground = Color.fromRGBO(240, 240, 240, 1);
-    const darkSettingsListBackground = Color.fromRGBO(27, 27, 27, 1);
+    // const lightSettingsListBackground = Color.fromRGBO(240, 240, 240, 1);
+    // const darkSettingsListBackground = Color.fromRGBO(27, 27, 27, 1);
 
     const lightSettingsTitleColor = Color.fromRGBO(11, 87, 208, 1);
     const darkSettingsTitleColor = Color.fromRGBO(211, 227, 253, 1);
@@ -55,9 +52,7 @@ class ThemeProvider {
     const lightTileDescriptionTextColor = Color.fromARGB(255, 70, 70, 70);
     const darkTileDescriptionTextColor = Color.fromARGB(255, 198, 198, 198);
 
-    final isLight = brightness == Brightness.light;
-
-    final listBackground = isLight ? lightSettingsListBackground : darkSettingsListBackground;
+    // final listBackground = isLight ? lightSettingsListBackground : darkSettingsListBackground;
 
     final titleTextColor = isLight ? lightSettingsTitleColor : darkSettingsTitleColor;
 
@@ -76,7 +71,7 @@ class ThemeProvider {
 
     return SettingsThemeData(
       tileHighlightColor: tileHighlightColor,
-      settingsListBackground: listBackground,
+      // settingsListBackground: listBackground,
       titleTextColor: titleTextColor,
       settingsTileTextColor: settingsTileTextColor,
       tileDescriptionTextColor: tileDescriptionTextColor,
@@ -86,12 +81,9 @@ class ThemeProvider {
     );
   }
 
-  static SettingsThemeData _iosTheme({
-    required BuildContext context,
-    required Brightness brightness,
-  }) {
-    const lightSettingsListBackground = Color.fromRGBO(242, 242, 247, 1);
-    const darkSettingsListBackground = CupertinoColors.black;
+  static SettingsThemeData _iosTheme(bool isLight) {
+    // const lightSettingsListBackground = Color.fromRGBO(242, 242, 247, 1);
+    // const darkSettingsListBackground = CupertinoColors.black;
 
     const lightSettingSectionColor = CupertinoColors.white;
     const darkSettingSectionColor = Color.fromARGB(255, 28, 28, 30);
@@ -114,9 +106,7 @@ class ThemeProvider {
     const lightLeadingIconsColor = CupertinoColors.inactiveGray;
     const darkLeadingIconsColor = CupertinoColors.inactiveGray;
 
-    final isLight = brightness == Brightness.light;
-
-    final listBackground = isLight ? lightSettingsListBackground : darkSettingsListBackground;
+    // final listBackground = isLight ? lightSettingsListBackground : darkSettingsListBackground;
 
     final sectionBackground = isLight ? lightSettingSectionColor : darkSettingSectionColor;
 
@@ -134,7 +124,7 @@ class ThemeProvider {
 
     return SettingsThemeData(
       tileHighlightColor: tileHighlightColor,
-      settingsListBackground: listBackground,
+      // settingsListBackground: listBackground,
       settingsSectionBackground: sectionBackground,
       titleTextColor: titleTextColor,
       dividerColor: dividerColor,
@@ -146,16 +136,13 @@ class ThemeProvider {
     );
   }
 
-  static SettingsThemeData _webTheme({
-    required BuildContext context,
-    required Brightness brightness,
-  }) {
+  static SettingsThemeData _webTheme(bool isLight) {
     const lightLeadingIconsColor = Color.fromARGB(255, 70, 70, 70);
     const darkLeadingIconsColor = Color.fromARGB(255, 197, 197, 197);
 
-    const lightSettingsListBackground = Color.fromRGBO(240, 240, 240, 1);
+    // const lightSettingsListBackground = Color.fromRGBO(240, 240, 240, 1);
     //done
-    const darkSettingsListBackground = Color.fromRGBO(32, 33, 36, 1);
+    // const darkSettingsListBackground = Color.fromRGBO(32, 33, 36, 1);
 
     const lightSettingSectionColor = CupertinoColors.white;
     //done
@@ -175,9 +162,7 @@ class ThemeProvider {
     const lightTileDescriptionTextColor = Color.fromARGB(255, 70, 70, 70);
     const darkTileDescriptionTextColor = Color.fromARGB(154, 160, 166, 198);
 
-    final isLight = brightness == Brightness.light;
-
-    final listBackground = isLight ? lightSettingsListBackground : darkSettingsListBackground;
+    // final listBackground = isLight ? lightSettingsListBackground : darkSettingsListBackground;
 
     final titleTextColor = isLight ? lightSettingsTitleColor : darkSettingsTitleColor;
 
@@ -194,7 +179,7 @@ class ThemeProvider {
 
     return SettingsThemeData(
       tileHighlightColor: tileHighlightColor,
-      settingsListBackground: listBackground,
+      // settingsListBackground: listBackground,
       titleTextColor: titleTextColor,
       settingsSectionBackground: sectionBackground,
       settingsTileTextColor: settingsTileTextColor,

@@ -1,5 +1,3 @@
-import 'dart:io';
-
 import 'package:colorful_iconify_flutter/icons/logos.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -13,7 +11,7 @@ import 'package:iconify_flutter/icons/ion.dart';
 import '../Utilities/SessionData/session_data.dart';
 
 abstract class AdaptiveIcons {
-  static bool get isIOS => Platform.isIOS;
+  static bool get isApple => StaticData.platform.isApple;
 
   static Color _adaptiveColor([WidgetRef? ref]) =>
       (ref != null ? LiveData.isLight(ref) : StaticData.isLight) ? Colors.black : Colors.white;
@@ -80,88 +78,90 @@ abstract class AdaptiveIcons {
         color: color ?? _adaptiveColor(ref),
       );
 
-  static IconData get home => isIOS ? CupertinoIcons.home : Icons.home_rounded;
+  static IconData get home => isApple ? CupertinoIcons.home : Icons.home_rounded;
 
-  static IconData get star => isIOS ? CupertinoIcons.star_fill : Icons.star_rounded;
+  static IconData get star => isApple ? CupertinoIcons.star_fill : Icons.star_rounded;
 
-  static IconData get language => isIOS ? CupertinoIcons.globe : Icons.language_rounded;
+  static IconData get language => isApple ? CupertinoIcons.globe : Icons.language_rounded;
 
-  static IconData get info => isIOS ? CupertinoIcons.info_circle_fill : Icons.info_rounded;
+  static IconData get info => isApple ? CupertinoIcons.info_circle_fill : Icons.info_rounded;
 
-  static IconData get settings => isIOS ? CupertinoIcons.settings : Icons.settings;
+  static IconData get settings => isApple ? CupertinoIcons.settings : Icons.settings;
 
-  static IconData get send => isIOS ? CupertinoIcons.arrow_up_circle_fill : Icons.send_rounded;
+  static IconData get send => isApple ? CupertinoIcons.arrow_up_circle_fill : Icons.send_rounded;
 
-  static IconData get check => isIOS ? CupertinoIcons.check_mark : Icons.check;
+  static IconData get check => isApple ? CupertinoIcons.check_mark : Icons.check;
 
-  static IconData get upload => isIOS ? CupertinoIcons.arrow_up_circle_fill : Icons.upload_rounded;
+  static IconData get upload => isApple ? CupertinoIcons.arrow_up_circle_fill : Icons.upload_rounded;
 
-  static IconData get circle => isIOS ? CupertinoIcons.circle : Icons.circle_outlined;
+  static IconData get circle => isApple ? CupertinoIcons.circle : Icons.circle_outlined;
 
-  static IconData get circleFill => isIOS ? CupertinoIcons.circle_filled : Icons.circle_rounded;
+  static IconData get circleFill => isApple ? CupertinoIcons.circle_filled : Icons.circle_rounded;
 
   static IconData get checkFilled =>
-      isIOS ? CupertinoIcons.check_mark_circled_solid : Icons.check_circle;
+      isApple ? CupertinoIcons.check_mark_circled_solid : Icons.check_circle;
 
   static IconData get checkShieldFilled => CupertinoIcons.checkmark_shield_fill;
 
-  static IconData get share => isIOS ? CupertinoIcons.share : Icons.share_rounded;
+  static IconData get share => isApple ? CupertinoIcons.share : Icons.share_rounded;
 
-  static IconData get search => isIOS ? CupertinoIcons.search : Icons.search_rounded;
+  static IconData get search => isApple ? CupertinoIcons.search : Icons.search_rounded;
 
-  static IconData get pin => isIOS ? CupertinoIcons.delete : Icons.delete_rounded;
+  static IconData get pin => isApple ? CupertinoIcons.delete : Icons.delete_rounded;
 
-  static IconData get report => isIOS ? CupertinoIcons.exclamationmark_circle_fill : Icons.report;
+  static IconData get report => isApple ? CupertinoIcons.exclamationmark_circle_fill : Icons.report;
 
-  static IconData get reload => isIOS ? CupertinoIcons.refresh : Icons.refresh_rounded;
+  static IconData get reload => isApple ? CupertinoIcons.refresh : Icons.refresh_rounded;
 
-  static IconData get light => isIOS ? CupertinoIcons.sun_min_fill : Icons.light_mode_rounded;
+  static IconData get theme => isApple ? CupertinoIcons.circle_righthalf_fill : Icons.contrast_rounded;
 
-  static IconData get dark => isIOS ? CupertinoIcons.moon_fill : Icons.dark_mode_rounded;
+  static IconData get light => isApple ? CupertinoIcons.sun_min_fill : Icons.light_mode_rounded;
 
-  static IconData get add => isIOS ? CupertinoIcons.add : Icons.add;
+  static IconData get dark => isApple ? CupertinoIcons.moon_fill : Icons.dark_mode_rounded;
+
+  static IconData get add => isApple ? CupertinoIcons.add : Icons.add;
 
   static IconData get arrowDown =>
-      isIOS ? CupertinoIcons.chevron_down : Icons.keyboard_arrow_down_rounded;
+      isApple ? CupertinoIcons.chevron_down : Icons.keyboard_arrow_down_rounded;
 
-  static IconData get arrowUp => isIOS ? CupertinoIcons.chevron_up : Icons.keyboard_arrow_up_rounded;
+  static IconData get arrowUp => isApple ? CupertinoIcons.chevron_up : Icons.keyboard_arrow_up_rounded;
 
   static IconData get rtlArrow => CupertinoIcons.arrow_left_square_fill;
 
   static IconData get ltrArrow => CupertinoIcons.arrow_right_square_fill;
 
-  static IconData get pen => isIOS ? CupertinoIcons.pen : Icons.edit;
+  static IconData get pen => isApple ? CupertinoIcons.pen : Icons.edit;
 
-  static IconData get reply => isIOS ? CupertinoIcons.reply : Icons.reply;
+  static IconData get reply => isApple ? CupertinoIcons.reply : Icons.reply;
 
   static IconData get copy => Icons.copy_rounded;
 
-  static IconData get pause => isIOS ? CupertinoIcons.pause : Icons.pause_rounded;
+  static IconData get pause => isApple ? CupertinoIcons.pause : Icons.pause_rounded;
 
-  static IconData get play => isIOS ? CupertinoIcons.play_fill : Icons.play_arrow_rounded;
+  static IconData get play => isApple ? CupertinoIcons.play_fill : Icons.play_arrow_rounded;
 
-  static IconData get stop => isIOS ? CupertinoIcons.stop_fill : Icons.stop_rounded;
+  static IconData get stop => isApple ? CupertinoIcons.stop_fill : Icons.stop_rounded;
 
-  static IconData get photo => isIOS ? CupertinoIcons.photo_fill : Icons.photo_rounded;
+  static IconData get photo => isApple ? CupertinoIcons.photo_fill : Icons.photo_rounded;
 
-  static IconData get camera => isIOS ? CupertinoIcons.camera_fill : Icons.camera_alt_rounded;
+  static IconData get camera => isApple ? CupertinoIcons.camera_fill : Icons.camera_alt_rounded;
 
-  static IconData get microphone => isIOS ? CupertinoIcons.mic_fill : Icons.mic_rounded;
+  static IconData get microphone => isApple ? CupertinoIcons.mic_fill : Icons.mic_rounded;
 
-  static IconData get email => isIOS ? CupertinoIcons.mail_solid : Icons.email_rounded;
+  static IconData get email => isApple ? CupertinoIcons.mail_solid : Icons.email_rounded;
 
-  static IconData get call => isIOS ? CupertinoIcons.phone_fill : Icons.call_rounded;
+  static IconData get call => isApple ? CupertinoIcons.phone_fill : Icons.call_rounded;
 
-  static IconData get sms => isIOS ? CupertinoIcons.text_bubble_fill : Icons.sms_rounded;
+  static IconData get sms => isApple ? CupertinoIcons.text_bubble_fill : Icons.sms_rounded;
 
   static IconData get phone =>
-      isIOS ? CupertinoIcons.device_phone_portrait : Icons.phone_android_rounded;
+      isApple ? CupertinoIcons.device_phone_portrait : Icons.phone_android_rounded;
 
-  static IconData get person => isIOS ? CupertinoIcons.person_fill : Icons.person_rounded;
+  static IconData get person => isApple ? CupertinoIcons.person_fill : Icons.person_rounded;
 
-  static IconData get lock => isIOS ? CupertinoIcons.lock_fill : Icons.lock_rounded;
+  static IconData get lock => isApple ? CupertinoIcons.lock_fill : Icons.lock_rounded;
 
-  static IconData get eye => isIOS ? CupertinoIcons.eye_fill : Icons.visibility_rounded;
+  static IconData get eye => isApple ? CupertinoIcons.eye_fill : Icons.visibility_rounded;
 
-  static IconData get eyeSlash => isIOS ? CupertinoIcons.eye_slash_fill : Icons.visibility_off_rounded;
+  static IconData get eyeSlash => isApple ? CupertinoIcons.eye_slash_fill : Icons.visibility_off_rounded;
 }

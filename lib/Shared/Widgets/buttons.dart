@@ -1,5 +1,3 @@
-import 'dart:io';
-
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
@@ -122,7 +120,7 @@ class CustomButton extends StatelessWidget {
       adaptive ? _buildAdaptiveButton(onPressed) : _buildCustomButton(onPressed);
 
   Widget _buildAdaptiveButton(VoidCallback? callToAction) {
-    final isIOS = Platform.isIOS;
+    final isApple = StaticData.platform.isApple;
     final textPart = FittedBox(
       child: child is String ? Text(child as String, style: textStyle) : child as Widget,
     );
@@ -138,7 +136,7 @@ class CustomButton extends StatelessWidget {
         child: textPart,
       ),
     );
-    if (isIOS) {
+    if (isApple) {
       if (color != null) {
         return CupertinoButton(onPressed: callToAction, color: color, child: zChild);
       }

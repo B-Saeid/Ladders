@@ -1,9 +1,8 @@
-import 'dart:io';
-
-import 'package:flutter/cupertino.dart';
-import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 
+import '../../../../../Shared/Utilities/SessionData/session_data.dart';
+import '../../../../../Shared/Utilities/device_platform.dart';
 import '../../settings_ui.dart';
 import '../utils/theme_provider.dart';
 
@@ -19,7 +18,7 @@ enum ApplicationType {
   both,
 }
 
-class SettingsList extends StatelessWidget {
+class SettingsList extends ConsumerWidget {
   const SettingsList({
     required this.sections,
     this.shrinkWrap = false,
@@ -29,7 +28,6 @@ class SettingsList extends StatelessWidget {
     this.darkTheme,
     this.brightness,
     this.contentPadding,
-    this.applicationType = ApplicationType.material,
     super.key,
   });
 
@@ -41,43 +39,36 @@ class SettingsList extends StatelessWidget {
   final Brightness? brightness;
   final EdgeInsetsGeometry? contentPadding;
   final List<AbstractSettingsSection> sections;
-  final ApplicationType applicationType;
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
     DevicePlatform platform;
     if (this.platform == null || this.platform == DevicePlatform.device) {
-      platform = PlatformUtils.detectPlatform(context);
+      platform = StaticData.platform;
     } else {
       platform = this.platform!;
     }
 
-    final brightness = calculateBrightness(context);
+    final isLight = LiveData.isLight(ref);
 
     final themeData = ThemeProvider.getTheme(
-      context: context,
       platform: platform,
-      brightness: brightness,
+      isLight: isLight,
     ).merge(theme: brightness == Brightness.dark ? darkTheme : lightTheme);
 
-    return Container(
-      color: themeData.settingsListBackground,
-      width: MediaQuery.of(context).size.width,
-      alignment: Alignment.center,
-      child: ConstrainedBox(
-        constraints: const BoxConstraints(maxWidth: 810),
-        child: SettingsTheme(
-          themeData: themeData,
-          platform: platform,
-          child: ListView.builder(
-            physics: physics,
-            shrinkWrap: shrinkWrap,
-            itemCount: sections.length,
-            padding: contentPadding ?? calculateDefaultPadding(platform),
-            itemBuilder: (BuildContext context, int index) {
-              return sections[index];
-            },
-          ),
+    return ConstrainedBox(
+      constraints: const BoxConstraints(maxWidth: 810),
+      child: SettingsTheme(
+        themeData: themeData,
+        platform: platform,
+        child: ListView.builder(
+          physics: physics,
+          shrinkWrap: shrinkWrap,
+          itemCount: sections.length,
+          padding: contentPadding ?? calculateDefaultPadding(platform),
+          itemBuilder: (BuildContext context, int index) {
+            return sections[index];
+          },
         ),
       ),
     );
@@ -100,23 +91,6 @@ class SettingsList extends StatelessWidget {
           'You can\'t use the DevicePlatform.device in this context. '
           'Incorrect platform: SettingsList.calculateDefaultPadding',
         );
-    }
-  }
-
-  Brightness calculateBrightness(BuildContext context) {
-    final materialBrightness = Theme.of(context).brightness;
-    final cupertinoBrightness = CupertinoTheme.of(context).brightness ??
-        MediaQuery.of(context).platformBrightness;
-
-    switch (applicationType) {
-      case ApplicationType.material:
-        return materialBrightness;
-      case ApplicationType.cupertino:
-        return cupertinoBrightness;
-      case ApplicationType.both:
-        return kIsWeb || !Platform.isIOS
-            ? materialBrightness
-            : cupertinoBrightness;
     }
   }
 }

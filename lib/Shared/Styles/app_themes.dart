@@ -66,4 +66,6 @@ class LaddersStyles {
       SupportedLocale.en => AssetFonts.montserrat,
     };
   }
+
+  String? get arabicFontFamily => AssetFonts.cairo;
 }

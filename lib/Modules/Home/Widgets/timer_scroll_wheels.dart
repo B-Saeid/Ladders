@@ -3,13 +3,13 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../../../../Shared/Extensions/time_package.dart';
 import '../../../../Shared/Services/l10n/assets/l10n_resources.dart';
-import '../../../../Shared/Widgets/text_container.dart';
 import '../../../Shared/Extensions/on_num.dart';
 import '../../../Shared/Services/l10n/l10n_service.dart';
 import '../../../Shared/Utilities/SessionData/session_data.dart';
 import '../../../Shared/Widgets/custom_animated_size.dart';
 import '../../../Shared/Widgets/riverpod_helper_widgets.dart';
 import '../../../Shared/Widgets/scale_controlled_text.dart';
+import '../../../Shared/Widgets/text_container.dart';
 import '../provider/home_provider.dart';
 import '../utilities/enums.dart';
 
@@ -75,6 +75,7 @@ class _SetTotalTimeText extends ConsumerWidget {
           child: isStopped ? child! : const SizedBox(),
         ),
         child: TextContainer(
+          padding: const EdgeInsets.symmetric(vertical: 12, horizontal: 20),
           child: FittedBox(
             child: Text(
               L10nR.tSetTotalTime(ref),

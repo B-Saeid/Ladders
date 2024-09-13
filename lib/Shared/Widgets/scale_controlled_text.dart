@@ -6,6 +6,8 @@ import '../Utilities/SessionData/session_data.dart';
 class ScaleControlledText extends ConsumerWidget {
   final String text;
   final TextStyle? style;
+  final bool scale;
+  final List<InlineSpan>? spans;
   final double? maxSize;
   final double? maxPercentage;
   final bool allowBelow;
@@ -14,6 +16,8 @@ class ScaleControlledText extends ConsumerWidget {
   const ScaleControlledText(
     this.text, {
     super.key,
+    this.spans,
+    this.scale = false,
     this.style,
     this.maxSize,
     this.maxPercentage,
@@ -21,7 +25,7 @@ class ScaleControlledText extends ConsumerWidget {
     this.sizeWrapString,
   });
 
-  bool get shouldScale => maxSize != null || maxPercentage != null || !allowBelow;
+  bool get shouldScale => scale || maxSize != null || maxPercentage != null || !allowBelow;
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
@@ -31,7 +35,11 @@ class ScaleControlledText extends ConsumerWidget {
     return SizedBox(
       width: sizeWrapString?.getWidth(scaledStyle ?? style ?? defaultStyle),
       child: RichText(
-        text: TextSpan(text: text, style: scaledStyle ?? style ?? defaultStyle),
+        text: TextSpan(
+          text: text,
+          style: scaledStyle ?? style ?? defaultStyle,
+          children: spans,
+        ),
       ),
     );
   }

@@ -1,7 +1,6 @@
 import 'dart:developer';
 
 import 'package:flutter/material.dart';
-import 'package:flutter_native_splash/flutter_native_splash.dart';
 
 import 'Database/Hive/hive_service.dart';
 import 'Routing/routes_base.dart';
@@ -10,11 +9,13 @@ Future<void> initServices() async {
   Timeline.startSync('initServices including startScreenSelector');
   // final isIOS = defaultTargetPlatform == TargetPlatform.iOS;
   // final iOS = Platform.isIOS;
-  final widgetsBinding = WidgetsFlutterBinding.ensureInitialized();
-  FlutterNativeSplash.preserve(widgetsBinding: widgetsBinding);
+  WidgetsFlutterBinding.ensureInitialized();
+
+  /// TODO : Later implement this when you design logo
+  // FlutterNativeSplash.preserve(widgetsBinding: widgetsBinding);
   final startPath = await startPathSelector();
-  FlutterNativeSplash.remove();
-  Timeline.finishSync();
+  // FlutterNativeSplash.remove();
+  // Timeline.finishSync();
   RoutesBase.startLocationNotifier.value = startPath;
 }
 

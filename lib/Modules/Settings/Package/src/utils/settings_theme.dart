@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-import '../../settings_ui.dart';
+import '../../../../../Shared/Utilities/device_platform.dart';
 
 class SettingsTheme extends InheritedWidget {
   final SettingsThemeData themeData;
@@ -25,7 +25,7 @@ class SettingsTheme extends InheritedWidget {
 class SettingsThemeData {
   const SettingsThemeData({
     this.trailingTextColor,
-    this.settingsListBackground,
+    // this.settingsListBackground,
     this.settingsSectionBackground,
     this.dividerColor,
     this.tileHighlightColor,
@@ -37,7 +37,7 @@ class SettingsThemeData {
     this.inactiveSubtitleColor,
   });
 
-  final Color? settingsListBackground;
+  // final Color? settingsListBackground;
   final Color? trailingTextColor;
   final Color? leadingIconsColor;
   final Color? settingsSectionBackground;
@@ -59,7 +59,7 @@ class SettingsThemeData {
       tileDescriptionTextColor: theme.tileDescriptionTextColor,
       dividerColor: theme.dividerColor,
       trailingTextColor: theme.trailingTextColor,
-      settingsListBackground: theme.settingsListBackground,
+      // settingsListBackground: theme.settingsListBackground,
       settingsSectionBackground: theme.settingsSectionBackground,
       settingsTileTextColor: theme.settingsTileTextColor,
       tileHighlightColor: theme.tileHighlightColor,
@@ -83,7 +83,7 @@ class SettingsThemeData {
     Color? inactiveSubtitleColor,
   }) {
     return SettingsThemeData(
-      settingsListBackground: settingsListBackground ?? this.settingsListBackground,
+      // settingsListBackground: settingsListBackground ?? this.settingsListBackground,
       trailingTextColor: trailingTextColor ?? this.trailingTextColor,
       leadingIconsColor: leadingIconsColor ?? this.leadingIconsColor,
       settingsSectionBackground: settingsSectionBackground ?? this.settingsSectionBackground,

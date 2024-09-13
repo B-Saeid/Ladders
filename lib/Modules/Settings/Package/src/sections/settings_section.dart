@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 
+import '../../../../../Shared/Utilities/device_platform.dart';
 import '../../settings_ui.dart';
 import 'platforms/android_settings_section.dart';
 import 'platforms/ios_settings_section.dart';

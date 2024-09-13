@@ -3,7 +3,6 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../../../Shared/Services/l10n/assets/l10n_resources.dart';
 import '../../../Shared/Styles/app_colors.dart';
-import '../../Home/extensions.dart';
 import '../Provider/setting_provider.dart';
 
 class ChangeThemeMode extends ConsumerWidget {
@@ -18,7 +17,7 @@ class ChangeThemeMode extends ConsumerWidget {
       children: [
         if (AppColors.isDarkModeSupported)
           ChoiceChip(
-            label: Text(L10nR.tAutomatic(ref)),
+            label: Text(L10nR.tAuto(ref)),
             selected: themeMode.isAuto,
             onSelected: (_) => provider.setThemeMode(ThemeMode.system),
           ),

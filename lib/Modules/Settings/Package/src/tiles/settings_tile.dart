@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 
+import '../../../../../Shared/Utilities/device_platform.dart';
 import '../../settings_ui.dart';
 import 'platforms/android_settings_tile.dart';
 import 'platforms/ios_settings_tile.dart';
@@ -60,7 +61,7 @@ class SettingsTile extends AbstractSettingsTile {
   final Widget? trailing;
   final Widget title;
   final Widget? description;
-  final Function(BuildContext context)? onPressed;
+  final VoidCallback? onPressed;
 
   late final Color? activeSwitchColor;
   late final Widget? value;

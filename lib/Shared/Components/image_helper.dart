@@ -1,4 +1,3 @@
-import 'dart:io';
 
 import 'package:device_info_plus/device_info_plus.dart';
 import 'package:flutter/cupertino.dart';
@@ -6,6 +5,7 @@ import 'package:image_picker/image_picker.dart';
 
 import '../Services/Permission/permissions_service.dart';
 import '../Services/l10n/assets/l10n_resources.dart';
+import '../Utilities/SessionData/session_data.dart';
 import 'Toast/toast.dart';
 
 abstract class ImageHelper {
@@ -21,7 +21,7 @@ abstract class ImageHelper {
     /// Solution:
     /// https://stackoverflow.com/questions/74826687/how-to-solve-no-permissions-found-in-manifest-for-9-in-flutter
     MyPermission permission;
-    if (Platform.isAndroid) {
+    if (StaticData.platform.isAndroid) {
       final androidInfo = await DeviceInfoPlugin().androidInfo;
       if (androidInfo.version.sdkInt <= 32) {
         /// use [Permissions.storage.status]

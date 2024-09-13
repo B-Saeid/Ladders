@@ -25,7 +25,7 @@ enum LocaleSetting {
   static LocaleSetting fromStored(value) =>
       LocaleSetting.values.firstWhereOrNull((element) => value == element.name) ?? LocaleSetting.auto;
 
-   String displayName(WidgetRef ref) => L10nR.localeDisplayName(this, ref);
+  String displayName(WidgetRef ref) => L10nR.localeSettingDisplayName(this, ref);
 }
 
 enum SupportedLocale {
@@ -34,6 +34,11 @@ enum SupportedLocale {
 
   static SupportedLocale fromLocale(Locale locale) =>
       SupportedLocale.values.firstWhere((element) => element.name == locale.languageCode);
+
+  String get displayName => switch (this) {
+        SupportedLocale.ar => 'العربية',
+        SupportedLocale.en => 'English',
+      };
 
   /// If rootApp widget locale is set to null and device locale is set to a locale no in this list
   /// The root app will take the first locale supported AFTER THE MAIN ONE IN DEVICE SETTINGS LIST

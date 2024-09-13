@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 
+import '../../../../../../Shared/Utilities/SessionData/session_data.dart';
 import '../../../settings_ui.dart';
 
-class WebSettingsSection extends StatelessWidget {
+class WebSettingsSection extends ConsumerWidget {
   const WebSettingsSection({
     required this.tiles,
     required this.margin,
@@ -15,13 +17,9 @@ class WebSettingsSection extends StatelessWidget {
   final Widget? title;
 
   @override
-  Widget build(BuildContext context) {
-    return buildSectionBody(context);
-  }
-
-  Widget buildSectionBody(BuildContext context) {
+  Widget build(BuildContext context,WidgetRef ref) {
     final theme = SettingsTheme.of(context);
-    final scaleFactor = MediaQuery.of(context).textScaleFactor;
+    final scaleFactor = LiveData.scalePercentage(ref);
 
     return Padding(
       padding: margin ?? EdgeInsets.zero,
@@ -36,7 +34,7 @@ class WebSettingsSection extends StatelessWidget {
                 start: 6,
                 top: 40 * scaleFactor,
               ),
-              child: DefaultTextStyle(
+              child: DefaultTextStyle.merge(
                 style: TextStyle(
                   color: theme.themeData.titleTextColor,
                   fontSize: 15,

@@ -41,3 +41,20 @@ class SettingsProvider extends ChangeNotifier {
     }
   }
 }
+
+extension OnThemeMode on ThemeMode {
+  bool get isAuto => this == ThemeMode.system;
+
+  bool get isLight => this == ThemeMode.light;
+
+  bool get isDark => this == ThemeMode.dark;
+
+  String displayName(WidgetRef ref) => switch (this) {
+        ThemeMode.system => L10nR.tAuto(ref),
+        ThemeMode.light => L10nR.tLight(ref),
+        ThemeMode.dark => L10nR.tDark(ref),
+      };
+
+  static ThemeMode? fromStored(storedValue) =>
+      ThemeMode.values.firstWhereOrNull((e) => e.name == storedValue);
+}

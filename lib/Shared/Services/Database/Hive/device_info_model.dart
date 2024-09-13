@@ -31,7 +31,7 @@ class IOSInfo {
 
   /// TODO: Complete These Two Methods when you need to access any thing related to ios Device info
 
-  void _setInfoFromBox(Box deviceInfo) {}
-
-  Future<void> _setInfoFromPlugin(IosDeviceInfo info) async {}
+  // void _setInfoFromBox(Box deviceInfo) {}
+  //
+  // Future<void> _setInfoFromPlugin(IosDeviceInfo info) async {}
 }

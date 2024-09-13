@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 
+import '../../../../../../Shared/Utilities/SessionData/session_data.dart';
 import '../../../settings_ui.dart';
 
-class AndroidSettingsSection extends StatelessWidget {
+class AndroidSettingsSection extends ConsumerWidget {
   const AndroidSettingsSection({
     required this.tiles,
     required this.margin,
@@ -15,18 +17,12 @@ class AndroidSettingsSection extends StatelessWidget {
   final Widget? title;
 
   @override
-  Widget build(BuildContext context) {
-    return buildSectionBody(context);
-  }
-
-  Widget buildSectionBody(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
     final theme = SettingsTheme.of(context);
-    final scaleFactor = MediaQuery.of(context).textScaleFactor;
+    final scaleFactor = LiveData.scalePercentage(ref);
     final tileList = buildTileList();
 
-    if (title == null) {
-      return tileList;
-    }
+    if (title == null) return tileList;
 
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
@@ -38,17 +34,14 @@ class AndroidSettingsSection extends StatelessWidget {
             start: 24,
             end: 24,
           ),
-          child: DefaultTextStyle(
+          child: DefaultTextStyle.merge(
             style: TextStyle(
               color: theme.themeData.titleTextColor,
             ),
             child: title!,
           ),
         ),
-        Container(
-          color: theme.themeData.settingsSectionBackground,
-          child: tileList,
-        ),
+        tileList,
       ],
     );
   }

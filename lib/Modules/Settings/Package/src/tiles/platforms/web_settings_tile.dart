@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 
+import '../../../../../../Shared/Utilities/SessionData/session_data.dart';
 import '../../../settings_ui.dart';
 
-class WebSettingsTile extends StatelessWidget {
+class WebSettingsTile extends ConsumerWidget {
   const WebSettingsTile({
     required this.tileType,
     required this.leading,
@@ -22,7 +24,7 @@ class WebSettingsTile extends StatelessWidget {
   final Widget? leading;
   final Widget? title;
   final Widget? description;
-  final Function(BuildContext context)? onPressed;
+  final VoidCallback? onPressed;
   final Function(bool value)? onToggle;
   final Widget? value;
   final bool initialValue;
@@ -31,9 +33,9 @@ class WebSettingsTile extends StatelessWidget {
   final Color? activeSwitchColor;
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
     final theme = SettingsTheme.of(context);
-    final scaleFactor = MediaQuery.of(context).textScaleFactor;
+    final scaleFactor = LiveData.scalePercentage(ref);
 
     final cantShowAnimation = tileType == SettingsTileType.switchTile
         ? onToggle == null && onPressed == null
@@ -44,13 +46,14 @@ class WebSettingsTile extends StatelessWidget {
       child: Material(
         color: Colors.transparent,
         child: InkWell(
+          borderRadius: BorderRadius.circular(12), // Card default border radius
           onTap: cantShowAnimation
               ? null
               : () {
                   if (tileType == SettingsTileType.switchTile) {
                     onToggle?.call(!initialValue);
                   } else {
-                    onPressed?.call(context);
+                    onPressed?.call();
                   }
                 },
           highlightColor: theme.themeData.tileHighlightColor,
@@ -61,7 +64,7 @@ class WebSettingsTile extends StatelessWidget {
                   padding: const EdgeInsetsDirectional.only(
                     start: 24,
                   ),
-                  child: IconTheme(
+                  child: IconTheme.merge(
                     data: IconTheme.of(context).copyWith(
                       color: theme.themeData.leadingIconsColor,
                     ),
@@ -79,18 +82,18 @@ class WebSettingsTile extends StatelessWidget {
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      DefaultTextStyle(
+                      DefaultTextStyle.merge(
                         style: TextStyle(
                           color: theme.themeData.settingsTileTextColor,
                           fontSize: 18,
                           fontWeight: FontWeight.w400,
                         ),
-                        child: title ?? Container(),
+                        child: title ?? const SizedBox(),
                       ),
                       if (value != null)
                         Padding(
                           padding: const EdgeInsets.only(top: 4.0),
-                          child: DefaultTextStyle(
+                          child: DefaultTextStyle.merge(
                             style: TextStyle(
                               color: theme.themeData.tileDescriptionTextColor,
                             ),
@@ -118,8 +121,7 @@ class WebSettingsTile extends StatelessWidget {
               //   ),
               if (tileType == SettingsTileType.switchTile)
                 Padding(
-                  padding:
-                      const EdgeInsetsDirectional.only(start: 16, end: 8),
+                  padding: const EdgeInsetsDirectional.only(start: 16, end: 8),
                   child: Switch.adaptive(
                     value: initialValue,
                     onChanged: onToggle,

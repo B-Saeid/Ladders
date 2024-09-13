@@ -1,11 +1,10 @@
-import 'dart:io';
-
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../Constants/assets_strings.dart';
 import '../Styles/app_colors.dart';
+import '../Utilities/SessionData/session_data.dart';
 import 'riverpod_helper_widgets.dart';
 
 class MyDialogue extends StatelessWidget {
@@ -40,28 +39,28 @@ class MyDialogue extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final isAndroid = Platform.isAndroid;
+    final isApple = StaticData.platform.isApple;
     return AlertDialog.adaptive(
-      contentPadding: isAndroid ? EdgeInsets.zero : null,
-      title: buildTitle(isAndroid),
+      contentPadding: isApple ? null : EdgeInsets.zero,
+      title: buildTitle(isApple),
       content: content == null
           ? null
           : Column(
               mainAxisSize: MainAxisSize.min,
               children: [
                 Padding(
-                  padding: isAndroid
-                      ? const EdgeInsets.only(top: 25, bottom: 15, left: 15, right: 15)
-                      : const EdgeInsets.only(top: 15),
+                  padding: isApple
+                      ? const EdgeInsets.only(top: 15)
+                      : const EdgeInsets.only(top: 25, bottom: 15, left: 15, right: 15),
                   child: content is String
                       ? Text(
                           content as String,
-                          textAlign: isAndroid ? TextAlign.start : null,
-                          style: isAndroid ? null : const TextStyle(fontFamily: AssetFonts.cairo),
+                          textAlign: isApple ? null : TextAlign.start,
+                          style: isApple ? const TextStyle(fontFamily: AssetFonts.cairo) : null,
                         )
                       : content as Widget,
                 ),
-                if (isAndroid &&
+                if (!isApple &&
                     (dismissTitle != null ||
                         actionTitle != null ||
                         customAndroidActions != null ||
@@ -90,8 +89,9 @@ class MyDialogue extends StatelessWidget {
                   ),
               ],
             ),
-      actions: !isAndroid
-          ? customIOSActions ??
+      actions: !isApple
+          ? null
+          : customIOSActions ??
               customAdaptiveActions ??
               [
                 if (dismissTitle != null)
@@ -110,16 +110,15 @@ class MyDialogue extends StatelessWidget {
                     isDestructiveAction: counterRecommended,
                     child: Text(actionTitle!),
                   )
-              ]
-          : null,
+              ],
     );
   }
 
-  Widget buildTitle(bool isAndroid) {
+  Widget buildTitle(bool isApple) {
     final titleText = Text(
       title,
-      style: isAndroid ? null : const TextStyle(fontFamily: AssetFonts.cairo),
-      textAlign: (isAndroid && androidCenterTitle) ? TextAlign.center : null,
+      style: isApple ? const TextStyle(fontFamily: AssetFonts.cairo) : null,
+      textAlign: (!isApple && androidCenterTitle) ? TextAlign.center : null,
     );
     if (cornerWidget == null) {
       return titleText;
@@ -196,7 +195,7 @@ class AdaptiveDialogueAction extends StatelessWidget {
   final bool? encouraged;
 
   @override
-  Widget build(BuildContext context) => Platform.isIOS
+  Widget build(BuildContext context) => StaticData.platform.isApple
       ? CupertinoDialogAction(
           textStyle: const TextStyle(fontFamily: AssetFonts.cairo),
           onPressed: onPressed,

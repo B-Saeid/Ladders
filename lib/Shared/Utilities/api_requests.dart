@@ -1,5 +1,6 @@
 import 'dart:convert';
-import 'dart:io';
+/// TODO : Check if that also throw on web
+import 'dart:io' show HandshakeException;
 
 import 'package:http/http.dart' as http;
 

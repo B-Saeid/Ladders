@@ -1,12 +1,13 @@
-import 'dart:io';
-
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 
+import '../../../../../../Shared/Utilities/SessionData/session_data.dart';
+import '../../../../../../Shared/Widgets/cupertino_well.dart';
 import '../../../settings_ui.dart';
 
-class IOSSettingsTile extends StatefulWidget {
+class IOSSettingsTile extends ConsumerWidget {
   const IOSSettingsTile({
     required this.tileType,
     required this.leading,
@@ -26,7 +27,7 @@ class IOSSettingsTile extends StatefulWidget {
   final Widget? leading;
   final Widget? title;
   final Widget? description;
-  final Function(BuildContext context)? onPressed;
+  final VoidCallback? onPressed;
   final Function(bool value)? onToggle;
   final Widget? value;
   final bool? initialValue;
@@ -35,44 +36,35 @@ class IOSSettingsTile extends StatefulWidget {
   final Widget? trailing;
 
   @override
-  _IOSSettingsTileState createState() => _IOSSettingsTileState();
-}
-
-class _IOSSettingsTileState extends State<IOSSettingsTile> {
-  bool isPressed = false;
-
-  @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
     final additionalInfo = IOSSettingsTileAdditionalInfo.of(context);
     final theme = SettingsTheme.of(context);
 
     return IgnorePointer(
-      ignoring: !widget.enabled,
-      child: Column(
-        children: [
-          buildTitle(
-            context: context,
-            theme: theme,
-            additionalInfo: additionalInfo,
-          ),
-          if (widget.description != null)
-            buildDescription(
-              context: context,
-              theme: theme,
-              additionalInfo: additionalInfo,
-            ),
-        ],
+      ignoring: !enabled,
+      child: buildTile(
+        context: context,
+        ref: ref,
+        theme: theme,
+        additionalInfo: additionalInfo,
       ),
     );
   }
 
-  Widget buildTitle({
+  Widget buildTile({
     required BuildContext context,
+    required WidgetRef ref,
     required SettingsTheme theme,
     required IOSSettingsTileAdditionalInfo additionalInfo,
   }) {
-    var content = buildTileContent(context, theme, additionalInfo);
-    if (kIsWeb || !Platform.isIOS) {
+    var content = buildContent(
+      context: context,
+      theme: theme,
+      additionalInfo: additionalInfo,
+      ref: ref,
+    );
+    final device = StaticData.platform;
+    if (kIsWeb || !device.isApple) {
       content = Material(
         color: Colors.transparent,
         child: content,
@@ -81,42 +73,20 @@ class _IOSSettingsTileState extends State<IOSSettingsTile> {
 
     return ClipRRect(
       borderRadius: BorderRadius.vertical(
-        top: additionalInfo.enableTopBorderRadius
-            ? const Radius.circular(12)
-            : Radius.zero,
-        bottom: additionalInfo.enableBottomBorderRadius
-            ? const Radius.circular(12)
-            : Radius.zero,
+        top: additionalInfo.enableTopBorderRadius ? const Radius.circular(12) : Radius.zero,
+        bottom: additionalInfo.enableBottomBorderRadius ? const Radius.circular(12) : Radius.zero,
       ),
       child: content,
     );
   }
 
-  Widget buildDescription({
-    required BuildContext context,
-    required SettingsTheme theme,
-    required IOSSettingsTileAdditionalInfo additionalInfo,
-  }) {
-    final scaleFactor = MediaQuery.of(context).textScaleFactor;
-
-    return Container(
-      width: MediaQuery.of(context).size.width,
-      padding: EdgeInsets.only(
-        left: 18,
-        right: 18,
-        top: 8 * scaleFactor,
-        bottom: additionalInfo.needToShowDivider ? 24 : 8 * scaleFactor,
+  Widget buildDescription(SettingsTheme theme) {
+    return DefaultTextStyle.merge(
+      style: TextStyle(
+        color: theme.themeData.titleTextColor,
+        fontSize: 13,
       ),
-      decoration: BoxDecoration(
-        color: theme.themeData.settingsListBackground,
-      ),
-      child: DefaultTextStyle(
-        style: TextStyle(
-          color: theme.themeData.titleTextColor,
-          fontSize: 13,
-        ),
-        child: widget.description!,
-      ),
+      child: description!,
     );
   }
 
@@ -124,146 +94,72 @@ class _IOSSettingsTileState extends State<IOSSettingsTile> {
     required BuildContext context,
     required SettingsTheme theme,
   }) {
-    if (widget.trailing != null) return widget.trailing!;
+    if (trailing != null) return trailing!;
 
-    if (widget.tileType == SettingsTileType.simpleTile) {
-      if (widget.value == null) {
-        return Container();
-      }
-      return widget.value!;
-    }
-
-    final scaleFactor = MediaQuery.of(context).textScaleFactor;
-
-    return Row(
-      children: [
-        if (widget.tileType == SettingsTileType.switchTile)
-          CupertinoSwitch(
-            value: widget.initialValue ?? true,
-            onChanged: widget.onToggle,
-            activeColor: widget.enabled
-                ? widget.activeSwitchColor
-                : theme.themeData.inactiveTitleColor,
+    return switch (tileType) {
+      SettingsTileType.switchTile => CupertinoSwitch(
+          value: initialValue ?? true,
+          onChanged: onToggle,
+          activeColor: enabled ? activeSwitchColor : theme.themeData.inactiveTitleColor,
+        ),
+      _ => DefaultTextStyle.merge(
+          style: TextStyle(
+            color: enabled ? theme.themeData.trailingTextColor : theme.themeData.inactiveTitleColor,
+            fontSize: 17,
           ),
-        if (widget.tileType == SettingsTileType.navigationTile &&
-            widget.value != null)
-          DefaultTextStyle(
-            style: TextStyle(
-              color: widget.enabled
-                  ? theme.themeData.trailingTextColor
-                  : theme.themeData.inactiveTitleColor,
-              fontSize: 17,
-            ),
-            child: widget.value!,
-          ),
-        if (widget.tileType == SettingsTileType.navigationTile)
-          Padding(
-            padding: const EdgeInsetsDirectional.only(start: 6, end: 2),
-            child: IconTheme(
-              data: IconTheme.of(context)
-                  .copyWith(color: theme.themeData.leadingIconsColor),
-              child: Icon(
-                CupertinoIcons.chevron_forward,
-                size: 18 * scaleFactor,
-              ),
-            ),
-          ),
-      ],
-    );
+          child: value ?? const SizedBox(),
+        ),
+    };
   }
 
-  void changePressState({bool isPressed = false}) {
-    if (mounted) {
-      setState(() {
-        this.isPressed = isPressed;
-      });
-    }
-  }
+  Widget buildContent({
+    required BuildContext context,
+    required WidgetRef ref,
+    required SettingsTheme theme,
+    required IOSSettingsTileAdditionalInfo additionalInfo,
+  }) {
+    final scaleFactor = LiveData.scalePercentage(ref);
 
-  Widget buildTileContent(
-    BuildContext context,
-    SettingsTheme theme,
-    IOSSettingsTileAdditionalInfo additionalInfo,
-  ) {
-    final scaleFactor = MediaQuery.of(context).textScaleFactor;
-
-    return GestureDetector(
-      behavior: HitTestBehavior.translucent,
-      onTap: widget.onPressed == null
-          ? null
-          : () {
-              changePressState(isPressed: true);
-
-              widget.onPressed!.call(context);
-
-              Future.delayed(
-                const Duration(milliseconds: 100),
-                () => changePressState(isPressed: false),
-              );
-            },
-      onTapDown: (_) =>
-          widget.onPressed == null ? null : changePressState(isPressed: true),
-      onTapUp: (_) =>
-          widget.onPressed == null ? null : changePressState(isPressed: false),
-      onTapCancel: () =>
-          widget.onPressed == null ? null : changePressState(isPressed: false),
+    return CupertinoWell(
+      color: theme.themeData.settingsSectionBackground,
+      pressedColor: theme.themeData.tileHighlightColor,
+      onPressed: onPressed,
       child: Container(
-        color: isPressed
-            ? theme.themeData.tileHighlightColor
-            : theme.themeData.settingsSectionBackground,
-        padding: const EdgeInsetsDirectional.only(start: 18),
+        constraints: const BoxConstraints(minHeight: 44),
+        padding: EdgeInsetsDirectional.only(
+          top: 8 * scaleFactor,
+          start: 18,
+          bottom: 8,
+        ),
         child: Row(
           children: [
-            if (widget.leading != null)
-              Padding(
-                padding: const EdgeInsetsDirectional.only(end: 12.0),
-                child: IconTheme.merge(
-                  data: IconThemeData(
-                    color: widget.enabled
-                        ? theme.themeData.leadingIconsColor
-                        : theme.themeData.inactiveTitleColor,
-                  ),
-                  child: widget.leading!,
-                ),
-              ),
+            if (leading != null) buildLeading(theme: theme, ref: ref),
             Expanded(
-              child: Column(
-                mainAxisSize: MainAxisSize.min,
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  Padding(
-                    padding: const EdgeInsetsDirectional.only(end: 16),
-                    child: Row(
-                      children: [
-                        Expanded(
-                          child: Padding(
-                            padding: EdgeInsetsDirectional.only(
-                              top: 12.5 * scaleFactor,
-                              bottom: 12.5 * scaleFactor,
-                            ),
-                            child: DefaultTextStyle(
-                              style: TextStyle(
-                                color: widget.enabled
-                                    ? theme.themeData.settingsTileTextColor
-                                    : theme.themeData.inactiveTitleColor,
-                                fontSize: 16,
-                              ),
-                              child: widget.title!,
-                            ),
+              child: Padding(
+                padding: const EdgeInsetsDirectional.only(start: 18, end: 18),
+                child: Row(
+                  children: [
+                    Expanded(
+                      child: Wrap(
+                        crossAxisAlignment: WrapCrossAlignment.center,
+                        alignment: WrapAlignment.spaceBetween,
+                        children: [
+                          /// Title & Description
+                          Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              buildTitle(theme),
+                              if (description != null) buildDescription(theme),
+                            ],
                           ),
-                        ),
-                        buildTrailing(context: context, theme: theme),
-                      ],
+                          buildTrailing(context: context, theme: theme),
+                        ],
+                      ),
                     ),
-                  ),
-                  if (widget.description == null &&
-                      additionalInfo.needToShowDivider)
-                    Divider(
-                      height: 0,
-                      thickness: 0.7,
-                      color: theme.themeData.dividerColor,
-                    ),
-                ],
+                    if (tileType == SettingsTileType.navigationTile)
+                      buildChevron(context: context, theme: theme, ref: ref),
+                  ],
+                ),
               ),
             ),
           ],
@@ -271,15 +167,57 @@ class _IOSSettingsTileState extends State<IOSSettingsTile> {
       ),
     );
   }
+
+  Widget buildLeading({
+    required SettingsTheme theme,
+    required WidgetRef ref,
+  }) {
+    return IconTheme.merge(
+      data: IconThemeData(
+        color: enabled ? theme.themeData.leadingIconsColor : theme.themeData.inactiveTitleColor,
+        size: 24.scalable(ref, maxPercentage: 2),
+      ),
+      child: leading!,
+    );
+  }
+
+  Widget buildTitle(SettingsTheme theme) {
+    return DefaultTextStyle.merge(
+      style: TextStyle(
+        color: enabled ? theme.themeData.settingsTileTextColor : theme.themeData.inactiveTitleColor,
+        fontSize: 16,
+      ),
+      child: title!,
+    );
+  }
+
+  Widget buildChevron({
+    required BuildContext context,
+    required WidgetRef ref,
+    required SettingsTheme theme,
+  }) {
+    final scaleFactor = LiveData.scalePercentage(ref);
+    return Padding(
+      padding: const EdgeInsetsDirectional.only(start: 6, end: 2),
+      child: IconTheme.merge(
+        data: IconTheme.of(context).copyWith(color: theme.themeData.leadingIconsColor),
+        child: Icon(
+          Directionality.of(context) == TextDirection.ltr
+              ? CupertinoIcons.chevron_forward
+              : CupertinoIcons.chevron_left,
+          size: 18 * scaleFactor,
+        ),
+      ),
+    );
+  }
 }
 
 class IOSSettingsTileAdditionalInfo extends InheritedWidget {
-  final bool needToShowDivider;
   final bool enableTopBorderRadius;
   final bool enableBottomBorderRadius;
 
-  const IOSSettingsTileAdditionalInfo({super.key, 
-    required this.needToShowDivider,
+  const IOSSettingsTileAdditionalInfo({
+    super.key,
     required this.enableTopBorderRadius,
     required this.enableBottomBorderRadius,
     required super.child,
@@ -289,12 +227,10 @@ class IOSSettingsTileAdditionalInfo extends InheritedWidget {
   bool updateShouldNotify(IOSSettingsTileAdditionalInfo oldWidget) => true;
 
   static IOSSettingsTileAdditionalInfo of(BuildContext context) {
-    final result = context
-        .dependOnInheritedWidgetOfExactType<IOSSettingsTileAdditionalInfo>();
+    final result = context.dependOnInheritedWidgetOfExactType<IOSSettingsTileAdditionalInfo>();
     // assert(result != null, 'No IOSSettingsTileAdditionalInfo found in context');
     return result ??
         const IOSSettingsTileAdditionalInfo(
-          needToShowDivider: true,
           enableBottomBorderRadius: true,
           enableTopBorderRadius: true,
           child: SizedBox(),

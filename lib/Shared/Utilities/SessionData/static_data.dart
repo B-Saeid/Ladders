@@ -24,4 +24,6 @@ abstract class StaticData {
   static TextTheme get textTheme => LiveData.__textTheme;
 
   static bool get isLight => LiveData.__isLight;
+
+  static final DevicePlatform platform = DevicePlatform.fromIO;
 }

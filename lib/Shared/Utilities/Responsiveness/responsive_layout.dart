@@ -21,7 +21,7 @@ class ResponsiveLayout extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) => Selector<double>(
-        selector: LiveData.deviceWidthSelector(ref),
+        selector: LiveData.deviceWidthSelector,
         builder: (context, width, __) => BreakPoints.isMobile(width)
             ? _MobileLayout(content, title, endDrawer)
             : _LargeLayout(content, title),

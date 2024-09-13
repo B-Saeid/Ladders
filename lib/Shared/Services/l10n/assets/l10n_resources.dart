@@ -31,8 +31,37 @@ abstract class L10nR {
         SupportedLocale.ar => 'الضبط',
       };
 
-  static String tAutomatic([WidgetRef? ref]) => switch (_currentLocale(ref)) {
-        SupportedLocale.en => 'Automatic',
+  static String tGENERAL([WidgetRef? ref]) => switch (_currentLocale(ref)) {
+        SupportedLocale.en => 'GENERAL',
+        SupportedLocale.ar => 'عام',
+      };
+
+  static String tLanguage([WidgetRef? ref]) => switch (_currentLocale(ref)) {
+        SupportedLocale.en => 'Language',
+        SupportedLocale.ar => 'اللغة',
+      };
+
+  static String tChangeLanguage([WidgetRef? ref]) => switch (_currentLocale(ref)) {
+        SupportedLocale.en => 'Change Language',
+        SupportedLocale.ar => 'تغيير اللغة',
+      };
+  static String tChangeTheme([WidgetRef? ref]) => switch (_currentLocale(ref)) {
+        SupportedLocale.en => 'Change Theme',
+        SupportedLocale.ar => 'تغيير السمة',
+      };
+
+  static String tThemeMode([WidgetRef? ref]) => switch (_currentLocale(ref)) {
+        SupportedLocale.en => 'Theme Mode',
+        SupportedLocale.ar => 'وضع السمة',
+      };
+
+  static String tDeviceLanguage([WidgetRef? ref]) => switch (_currentLocale(ref)) {
+        SupportedLocale.en => 'Device Language: ',
+        SupportedLocale.ar => 'لغة الجهاز: ',
+      };
+
+  static String tAuto([WidgetRef? ref]) => switch (_currentLocale(ref)) {
+        SupportedLocale.en => 'Auto',
         SupportedLocale.ar => 'تلقائي',
       };
 
@@ -46,7 +75,7 @@ abstract class L10nR {
         SupportedLocale.ar => 'داكن',
       };
 
-  static String localeDisplayName(LocaleSetting setting, [WidgetRef? ref]) => switch (setting) {
+  static String localeSettingDisplayName(LocaleSetting setting, [WidgetRef? ref]) => switch (setting) {
         LocaleSetting.auto => switch (_currentLocale(ref)) {
             SupportedLocale.en => 'Device Language',
             SupportedLocale.ar => 'لغة الجهاز',
@@ -1649,6 +1678,7 @@ abstract class L10nR {
         SupportedLocale.en => 'min',
         SupportedLocale.ar => 'دقيقة',
       };
+
   static String tSec([WidgetRef? ref]) => switch (_currentLocale(ref)) {
         SupportedLocale.en => 'sec',
         SupportedLocale.ar => 'ثانية',

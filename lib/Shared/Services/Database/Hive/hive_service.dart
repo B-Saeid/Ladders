@@ -1,7 +1,7 @@
-import 'dart:io';
-
 import 'package:device_info_plus/device_info_plus.dart';
 import 'package:hive_flutter/hive_flutter.dart';
+
+import '../../../Utilities/SessionData/session_data.dart';
 
 export 'boxes_keys/stored_cache_keys.dart';
 
@@ -16,8 +16,8 @@ abstract class HiveService {
   static late final Box settings;
   static late final Box storedCache;
   static late final Box _deviceInfo;
-  static final AndroidInfo? androidInfo = Platform.isAndroid ? AndroidInfo() : null;
-  static final IOSInfo? iosInfo = Platform.isIOS ? IOSInfo() : null;
+  static final AndroidInfo? androidInfo = StaticData.platform.isAndroid ? AndroidInfo() : null;
+  static final IOSInfo? iosInfo = StaticData.platform.isIOS ? IOSInfo() : null;
 
   static Future<void> init() async {
     await Hive.initFlutter(_subdirectory);
@@ -34,7 +34,7 @@ abstract class HiveService {
     if (!_deviceInfoSet) {
       _deviceInfoSet = true;
       if (_deviceInfo.isEmpty) {
-        if (Platform.isAndroid) {
+        if (StaticData.platform.isAndroid) {
           final info = await DeviceInfoPlugin().androidInfo;
           await androidInfo!._setInfoFromPlugin(info);
         } /*else {
@@ -42,7 +42,7 @@ abstract class HiveService {
           await iosInfo!._setInfoFromPlugin(info);
         }*/
       } else {
-        Platform.isAndroid
+        StaticData.platform.isAndroid
             ? androidInfo!._setInfoFromBox(_deviceInfo)
             : null;
             // : iosInfo!._setInfoFromBox(_deviceInfo);

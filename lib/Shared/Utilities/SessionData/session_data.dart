@@ -53,6 +53,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
+import '../device_platform.dart';
+
 part 'static_data.dart';
 
 ChangeNotifierProvider<LiveData> liveData = ChangeNotifierProvider((_) => LiveData._());
@@ -150,8 +152,8 @@ class LiveData extends ChangeNotifier {
     _textTheme = _themeData.textTheme;
     __textTheme = _textTheme;
     _normalSize = _textTheme.bodyMedium!; // you can use any textTheme
-    _isLight = _themeData.brightness == Brightness.light;
-    __isLight = _isLight;
+    __isLight = _themeData.brightness == Brightness.light;
+    _isLight = __isLight;
   }
 
   bool _updateLiveScalePercentage(TextScaler textScaler) {
@@ -167,7 +169,7 @@ class LiveData extends ChangeNotifier {
 
   /// Watcher static methods
 
-  static AlwaysAliveProviderListenable<double> scalePercentageSelector(WidgetRef ref) => liveData.select(
+  static AlwaysAliveProviderListenable<double> get scalePercentageSelector => liveData.select(
         (value) => value._scalePercentage,
       );
 
@@ -175,8 +177,7 @@ class LiveData extends ChangeNotifier {
         liveData.select((p) => p._scalePercentage),
       );
 
-  static AlwaysAliveProviderListenable<MediaQueryData> mediaQuerySelector(WidgetRef ref) =>
-      liveData.select(
+  static AlwaysAliveProviderListenable<MediaQueryData> get mediaQuerySelector => liveData.select(
         (value) => value._mediaQuery,
       );
 
@@ -184,7 +185,7 @@ class LiveData extends ChangeNotifier {
         liveData.select((p) => p._mediaQuery),
       );
 
-  static AlwaysAliveProviderListenable<Size> sizeQuerySelector(WidgetRef ref) => liveData.select(
+  static AlwaysAliveProviderListenable<Size> get sizeQuerySelector => liveData.select(
         (value) => value._sizeQuery,
       );
 
@@ -192,7 +193,7 @@ class LiveData extends ChangeNotifier {
         liveData.select((p) => p._sizeQuery),
       );
 
-  static AlwaysAliveProviderListenable<double> deviceWidthSelector(WidgetRef ref) => liveData.select(
+  static AlwaysAliveProviderListenable<double> get deviceWidthSelector => liveData.select(
         (value) => value._deviceWidth,
       );
 
@@ -200,7 +201,7 @@ class LiveData extends ChangeNotifier {
         liveData.select((p) => p._deviceWidth),
       );
 
-  static AlwaysAliveProviderListenable<double> deviceHeightSelector(WidgetRef ref) => liveData.select(
+  static AlwaysAliveProviderListenable<double> get deviceHeightSelector => liveData.select(
         (value) => value._deviceHeight,
       );
 
@@ -208,7 +209,7 @@ class LiveData extends ChangeNotifier {
         liveData.select((p) => p._deviceHeight),
       );
 
-  static AlwaysAliveProviderListenable<EdgeInsets> viewPaddingSelector(WidgetRef ref) => liveData.select(
+  static AlwaysAliveProviderListenable<EdgeInsets> get viewPaddingSelector => liveData.select(
         (value) => value._viewPadding,
       );
 
@@ -216,7 +217,7 @@ class LiveData extends ChangeNotifier {
         liveData.select((p) => p._viewPadding),
       );
 
-  static AlwaysAliveProviderListenable<EdgeInsets> viewInsetsSelector(WidgetRef ref) => liveData.select(
+  static AlwaysAliveProviderListenable<EdgeInsets> get viewInsetsSelector => liveData.select(
         (value) => value._viewInsets,
       );
 
@@ -224,7 +225,7 @@ class LiveData extends ChangeNotifier {
         liveData.select((p) => p._viewInsets),
       );
 
-  static AlwaysAliveProviderListenable<EdgeInsets> paddingSelector(WidgetRef ref) => liveData.select(
+  static AlwaysAliveProviderListenable<EdgeInsets> get paddingSelector => liveData.select(
         (value) => value._padding,
       );
 
@@ -232,7 +233,7 @@ class LiveData extends ChangeNotifier {
         liveData.select((p) => p._padding),
       );
 
-  static AlwaysAliveProviderListenable<bool> isPortraitSelector(WidgetRef ref) => liveData.select(
+  static AlwaysAliveProviderListenable<bool> get isPortraitSelector => liveData.select(
         (value) => value._isPortrait,
       );
 
@@ -240,7 +241,7 @@ class LiveData extends ChangeNotifier {
         liveData.select((p) => p._isPortrait),
       );
 
-  static AlwaysAliveProviderListenable<ThemeData> themeDataSelector(WidgetRef ref) => liveData.select(
+  static AlwaysAliveProviderListenable<ThemeData> get themeDataSelector => liveData.select(
         (value) => value._themeData,
       );
 
@@ -248,7 +249,7 @@ class LiveData extends ChangeNotifier {
         liveData.select((p) => p._themeData),
       );
 
-  static AlwaysAliveProviderListenable<TextTheme> textThemeSelector(WidgetRef ref) => liveData.select(
+  static AlwaysAliveProviderListenable<TextTheme> get textThemeSelector => liveData.select(
         (value) => value._textTheme,
       );
 
@@ -256,7 +257,7 @@ class LiveData extends ChangeNotifier {
         liveData.select((p) => p._textTheme),
       );
 
-  static AlwaysAliveProviderListenable<bool> isLightSelector(WidgetRef ref) => liveData.select(
+  static AlwaysAliveProviderListenable<bool> get isLightSelector => liveData.select(
         (value) => value._isLight,
       );
 
