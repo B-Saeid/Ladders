@@ -204,6 +204,10 @@ abstract class L10nR {
         SupportedLocale.en => 'Keep Default',
         SupportedLocale.ar => 'إبقاء الأصل',
       };
+  static String tHide([WidgetRef? ref]) => switch (_currentLocale(ref)) {
+        SupportedLocale.en => 'Hide',
+        SupportedLocale.ar => 'إخفاء',
+      };
 
   static String tTapOnIcon(String name, [WidgetRef? ref]) => switch (_currentLocale(ref)) {
         SupportedLocale.en => 'Tap on $name Icon',

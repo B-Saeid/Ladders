@@ -126,6 +126,12 @@ abstract class AdaptiveIcons {
 
   static IconData get arrowUp => isApple ? CupertinoIcons.chevron_up : Icons.keyboard_arrow_up_rounded;
 
+  static IconData get arrowRight =>
+      isApple ? CupertinoIcons.chevron_right : Icons.keyboard_arrow_right_rounded;
+
+  static IconData get arrowLeft =>
+      isApple ? CupertinoIcons.chevron_left : Icons.keyboard_arrow_left_rounded;
+
   static IconData get rtlArrow => CupertinoIcons.arrow_left_square_fill;
 
   static IconData get ltrArrow => CupertinoIcons.arrow_right_square_fill;
