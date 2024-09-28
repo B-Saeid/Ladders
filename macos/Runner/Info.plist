@@ -28,5 +28,9 @@
 	<string>MainMenu</string>
 	<key>NSPrincipalClass</key>
 	<string>NSApplication</string>
+	<key>NSSpeechRecognitionUsageDescription</key>
+    <string>Speech Recognition permission needed to perform voice actions</string>
+    <key>NSMicrophoneUsageDescription</key>
+    <string>Microphone permission needed for voice recognition</string>
 </dict>
 </plist>
