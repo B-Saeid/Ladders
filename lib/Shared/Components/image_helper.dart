@@ -1,4 +1,3 @@
-
 import 'package:device_info_plus/device_info_plus.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:image_picker/image_picker.dart';
@@ -9,14 +8,14 @@ import '../Utilities/SessionData/session_data.dart';
 import 'Toast/toast.dart';
 
 abstract class ImageHelper {
-  static void cameraRoutine(BuildContext context, {Function? allSetCallBack}) =>
-      PermissionsService.permissionRoutine(
+  static void cameraRoutine(BuildContext context, {VoidCallback? allSetCallBack}) =>
+      PermissionsService.routine(
         context: context,
         permission: MyPermission.camera,
         allSetCallBack: allSetCallBack,
       );
 
-  static Future<void> galleryRoutine(BuildContext context, {Function? allSetCallBack}) async {
+  static Future<void> galleryRoutine(BuildContext context, {VoidCallback? allSetCallBack}) async {
     /// Problem Encountered on Android 6 'No permissions found in manifest for: []9'
     /// Solution:
     /// https://stackoverflow.com/questions/74826687/how-to-solve-no-permissions-found-in-manifest-for-9-in-flutter
@@ -35,7 +34,7 @@ abstract class ImageHelper {
       permission = MyPermission.photos;
     }
     if (context.mounted) {
-      await PermissionsService.permissionRoutine(
+      await PermissionsService.routine(
         context: context,
         permission: permission,
         allSetCallBack: allSetCallBack,

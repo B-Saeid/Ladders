@@ -1,7 +1,4 @@
-import 'package:permission_handler/permission_handler.dart';
-
-import '../../Extensions/on_strings.dart';
-import '../l10n/assets/l10n_resources.dart';
+part of 'permissions_service.dart';
 
 /// We aim in this service for a couple of goals:
 ///   >>> First: To Conceal the original package within the service.
@@ -13,6 +10,7 @@ enum MyPermission {
   locationAlways,
   notification,
   microphone,
+  speech,
   photos,
   scheduleExactAlarm,
   sensors,
@@ -30,6 +28,7 @@ enum MyPermission {
         MyPermission.microphone => L10nR.tMicrophoneReason(),
         MyPermission.photos => L10nR.tPhotosReason(),
         MyPermission.storage => L10nR.tPhotosReason(),
+        MyPermission.speech => L10nR.tSpeechReason(),
         MyPermission.location => throw UnimplementedError(),
         MyPermission.locationWhenInUse => throw UnimplementedError(),
         MyPermission.locationAlways => L10nR.tLocationAlwaysReason(),
@@ -61,6 +60,7 @@ enum MyPermission {
         MyPermission.photos => _canBeLimited,
         MyPermission.videos => _canBeLimited,
         MyPermission.storage => _fullOrNothing,
+        MyPermission.speech => _fullOrNothing,
         MyPermission.scheduleExactAlarm => throw UnimplementedError(),
         MyPermission.sensors => throw UnimplementedError(),
         MyPermission.sensorsAlways => throw UnimplementedError(),

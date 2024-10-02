@@ -1330,6 +1330,11 @@ abstract class L10nR {
         SupportedLocale.ar => 'سماح',
       };
 
+  static String tRequest([WidgetRef? ref]) => switch (_currentLocale(ref)) {
+        SupportedLocale.en => 'Allow Request',
+        SupportedLocale.ar => 'السماح بالطلب',
+      };
+
   static String tRefresh([WidgetRef? ref]) => switch (_currentLocale(ref)) {
         SupportedLocale.en => 'Refresh',
         SupportedLocale.ar => 'تحديث',
@@ -1399,17 +1404,17 @@ abstract class L10nR {
 //         SupportedLocale.en => 'Do you own or have a vehicle?',
 //         SupportedLocale.ar => 'هل تمتلك أو لديك مركبة؟'
 //       };
-//
-//   static String get tYes => switch (_currentLocale) {
-//         SupportedLocale.en => 'Yes',
-//         SupportedLocale.ar => 'نعم',
-//       };
-//
-//   static String get tYES => switch (_currentLocale) {
-//         SupportedLocale.en => 'YES',
-//         SupportedLocale.ar => 'نعم',
-//       };
-//
+
+  static String tYes([WidgetRef? ref]) => switch (_currentLocale(ref)) {
+        SupportedLocale.en => 'Yes',
+        SupportedLocale.ar => 'نعم',
+      };
+
+  static String tYES([WidgetRef? ref]) => switch (_currentLocale(ref)) {
+        SupportedLocale.en => 'YES',
+        SupportedLocale.ar => 'نعم',
+      };
+
 //   static String get tLicenceQuestion => switch (_currentLocale) {
 //         SupportedLocale.en => 'What about a driving licence?',
 //         SupportedLocale.ar => 'ماذا عن رخصة القيادة؟',
@@ -1440,16 +1445,16 @@ abstract class L10nR {
 //         SupportedLocale.ar => 'استمرار كراكب',
 //       };
 //
-//   static String get tNo => switch (_currentLocale) {
-//         SupportedLocale.en => 'No',
-//         SupportedLocale.ar => 'لا',
-//       };
-//
-//   static String get tNO => switch (_currentLocale) {
-//         SupportedLocale.en => 'NO',
-//         SupportedLocale.ar => 'لا',
-//       };
-//
+  static String tNo([WidgetRef? ref]) => switch (_currentLocale(ref)) {
+        SupportedLocale.en => 'No',
+        SupportedLocale.ar => 'لا',
+      };
+
+  static String tNO([WidgetRef? ref]) => switch (_currentLocale(ref)) {
+        SupportedLocale.en => 'NO',
+        SupportedLocale.ar => 'لا',
+      };
+
 //   /// Labels & Hints TextFields
 //
 //   static String get tUserName => switch (_currentLocale) {
@@ -2011,14 +2016,19 @@ abstract class L10nR {
 //         SupportedLocale.ar => 'لا توجد إشعارات مستخدمة مؤخرًا',
 //       };
 
+  static String tPermissionRequired([WidgetRef? ref]) => switch (_currentLocale(ref)) {
+        SupportedLocale.en => 'Permission Required',
+        SupportedLocale.ar => 'مطلوب السماح بالإذن',
+      };
+
   static String tPermissionDenied([WidgetRef? ref]) => switch (_currentLocale(ref)) {
         SupportedLocale.en => 'Permission Denied',
         SupportedLocale.ar => 'الإذن غير مسموح به',
       };
 
   static String tMicrophoneReason([WidgetRef? ref]) => switch (_currentLocale(ref)) {
-        SupportedLocale.en => 'record voice messages',
-        SupportedLocale.ar => 'تسجيل رسائل صوتية',
+        SupportedLocale.en => 'capture voice actions',
+        SupportedLocale.ar => 'التقاط الأوامر الصوتية',
       };
 
   static String tCameraReason([WidgetRef? ref]) => switch (_currentLocale(ref)) {
@@ -2029,6 +2039,11 @@ abstract class L10nR {
   static String tPhotosReason([WidgetRef? ref]) => switch (_currentLocale(ref)) {
         SupportedLocale.en => 'pick a photo',
         SupportedLocale.ar => 'الاختيار من الصور',
+      };
+
+  static String tSpeechReason([WidgetRef? ref]) => switch (_currentLocale(ref)) {
+        SupportedLocale.en => 'perform voice action',
+        SupportedLocale.ar => 'تنفيذ الأمر الصوتي',
       };
 
   static String tLocationAlwaysReadableName([WidgetRef? ref]) => switch (_currentLocale(ref)) {
