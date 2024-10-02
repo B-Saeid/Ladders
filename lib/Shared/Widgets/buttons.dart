@@ -93,7 +93,23 @@ class CustomButton extends StatelessWidget {
       curve: Curves.easeInCubic,
       child: SizedBox(
         width: width,
-        child: loadingIndicator ?? false ? const NeatCircularIndicator() : determineChild(onPressed),
+        child: Stack(
+          children: [
+            Visibility.maintain(
+              visible: !(loadingIndicator ?? false),
+              child: IgnorePointer(
+                ignoring: loadingIndicator ?? false,
+                child: determineChild(onPressed),
+              ),
+            ),
+            Positioned.fill(
+              child: Visibility(
+                visible: loadingIndicator ?? false,
+                child: const NeatCircularIndicator(),
+              ),
+            ),
+          ],
+        ),
       ),
     );
   }
@@ -199,7 +215,11 @@ class CustomButton extends StatelessWidget {
         ));
 
     final zChild = Padding(
-      padding: padding ?? const EdgeInsets.symmetric(horizontal: 12, vertical: 10),
+      padding: padding ??
+          EdgeInsets.symmetric(
+            horizontal: iconExists ? 0 : 12,
+            vertical: 10,
+          ),
       child: RefWidget((ref) => SizedBox(
             height: (childHeight ?? 28).scalable(ref),
             child: textPart,
