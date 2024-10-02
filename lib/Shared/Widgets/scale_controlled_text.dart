@@ -34,6 +34,14 @@ class ScaleControlledText extends ConsumerWidget {
     if (shouldScale) scaledStyle = getScaledStyle(ref, style ?? defaultStyle);
     return SizedBox(
       width: sizeWrapString?.getWidth(scaledStyle ?? style ?? defaultStyle),
+      /// Check out later - It behaves similarly todo
+      // child: ExcludeSemantics(
+      //   child: Text(
+      //     text,
+      //     style: scaledStyle ?? style ?? defaultStyle,
+      //     // children: spans,
+      //   ),
+      // ),
       child: RichText(
         text: TextSpan(
           text: text,

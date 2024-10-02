@@ -8,7 +8,7 @@ import '../Utilities/SessionData/session_data.dart';
 import 'riverpod_helper_widgets.dart';
 
 class MyDialogue extends StatelessWidget {
-  final String title;
+  final Object title;
   final Object? content;
   final String? actionTitle;
   final VoidCallback? actionFunction;
@@ -35,7 +35,7 @@ class MyDialogue extends StatelessWidget {
     this.customAndroidActions,
     this.customIOSActions,
     this.customAdaptiveActions,
-  });
+  }) : assert(title is String || title is Widget, 'Invalid title type. Must be String or Widget.');
 
   @override
   Widget build(BuildContext context) {
@@ -115,11 +115,13 @@ class MyDialogue extends StatelessWidget {
   }
 
   Widget buildTitle(bool isApple) {
-    final titleText = Text(
-      title,
-      style: isApple ? const TextStyle(fontFamily: AssetFonts.cairo) : null,
-      textAlign: (!isApple && androidCenterTitle) ? TextAlign.center : null,
-    );
+    final titleText = title is String
+        ? Text(
+            title as String,
+            style: isApple ? const TextStyle(fontFamily: AssetFonts.cairo) : null,
+            textAlign: (!isApple && androidCenterTitle) ? TextAlign.center : null,
+          )
+        : Center(child: title as Widget);
     if (cornerWidget == null) {
       return titleText;
     } else {
