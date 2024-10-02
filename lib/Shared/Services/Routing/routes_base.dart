@@ -68,6 +68,11 @@ class _SplashScreen extends StatelessWidget {
     Future(() {
       L10nService.init(context);
       RoutesBase.router.go(_Home.redirect);
+      // Navigator.of(context).push(
+      //   MaterialPageRoute(
+      //     builder: (context) => const MyOverlayTestWidget(),
+      //   ),
+      // );
     });
     return const Scaffold();
   }

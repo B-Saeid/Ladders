@@ -19,38 +19,40 @@ class ToastTestWidget extends StatelessWidget {
           padding: GlobalConstants.screensHPadding,
           child: Column(
             mainAxisSize: MainAxisSize.min,
-            children: ToastPriority.values
+            children: MyPriority.values
                 .map(
                   (e) => Center(
                     child: CustomButton.adaptive(
                         onPressed: () {
                           switch (e) {
-                            case ToastPriority.regular:
-                              Toast.show('"regular" I am a regular customer I wait on the line');
-                            case ToastPriority.ifEmpty:
+                            case MyPriority.regular:
+                              Toast.show(
+                                '"regular" I am a regular customer I wait on the line',
+                                priority: MyPriority.regular,
+                              );
+                            case MyPriority.ifEmpty:
                               Toast.showSuccess(
                                 '"ifEmpty" I have autism I only show a lone',
-                                priority: ToastPriority.ifEmpty,
+                                priority: MyPriority.ifEmpty,
                               );
-                            case ToastPriority.noRepeat:
+                            case MyPriority.noRepeat:
                               Toast.showSuccess(
                                 '"noRepeat" I can not be repeated ${pi.toStringAsFixed(2)}',
-                                priority: ToastPriority.noRepeat,
+                                priority: MyPriority.noRepeat,
                               );
-                            case ToastPriority.nowNoRepeat:
+                            case MyPriority.nowNoRepeat:
                               Toast.showError(
                                 '"nowNoRepeat" I show now and can not be repeated',
-                                priority: ToastPriority.nowNoRepeat,
                               );
-                            case ToastPriority.now:
+                            case MyPriority.now:
                               Toast.showWarning(
                                 '"now" Arrogantly Showing Now and continue serve the queue',
-                                priority: ToastPriority.now,
+                                priority: MyPriority.now,
                               );
-                            case ToastPriority.replaceAll:
+                            case MyPriority.replaceAll:
                               Toast.showError(
                                 '"replaceAll" The Destroyer show Me and cancel any one else',
-                                priority: ToastPriority.replaceAll,
+                                priority: MyPriority.replaceAll,
                               );
                           }
                         },
