@@ -82,18 +82,17 @@ class LanguageChangeTile extends AbstractSettingsTile {
   /// Since CupertinoThemeData until now does not follow up with global ThemeData
   TextStyle _cupertinoActionSheetTextStyle(WidgetRef ref, LocaleSetting setting) =>
       LiveData.textTheme(ref).titleLarge!.copyWith(
-            fontFamily: setting.isArabic
-                ? ref.read(stylesProvider).arabicFontFamily
-                : ref.read(stylesProvider).topLevelFamily,
+            fontFamily: setting.isArabic ? ref.read(stylesProvider).arabicFontFamily : null,
             color: currentLanguage(ref) == setting.displayName(ref)
                 ? StaticData.themeData.colorScheme.primary
                 : null,
           );
 
-  TextStyle _destructiveTextStyle(WidgetRef ref) => LiveData.textTheme(ref).titleLarge!.copyWith(
-        fontFamily: ref.read(stylesProvider).topLevelFamily,
+  TextStyle _destructiveTextStyle(WidgetRef ref) => LiveData.textTheme(ref)
+          .titleLarge! /*.copyWith(
         color: CupertinoColors.destructiveRed,
-      );
+      )*/
+      ;
 
   void _onPressed(WidgetRef ref, LocaleSetting element, BuildContext context) {
     ref.read(settingProvider).setLocaleSetting(element);

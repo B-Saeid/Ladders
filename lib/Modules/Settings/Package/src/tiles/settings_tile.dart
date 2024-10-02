@@ -9,7 +9,7 @@ import 'platforms/web_settings_tile.dart';
 enum SettingsTileType { simpleTile, switchTile, navigationTile }
 
 class SettingsTile extends AbstractSettingsTile {
-  SettingsTile({
+  const SettingsTile({
     this.leading,
     this.trailing,
     this.value,
@@ -18,14 +18,12 @@ class SettingsTile extends AbstractSettingsTile {
     this.onPressed,
     this.enabled = true,
     super.key,
-  }) {
-    onToggle = null;
-    initialValue = null;
-    activeSwitchColor = null;
-    tileType = SettingsTileType.simpleTile;
-  }
+  })  : onToggle = null,
+        initialValue = null,
+        activeSwitchColor = null,
+        tileType = SettingsTileType.simpleTile;
 
-  SettingsTile.navigation({
+  const SettingsTile.navigation({
     this.leading,
     this.trailing,
     this.value,
@@ -34,14 +32,12 @@ class SettingsTile extends AbstractSettingsTile {
     this.onPressed,
     this.enabled = true,
     super.key,
-  }) {
-    onToggle = null;
-    initialValue = null;
-    activeSwitchColor = null;
-    tileType = SettingsTileType.navigationTile;
-  }
+  })  : onToggle = null,
+        initialValue = null,
+        activeSwitchColor = null,
+        tileType = SettingsTileType.navigationTile;
 
-  SettingsTile.switchTile({
+  const SettingsTile.switchTile({
     required this.initialValue,
     required this.onToggle,
     this.activeSwitchColor,
@@ -52,10 +48,8 @@ class SettingsTile extends AbstractSettingsTile {
     this.onPressed,
     this.enabled = true,
     super.key,
-  }) {
-    value = null;
-    tileType = SettingsTileType.switchTile;
-  }
+  })  : value = null,
+        tileType = SettingsTileType.switchTile;
 
   final Widget? leading;
   final Widget? trailing;
@@ -63,12 +57,12 @@ class SettingsTile extends AbstractSettingsTile {
   final Widget? description;
   final VoidCallback? onPressed;
 
-  late final Color? activeSwitchColor;
-  late final Widget? value;
-  late final Function(bool value)? onToggle;
-  late final SettingsTileType tileType;
-  late final bool? initialValue;
-  late final bool enabled;
+  final Color? activeSwitchColor;
+  final Widget? value;
+  final Function(bool value)? onToggle;
+  final SettingsTileType tileType;
+  final bool? initialValue;
+  final bool enabled;
 
   @override
   Widget build(BuildContext context) {

@@ -25,7 +25,7 @@ class IOSSettingsTile extends ConsumerWidget {
 
   final SettingsTileType tileType;
   final Widget? leading;
-  final Widget? title;
+  final Widget title;
   final Widget? description;
   final VoidCallback? onPressed;
   final Function(bool value)? onToggle;
@@ -37,7 +37,6 @@ class IOSSettingsTile extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final additionalInfo = IOSSettingsTileAdditionalInfo.of(context);
     final theme = SettingsTheme.of(context);
 
     return IgnorePointer(
@@ -46,7 +45,6 @@ class IOSSettingsTile extends ConsumerWidget {
         context: context,
         ref: ref,
         theme: theme,
-        additionalInfo: additionalInfo,
       ),
     );
   }
@@ -55,12 +53,10 @@ class IOSSettingsTile extends ConsumerWidget {
     required BuildContext context,
     required WidgetRef ref,
     required SettingsTheme theme,
-    required IOSSettingsTileAdditionalInfo additionalInfo,
   }) {
     var content = buildContent(
       context: context,
       theme: theme,
-      additionalInfo: additionalInfo,
       ref: ref,
     );
     final device = StaticData.platform;
@@ -71,55 +67,58 @@ class IOSSettingsTile extends ConsumerWidget {
       );
     }
 
-    return ClipRRect(
-      borderRadius: BorderRadius.vertical(
-        top: additionalInfo.enableTopBorderRadius ? const Radius.circular(12) : Radius.zero,
-        bottom: additionalInfo.enableBottomBorderRadius ? const Radius.circular(12) : Radius.zero,
-      ),
-      child: content,
-    );
+    return content;
   }
 
-  Widget buildDescription(SettingsTheme theme) {
-    return DefaultTextStyle.merge(
-      style: TextStyle(
-        color: theme.themeData.titleTextColor,
-        fontSize: 13,
-      ),
-      child: description!,
-    );
-  }
+  Widget buildDescription(SettingsTheme theme) => DefaultTextStyle.merge(
+        style: TextStyle(
+          color: theme.themeData.titleTextColor,
+          fontSize: 13,
+        ),
+        child: description!,
+      );
 
-  Widget buildTrailing({
+  Widget buildValue({
     required BuildContext context,
     required SettingsTheme theme,
-  }) {
-    if (trailing != null) return trailing!;
-
-    return switch (tileType) {
-      SettingsTileType.switchTile => CupertinoSwitch(
-          value: initialValue ?? true,
-          onChanged: onToggle,
-          activeColor: enabled ? activeSwitchColor : theme.themeData.inactiveTitleColor,
-        ),
-      _ => DefaultTextStyle.merge(
-          style: TextStyle(
-            color: enabled ? theme.themeData.trailingTextColor : theme.themeData.inactiveTitleColor,
-            fontSize: 17,
+  }) =>
+      switch (tileType) {
+        SettingsTileType.switchTile => const SizedBox(),
+        _ => DefaultTextStyle.merge(
+            style: TextStyle(
+              color: enabled ? theme.themeData.trailingTextColor : theme.themeData.inactiveTitleColor,
+              fontSize: 17,
+            ),
+            child: value ?? const SizedBox(),
           ),
-          child: value ?? const SizedBox(),
-        ),
-    };
-  }
+      };
 
   Widget buildContent({
     required BuildContext context,
     required WidgetRef ref,
     required SettingsTheme theme,
-    required IOSSettingsTileAdditionalInfo additionalInfo,
   }) {
-    final scaleFactor = LiveData.scalePercentage(ref);
-
+    final symmetricVerticalPadding = 8.delayedScale(ref, startFrom: 1.2, beforeStart: 0);
+    // return ConstrainedBox(
+    //   constraints: const BoxConstraints(minHeight: 44),
+    //   child: CupertinoListTile(
+    //     title: title,
+    //     onTap: tileType != SettingsTileType.switchTile
+    //         ? onPressed
+    //         : /*() => onToggle!(!initialValue!)*/ null,
+    //     trailing: trailing ??
+    //         (tileType == SettingsTileType.switchTile
+    //             ? buildSwitch(context: context, theme: theme)
+    //             : tileType == SettingsTileType.navigationTile
+    //                 ? const CupertinoListTileChevron()
+    //                 : null),
+    //     additionalInfo: tileType != SettingsTileType.switchTile ? value : null,
+    //     // leading: leading,
+    //     // leading: buildLeading(theme: theme, ref: ref),
+    //     leading: leading,
+    //     subtitle: description,
+    //   ),
+    // );
     return CupertinoWell(
       color: theme.themeData.settingsSectionBackground,
       pressedColor: theme.themeData.tileHighlightColor,
@@ -127,9 +126,9 @@ class IOSSettingsTile extends ConsumerWidget {
       child: Container(
         constraints: const BoxConstraints(minHeight: 44),
         padding: EdgeInsetsDirectional.only(
-          top: 8 * scaleFactor,
+          top: symmetricVerticalPadding,
           start: 18,
-          bottom: 8,
+          bottom: symmetricVerticalPadding,
         ),
         child: Row(
           children: [
@@ -143,6 +142,7 @@ class IOSSettingsTile extends ConsumerWidget {
                       child: Wrap(
                         crossAxisAlignment: WrapCrossAlignment.center,
                         alignment: WrapAlignment.spaceBetween,
+                        spacing: 5,
                         children: [
                           /// Title & Description
                           Column(
@@ -152,12 +152,13 @@ class IOSSettingsTile extends ConsumerWidget {
                               if (description != null) buildDescription(theme),
                             ],
                           ),
-                          buildTrailing(context: context, theme: theme),
+                          buildValue(context: context, theme: theme),
                         ],
                       ),
                     ),
-                    if (tileType == SettingsTileType.navigationTile)
-                      buildChevron(context: context, theme: theme, ref: ref),
+                    if (onPressed != null && tileType == SettingsTileType.switchTile)
+                      buildDivider(context: context, theme: theme, ref: ref),
+                    buildTrailing(context: context, theme: theme, ref: ref),
                   ],
                 ),
               ),
@@ -175,7 +176,7 @@ class IOSSettingsTile extends ConsumerWidget {
     return IconTheme.merge(
       data: IconThemeData(
         color: enabled ? theme.themeData.leadingIconsColor : theme.themeData.inactiveTitleColor,
-        size: 24.scalable(ref, maxPercentage: 2),
+        size: 24.scalable(ref, maxFactor: 2),
       ),
       child: leading!,
     );
@@ -187,53 +188,52 @@ class IOSSettingsTile extends ConsumerWidget {
         color: enabled ? theme.themeData.settingsTileTextColor : theme.themeData.inactiveTitleColor,
         fontSize: 16,
       ),
-      child: title!,
+      child: title,
     );
   }
 
-  Widget buildChevron({
+  Widget buildTrailing({
     required BuildContext context,
     required WidgetRef ref,
     required SettingsTheme theme,
   }) {
+    if (trailing != null) return trailing!;
+
     final scaleFactor = LiveData.scalePercentage(ref);
-    return Padding(
-      padding: const EdgeInsetsDirectional.only(start: 6, end: 2),
-      child: IconTheme.merge(
-        data: IconTheme.of(context).copyWith(color: theme.themeData.leadingIconsColor),
-        child: Icon(
-          Directionality.of(context) == TextDirection.ltr
-              ? CupertinoIcons.chevron_forward
-              : CupertinoIcons.chevron_left,
-          size: 18 * scaleFactor,
+    return switch (tileType) {
+      SettingsTileType.simpleTile => const SizedBox(),
+      SettingsTileType.switchTile => CupertinoSwitch(
+          value: initialValue ?? true,
+          onChanged: onToggle,
+          activeColor: enabled ? activeSwitchColor : theme.themeData.inactiveTitleColor,
         ),
-      ),
-    );
+      SettingsTileType.navigationTile => Padding(
+          padding: const EdgeInsetsDirectional.only(start: 6, end: 2),
+          child: IconTheme.merge(
+            data: IconTheme.of(context).copyWith(color: theme.themeData.leadingIconsColor),
+            child: Icon(
+              Directionality.of(context) == TextDirection.ltr
+                  ? CupertinoIcons.chevron_forward
+                  : CupertinoIcons.chevron_left,
+              size: 18 * scaleFactor,
+            ),
+          ),
+        ),
+    };
   }
-}
 
-class IOSSettingsTileAdditionalInfo extends InheritedWidget {
-  final bool enableTopBorderRadius;
-  final bool enableBottomBorderRadius;
-
-  const IOSSettingsTileAdditionalInfo({
-    super.key,
-    required this.enableTopBorderRadius,
-    required this.enableBottomBorderRadius,
-    required super.child,
-  });
-
-  @override
-  bool updateShouldNotify(IOSSettingsTileAdditionalInfo oldWidget) => true;
-
-  static IOSSettingsTileAdditionalInfo of(BuildContext context) {
-    final result = context.dependOnInheritedWidgetOfExactType<IOSSettingsTileAdditionalInfo>();
-    // assert(result != null, 'No IOSSettingsTileAdditionalInfo found in context');
-    return result ??
-        const IOSSettingsTileAdditionalInfo(
-          enableBottomBorderRadius: true,
-          enableTopBorderRadius: true,
-          child: SizedBox(),
-        );
-  }
+  Widget buildDivider({
+    required BuildContext context,
+    required WidgetRef ref,
+    required SettingsTheme theme,
+  }) =>
+      Container(
+        width: 2,
+        height: 26,
+        margin: const EdgeInsetsDirectional.only(start: 3, end: 6),
+        decoration: ShapeDecoration(
+          shape: const StadiumBorder(),
+          color: LiveData.themeData(ref).dividerColor,
+        ),
+      );
 }

@@ -67,10 +67,12 @@ class ThemeModeTile extends AbstractSettingsTile {
             color: currentThemeMode(ref) == mode ? StaticData.themeData.colorScheme.primary : null,
           );
 
-  TextStyle _destructiveTextStyle(WidgetRef ref) => LiveData.textTheme(ref).titleLarge!.copyWith(
+  TextStyle _destructiveTextStyle(WidgetRef ref) => LiveData.textTheme(ref)
+          .titleLarge! /*.copyWith(
         fontFamily: ref.read(stylesProvider).topLevelFamily,
         color: CupertinoColors.destructiveRed,
-      );
+      )*/
+      ;
 
   void _onPressed(WidgetRef ref, ThemeMode mode, BuildContext context) {
     ref.read(settingProvider).setThemeMode(mode);

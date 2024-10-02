@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 
+import '../../../../../Shared/Utilities/SessionData/session_data.dart';
 import '../../../../../Shared/Utilities/device_platform.dart';
 import '../../settings_ui.dart';
 import 'platforms/android_settings_section.dart';
@@ -20,11 +21,12 @@ class SettingsSection extends AbstractSettingsSection {
 
   @override
   Widget build(BuildContext context) {
-    final theme = SettingsTheme.of(context);
+    final platform = StaticData.platform;
 
-    switch (theme.platform) {
+    switch (platform) {
       case DevicePlatform.android:
       case DevicePlatform.fuchsia:
+      case DevicePlatform.windows:
       case DevicePlatform.linux:
         return AndroidSettingsSection(
           title: title,
@@ -33,7 +35,6 @@ class SettingsSection extends AbstractSettingsSection {
         );
       case DevicePlatform.iOS:
       case DevicePlatform.macOS:
-      case DevicePlatform.windows:
         return IOSSettingsSection(
           title: title,
           tiles: tiles,
