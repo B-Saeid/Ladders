@@ -99,7 +99,7 @@ class _OurDrawerItem extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) => Padding(
         padding: const EdgeInsets.symmetric(horizontal: 3),
         child: ListTile(
-          leading: FittedBox(child: Icon(item.iconData, size: 24.scalable(ref, maxPercentage: 1.5))),
+          leading: FittedBox(child: Icon(item.iconData, size: 24.scalable(ref, maxFactor: 1.5))),
           title: FittedBox(fit: BoxFit.scaleDown, child: Text(item.title)),
           selected: Scaffold.of(context).hasDrawer ? RoutesBase.currentRoute == item.path : false,
           style: ListTileStyle.drawer,

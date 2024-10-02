@@ -52,7 +52,7 @@ class _Unit extends ConsumerWidget {
       child: ScaleControlledText(
         isMinute ? L10nR.tMin(ref) : L10nR.tSec(ref),
         style: style,
-        maxPercentage: 2,
+        maxFactor: 2,
         sizeWrapString: _getLarger(ref, style),
       ),
     );
@@ -144,7 +144,7 @@ class _ZeroTo59Wheel extends ConsumerWidget {
     return 50.scalable(
       ref,
       allowBelow: false,
-      maxPercentage: 2,
+      maxFactor: 2,
     );
   }
 }
@@ -180,7 +180,7 @@ class _PaddedColon extends ConsumerWidget {
         child: ScaleControlledText(
           ':',
           style: LiveData.textTheme(ref).displaySmall,
-          maxPercentage: 1.5,
+          maxFactor: 1.5,
         ),
       );
 }

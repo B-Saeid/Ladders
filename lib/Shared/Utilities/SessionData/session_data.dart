@@ -55,6 +55,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../device_platform.dart';
 
+part 'extensions.dart';
 part 'static_data.dart';
 
 ChangeNotifierProvider<LiveData> liveData = ChangeNotifierProvider((_) => LiveData._());
@@ -70,7 +71,7 @@ class LiveData extends ChangeNotifier {
     _setMediaQuery(context);
   }
 
-  double _scalePercentage = 1.0;
+  double _scaleFactor = 1.0;
   static double __scalePercentage = 1.0;
 
   MediaQueryData _mediaQuery = const MediaQueryData();
@@ -159,22 +160,22 @@ class LiveData extends ChangeNotifier {
   bool _updateLiveScalePercentage(TextScaler textScaler) {
     final scaledSize = textScaler.scale(_normalSize.fontSize!);
     final newPercentage = scaledSize / _normalSize.fontSize!;
-    if (_scalePercentage == newPercentage) return false;
-    _scalePercentage = newPercentage;
-    __scalePercentage = _scalePercentage;
+    if (_scaleFactor == newPercentage) return false;
+    _scaleFactor = newPercentage;
+    __scalePercentage = _scaleFactor;
     notifyListeners();
-    print('updated scalePercentage $_scalePercentage');
+    print('updated scalePercentage $_scaleFactor');
     return true;
   }
 
   /// Watcher static methods
 
   static AlwaysAliveProviderListenable<double> get scalePercentageSelector => liveData.select(
-        (value) => value._scalePercentage,
+        (value) => value._scaleFactor,
       );
 
   static double scalePercentage(WidgetRef ref) => ref.watch(
-        liveData.select((p) => p._scalePercentage),
+        liveData.select((p) => p._scaleFactor),
       );
 
   static AlwaysAliveProviderListenable<MediaQueryData> get mediaQuerySelector => liveData.select(
@@ -270,41 +271,17 @@ class LiveData extends ChangeNotifier {
     required double baseValue,
     bool allowBelow = true,
     double? maxValue,
-    double? maxPercentage,
+    double? maxFactor,
+    double? startFrom,
+    double? beforeStart,
   }) {
-    final currentScalePercentage = ref.watch(liveData)._scalePercentage;
-    var scaledValue = baseValue * currentScalePercentage.clamp(0, maxPercentage ?? double.infinity);
+    final currentScaleFactor = ref.watch(liveData)._scaleFactor;
+    var scaledValue = baseValue * currentScaleFactor.clamp(0, maxFactor ?? double.infinity);
+    if (startFrom != null && currentScaleFactor < startFrom) return beforeStart ?? baseValue;
     if (scaledValue < baseValue) {
       return allowBelow ? scaledValue : baseValue;
     } else {
       return scaledValue.clamp(baseValue, maxValue ?? scaledValue);
     }
-  }
-}
-
-extension LiveScaledValue on num {
-  double scalable(
-    WidgetRef ref, {
-    bool allowBelow = true,
-    double? maxValue,
-    double? maxPercentage,
-  }) =>
-      LiveData._getScaledValue(
-        ref,
-        baseValue: toDouble(),
-        allowBelow: allowBelow,
-        maxPercentage: maxPercentage,
-        maxValue: maxValue,
-      );
-}
-
-extension LiveStringWidth on String {
-  double getWidth(TextStyle style) {
-    final textSpan = TextSpan(
-      text: this,
-      style: style,
-    );
-    final tp = TextPainter(text: textSpan, textDirection: TextDirection.ltr)..layout();
-    return tp.width;
   }
 }

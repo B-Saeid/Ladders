@@ -8,8 +8,10 @@ import '../../../Shared/Styles/adaptive_icons.dart';
 import '../../../Shared/Styles/app_colors.dart';
 import '../../../Shared/Utilities/SessionData/session_data.dart';
 import '../../../Shared/Widgets/custom_animated_size.dart';
+import '../../../Shared/Widgets/custom_animated_switcher.dart';
 import '../../../Shared/Widgets/riverpod_helper_widgets.dart';
 import '../provider/home_provider.dart';
+import '../utilities/enums.dart';
 
 class InnerGoRestCycles extends ConsumerWidget {
   const InnerGoRestCycles({super.key});
@@ -23,28 +25,49 @@ class InnerGoRestCycles extends ConsumerWidget {
               : Center(
                   child: Column(
                     children: [
-                      CircleAvatar(
-                        backgroundColor: Colors.transparent,
-                        radius: 20.scalable(ref, maxPercentage: 2),
-                        child: state.total.isPaused
-                            ? AdaptiveIcons.wFlatBar(ref: ref)
-                            : state.ladder.isTraining
-                                ? AdaptiveIcons.wTraining(ref: ref)
-                                : AdaptiveIcons.wResting(ref: ref),
-                      ),
-                      SizedBox(height: 20.scalable(ref, maxPercentage: 2)),
-                      Card.filled(
-                        margin: EdgeInsets.zero,
-                        shape: const StadiumBorder(side: BorderSide()),
-                        color: state.ladder.isTraining ? AppColors.adaptiveBlue(ref) : null,
-                        child: child!,
-                      ),
-                      const SizedBox(height: 100),
+                      _IndicatingIcon(state),
+                      SizedBox(height: 20.scalable(ref, maxFactor: 2)),
+                      _TimerCard(state, child!),
+                      const SizedBox(height: 50),
                     ],
                   ),
                 ),
         ),
         child: const _GoRestTimer(),
+      );
+}
+
+class _TimerCard extends ConsumerWidget {
+  const _TimerCard(this.state, this.child);
+
+  final ({LadderState ladder, TotalState total}) state;
+  final Widget child;
+
+  @override
+  Widget build(BuildContext context, WidgetRef ref) => Card.filled(
+        margin: EdgeInsets.zero,
+        shape: const StadiumBorder(side: BorderSide()),
+        color: state.ladder.isTraining ? AppColors.adaptiveBlue(ref) : null,
+        child: child,
+      );
+}
+
+class _IndicatingIcon extends ConsumerWidget {
+  const _IndicatingIcon(this.state);
+
+  final ({LadderState ladder, TotalState total}) state;
+
+  @override
+  Widget build(BuildContext context, WidgetRef ref) => CircleAvatar(
+        backgroundColor: Colors.transparent,
+        radius: 20.scalable(ref, maxFactor: 2),
+        child: CustomAnimatedSwitcher(
+          child: state.total.isPaused
+              ? AdaptiveIcons.wFlatBar(ref: ref)
+              : state.ladder.isTraining
+                  ? AdaptiveIcons.wTraining(ref: ref)
+                  : AdaptiveIcons.wResting(ref: ref),
+        ),
       );
 }
 

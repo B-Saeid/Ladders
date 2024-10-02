@@ -9,7 +9,7 @@ class ScaleControlledText extends ConsumerWidget {
   final bool scale;
   final List<InlineSpan>? spans;
   final double? maxSize;
-  final double? maxPercentage;
+  final double? maxFactor;
   final bool allowBelow;
   final String? sizeWrapString;
 
@@ -20,12 +20,12 @@ class ScaleControlledText extends ConsumerWidget {
     this.scale = false,
     this.style,
     this.maxSize,
-    this.maxPercentage,
+    this.maxFactor,
     this.allowBelow = true,
     this.sizeWrapString,
   });
 
-  bool get shouldScale => scale || maxSize != null || maxPercentage != null || !allowBelow;
+  bool get shouldScale => scale || maxSize != null || maxFactor != null || !allowBelow;
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
@@ -58,7 +58,7 @@ class ScaleControlledText extends ConsumerWidget {
     final scaledSize = style.fontSize!.scalable(
       ref,
       maxValue: maxSize,
-      maxPercentage: maxPercentage,
+      maxFactor: maxFactor,
       allowBelow: allowBelow,
     );
     return style.copyWith(fontSize: scaledSize);
