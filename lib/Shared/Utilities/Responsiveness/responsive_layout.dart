@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../../../Modules/Home/Widgets/home_drawer.dart';
+import '../../Constants/type_def.dart';
 import '../../Services/l10n/assets/l10n_resources.dart';
 import '../../Services/l10n/helper_widgets.dart';
 import '../../Styles/adaptive_icons.dart';

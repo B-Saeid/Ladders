@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-typedef StringRef = String Function([WidgetRef? ref]);
+import '../../Constants/type_def.dart';
 
 class L10nRText extends ConsumerWidget {
   const L10nRText(

@@ -2,10 +2,10 @@ import 'package:device_info_plus/device_info_plus.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:image_picker/image_picker.dart';
 
+import '../Components/Toast/toast.dart';
 import '../Services/Permission/permissions_service.dart';
 import '../Services/l10n/assets/l10n_resources.dart';
-import '../Utilities/SessionData/session_data.dart';
-import 'Toast/toast.dart';
+import 'SessionData/session_data.dart';
 
 abstract class ImageHelper {
   static void cameraRoutine(BuildContext context, {VoidCallback? allSetCallBack}) =>

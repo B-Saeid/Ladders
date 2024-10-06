@@ -1,16 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:permission_handler/permission_handler.dart';
 
+import '../../Components/Dialogue/dialogue.dart';
+import '../../Constants/type_def.dart';
 import '../../Extensions/on_strings.dart';
-import '../../Extensions/time_package.dart';
 import '../../Utilities/SessionData/session_data.dart';
-import '../../Widgets/dialogue.dart';
 import '../l10n/assets/l10n_resources.dart';
 
 part 'enums.dart';
 part 'permission_dialogues.dart';
-
-typedef FutureBoolCallback = Future<bool> Function();
 
 abstract class PermissionsService {
   /// Check a specific permission status

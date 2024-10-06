@@ -7,11 +7,13 @@ class _MyEntry {
   final int id;
   final OverlayEntry entry;
   final Duration? duration;
+  final BoolCallback? onDismiss;
 
   _MyEntry({
     required this.id,
     required this.entry,
     this.duration,
+    this.onDismiss,
   });
 }
 
@@ -33,6 +35,8 @@ abstract class _MyOverlay {
     _animationTimer?.cancel();
     _timer = null;
     _animationTimer = null;
+
+    _current?.onDismiss?.call(manualDismiss);
 
     /// This line harshly removes the overlay But In Case of normal behaviour - no force removal -
     /// It is hidden with animation in [_ContentWidget] before executing this line.
@@ -93,6 +97,9 @@ abstract class _MyOverlay {
     _animationTimer?.cancel();
     _timer = null;
     _animationTimer = null;
+    for (var element in _overlayQueue) {
+      element.onDismiss?.call(false);
+    }
     _overlayQueue.clear();
     _current?.entry.remove();
     _current = null;
@@ -113,12 +120,13 @@ abstract class _MyOverlay {
     bool ignorePointer = false,
     bool dismissOnTap = false,
     MyPriority priority = MyPriority.regular,
+    BoolCallback? onDismiss,
   }) {
     /// Building the widget only
     Widget newChild = _CoreWidget(
       duration: duration,
       ignorePointer: ignorePointer,
-      onDismiss: dismissOnTap ? resetAndGoToNext : null,
+      onDismiss: dismissOnTap ? () => resetAndGoToNext(manualDismiss: true) : null,
       gravity: gravity,
       child: child,
     );
@@ -131,6 +139,7 @@ abstract class _MyOverlay {
       id: id,
       entry: newEntry,
       duration: duration,
+      onDismiss: onDismiss,
     );
 
     /// Adding our _ToastEntry to the serving queue

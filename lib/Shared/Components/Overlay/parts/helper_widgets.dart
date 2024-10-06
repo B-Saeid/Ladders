@@ -41,7 +41,7 @@ class _DismissIconButton extends ConsumerWidget {
       top: viewPadding.top + 10,
       end: baseEndPadding + 10,
       child: IconButton.filledTonal(
-        onPressed: _MyOverlay.resetAndGoToNext,
+        onPressed: () => _MyOverlay.resetAndGoToNext(manualDismiss: true),
         icon: Icon(AdaptiveIcons.close),
       ),
     );

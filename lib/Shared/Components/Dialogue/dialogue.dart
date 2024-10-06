@@ -2,10 +2,15 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-import '../Constants/assets_strings.dart';
-import '../Styles/app_colors.dart';
-import '../Utilities/SessionData/session_data.dart';
-import 'riverpod_helper_widgets.dart';
+import '../../Constants/assets_strings.dart';
+import '../../Styles/app_colors.dart';
+import '../../Utilities/SessionData/session_data.dart';
+
+part 'parts/adaptive_action.dart';
+
+part 'parts/android_action.dart';
+
+part 'parts/ios_action.dart';
 
 class MyDialogue extends StatelessWidget {
   final Object title;
@@ -42,7 +47,7 @@ class MyDialogue extends StatelessWidget {
     final isApple = StaticData.platform.isApple;
     return AlertDialog.adaptive(
       contentPadding: isApple ? null : EdgeInsets.zero,
-      title: buildTitle(isApple),
+      title: buildHeader(isApple),
       content: content == null
           ? null
           : Column(
@@ -114,106 +119,25 @@ class MyDialogue extends StatelessWidget {
     );
   }
 
-  Widget buildTitle(bool isApple) {
-    final titleText = title is String
-        ? Text(
+  Widget buildHeader(bool isApple) {
+    final title = buildTitle(isApple);
+    return cornerWidget == null
+        ? title
+        : Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              title,
+              cornerWidget!,
+            ],
+          );
+  }
+
+  Widget buildTitle(bool isApple) => switch (title) {
+        String() => Text(
             title as String,
             style: isApple ? const TextStyle(fontFamily: AssetFonts.cairo) : null,
             textAlign: (!isApple && androidCenterTitle) ? TextAlign.center : null,
-          )
-        : Center(child: title as Widget);
-    if (cornerWidget == null) {
-      return titleText;
-    } else {
-      return Row(
-        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-        children: [
-          titleText,
-          cornerWidget!,
-        ],
-      );
-    }
-  }
-}
-
-class AndroidDialogueAction extends ConsumerWidget {
-  const AndroidDialogueAction({
-    super.key,
-    required this.title,
-    required this.onPressed,
-    this.encouraged = true,
-  });
-
-  final String title;
-  final VoidCallback onPressed;
-  final bool encouraged;
-
-  @override
-  Widget build(BuildContext context, WidgetRef ref) {
-    return TextButton(
-      onPressed: onPressed,
-      child: Text(
-        title,
-        style: encouraged ? AppColors.positiveChoiceStyle(ref) : AppColors.negativeChoiceStyle(ref),
-      ),
-    );
-  }
-}
-
-class IOSDialogueAction extends StatelessWidget {
-  const IOSDialogueAction({
-    super.key,
-    required this.title,
-    required this.onPressed,
-    this.encouraged = true,
-  });
-
-  final String title;
-  final VoidCallback onPressed;
-  final bool encouraged;
-
-  @override
-  Widget build(BuildContext context) {
-    return CupertinoDialogAction(
-      textStyle: const TextStyle(fontFamily: AssetFonts.cairo),
-      onPressed: onPressed,
-      isDefaultAction: encouraged,
-      isDestructiveAction: !encouraged,
-      child: Text(title),
-    );
-  }
-}
-
-class AdaptiveDialogueAction extends StatelessWidget {
-  const AdaptiveDialogueAction({
-    super.key,
-    required this.title,
-    required this.onPressed,
-    this.encouraged,
-  });
-
-  final String title;
-  final VoidCallback onPressed;
-  final bool? encouraged;
-
-  @override
-  Widget build(BuildContext context) => StaticData.platform.isApple
-      ? CupertinoDialogAction(
-          textStyle: const TextStyle(fontFamily: AssetFonts.cairo),
-          onPressed: onPressed,
-          isDefaultAction: encouraged ?? false,
-          isDestructiveAction: !(encouraged ?? true),
-          child: Text(title),
-        )
-      : TextButton(
-          onPressed: onPressed,
-          child: RefWidget(
-            (ref) => Text(
-              title,
-              style: encouraged ?? true
-                  ? AppColors.positiveChoiceStyle(ref)
-                  : AppColors.negativeChoiceStyle(ref),
-            ),
           ),
-        );
+        _ => Center(child: title as Widget),
+      };
 }
