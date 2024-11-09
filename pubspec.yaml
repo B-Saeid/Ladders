@@ -63,12 +63,43 @@ dev_dependencies:
   flutter_test:
     sdk: flutter
 
+  flutter_launcher_icons: any
+
   # The "flutter_lints" package below contains a set of recommended lints to
   # encourage good coding practices. The lint set provided by the package is
   # activated in the `analysis_options.yaml` file located at the root of your
   # package. See that file for information about deactivating specific lint
   # rules and activating additional ones.
   flutter_lints: ^3.0.0
+
+flutter_launcher_icons:
+  image_path: "assets/images/logo_squared.png"
+
+  android: true
+  #  android: "launcher_icon"
+  image_path_android: "assets/images/logo_circular.png"
+  min_sdk_android: 23 # android min sdk min:16, default 21
+
+  ios: true
+  remove_alpha_ios: true
+  background_color_ios: "#B0916A"
+
+  web:
+    generate: true
+    #    image_path: "assets/images/logo_transparent.png"
+    image_path: "assets/images/logo_rounded.png"
+    background_color: "#B0916A"
+    theme_color: "#55361f"
+
+  windows:
+    generate: true
+    #    image_path: "assets/images/logo_transparent.png"
+    image_path: "assets/images/logo_rounded.png"
+    icon_size: 48 # min:48, max:256, default: 48
+
+  macos:
+    generate: true
+    image_path: "assets/images/logo_rounded_padded.png"
 
 # For information on the generic Dart part of this file, see the
 # following page: https://dart.dev/tools/pub/pubspec

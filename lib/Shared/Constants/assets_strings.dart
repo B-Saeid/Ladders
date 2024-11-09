@@ -2,9 +2,20 @@ import '../Extensions/time_package.dart';
 
 abstract class ImageAssets {
   static const defaultProfileAvatar = 'assets/images/default_profile_avatar.png';
+  static const drawerPatternFilled = 'assets/images/drawer_pattern_filled.png';
+  static const drawerPatternOutlined = 'assets/images/drawer_pattern_outlined.png';
+  static const drawerPatternOutlinedWide = 'assets/images/drawer_pattern_outlined_wide.png';
+  static const logoCircular = 'assets/images/logo_circular.png';
+  static const logoSquared = 'assets/images/logo_squared.png';
+  static const logoRoundedPadded = 'assets/images/logo_rounded_padded.png';
+  static const logoRounded = 'assets/images/logo_rounded.png';
+  static const logoTransparent = 'assets/images/logo_transparent.png';
 }
 
-// abstract class VectorAssets {}
+abstract class VectorAssets {
+  static const drawerPatternOutlined = 'assets/vectors/drawer_pattern_outlined.svg';
+  static const drawerPatternOutlinedWide = 'assets/vectors/drawer_pattern_outlined_wide.svg';
+}
 
 abstract class SoundAssets {
   static const speechStopped = 'assets/sounds/speech_to_text_stop.mp3';
