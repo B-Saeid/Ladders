@@ -40,57 +40,30 @@ class SettingsList extends ConsumerWidget {
   final EdgeInsetsGeometry? contentPadding;
   final List<AbstractSettingsSection> sections;
 
+  DevicePlatform get _platform =>
+      platform == null || platform == DevicePlatform.device ? StaticData.platform : platform!;
+
+  SettingsThemeData settingsThemeData(WidgetRef ref) => ThemeProvider.getTheme(
+        platform: _platform,
+        isLight: LiveData.isLight(ref),
+      ).merge(theme: brightness == Brightness.dark ? darkTheme : lightTheme);
+
   @override
-  Widget build(BuildContext context, WidgetRef ref) {
-    DevicePlatform platform;
-    if (this.platform == null || this.platform == DevicePlatform.device) {
-      platform = StaticData.platform;
-    } else {
-      platform = this.platform!;
-    }
-
-    final isLight = LiveData.isLight(ref);
-
-    final themeData = ThemeProvider.getTheme(
-      platform: platform,
-      isLight: isLight,
-    ).merge(theme: brightness == Brightness.dark ? darkTheme : lightTheme);
-
-    return ConstrainedBox(
-      constraints: const BoxConstraints(maxWidth: 810),
-      child: SettingsTheme(
-        themeData: themeData,
-        platform: platform,
-        child: ListView.builder(
-          physics: physics,
-          shrinkWrap: shrinkWrap,
-          itemCount: sections.length,
-          padding: contentPadding ?? calculateDefaultPadding(platform),
-          itemBuilder: (BuildContext context, int index) {
-            return sections[index];
-          },
+  Widget build(BuildContext context, WidgetRef ref) => Align(
+        alignment: Alignment.center,
+        child: ConstrainedBox(
+          constraints: const BoxConstraints(maxWidth: 1024),
+          child: SettingsTheme(
+            themeData: settingsThemeData(ref),
+            platform: _platform,
+            child: ListView.builder(
+              physics: physics,
+              shrinkWrap: shrinkWrap,
+              itemCount: sections.length,
+              padding: contentPadding,
+              itemBuilder: (_, index) => sections[index],
+            ),
+          ),
         ),
-      ),
-    );
-  }
-
-  EdgeInsets calculateDefaultPadding(DevicePlatform platform) {
-    switch (platform) {
-      case DevicePlatform.android:
-      case DevicePlatform.fuchsia:
-      case DevicePlatform.linux:
-        return const EdgeInsets.only(top: 0);
-      case DevicePlatform.iOS:
-      case DevicePlatform.macOS:
-      case DevicePlatform.windows:
-        return const EdgeInsets.symmetric(vertical: 20);
-      case DevicePlatform.web:
-        return EdgeInsets.zero;
-      case DevicePlatform.device:
-        throw Exception(
-          'You can\'t use the DevicePlatform.device in this context. '
-          'Incorrect platform: SettingsList.calculateDefaultPadding',
-        );
-    }
-  }
+      );
 }

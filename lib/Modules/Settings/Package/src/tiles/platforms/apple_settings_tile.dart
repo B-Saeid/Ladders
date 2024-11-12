@@ -5,10 +5,12 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../../../../../../Shared/Utilities/SessionData/session_data.dart';
 import '../../../../../../Shared/Widgets/cupertino_well.dart';
+import '../../../../../../Shared/Widgets/fit_within.dart';
+import '../../../../../../Shared/Widgets/neat_circular_indicator.dart';
 import '../../../settings_ui.dart';
 
-class IOSSettingsTile extends ConsumerWidget {
-  const IOSSettingsTile({
+class AppleSettingsTile extends ConsumerWidget {
+  const AppleSettingsTile({
     required this.tileType,
     required this.leading,
     required this.title,
@@ -20,6 +22,7 @@ class IOSSettingsTile extends ConsumerWidget {
     required this.activeSwitchColor,
     required this.enabled,
     required this.trailing,
+    required this.loading,
     super.key,
   });
 
@@ -30,6 +33,7 @@ class IOSSettingsTile extends ConsumerWidget {
   final VoidCallback? onPressed;
   final Function(bool value)? onToggle;
   final Widget? value;
+  final bool loading;
   final bool? initialValue;
   final bool enabled;
   final Color? activeSwitchColor;
@@ -70,14 +74,6 @@ class IOSSettingsTile extends ConsumerWidget {
     return content;
   }
 
-  Widget buildDescription(SettingsTheme theme) => DefaultTextStyle.merge(
-        style: TextStyle(
-          color: theme.themeData.titleTextColor,
-          fontSize: 13,
-        ),
-        child: description!,
-      );
-
   Widget buildValue({
     required BuildContext context,
     required SettingsTheme theme,
@@ -98,7 +94,8 @@ class IOSSettingsTile extends ConsumerWidget {
     required WidgetRef ref,
     required SettingsTheme theme,
   }) {
-    final symmetricVerticalPadding = 8.delayedScale(ref, startFrom: 1.2, beforeStart: 0);
+    final symmetricVerticalPadding =
+        tileType.isSwitch ? 8.delayedScale(ref, startFrom: 1.2, beforeStart: 0) : 8.scalable(ref);
     // return ConstrainedBox(
     //   constraints: const BoxConstraints(minHeight: 44),
     //   child: CupertinoListTile(
@@ -120,45 +117,43 @@ class IOSSettingsTile extends ConsumerWidget {
     //   ),
     // );
     return CupertinoWell(
-      color: theme.themeData.settingsSectionBackground,
+      color: theme.themeData.tileColor,
       pressedColor: theme.themeData.tileHighlightColor,
       onPressed: onPressed,
-      child: Container(
-        constraints: const BoxConstraints(minHeight: 44),
+      child: Padding(
         padding: EdgeInsetsDirectional.only(
           top: symmetricVerticalPadding,
-          start: 18,
+          start: 12,
           bottom: symmetricVerticalPadding,
         ),
         child: Row(
           children: [
-            if (leading != null) buildLeading(theme: theme, ref: ref),
+            if (leading != null) buildLeading(ref),
             Expanded(
               child: Padding(
-                padding: const EdgeInsetsDirectional.only(start: 18, end: 18),
+                padding: EdgeInsetsDirectional.only(start: leading != null ? 12 : 0, end: 18),
                 child: Row(
                   children: [
                     Expanded(
-                      child: Wrap(
-                        crossAxisAlignment: WrapCrossAlignment.center,
-                        alignment: WrapAlignment.spaceBetween,
-                        spacing: 5,
-                        children: [
-                          /// Title & Description
-                          Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              buildTitle(theme),
-                              if (description != null) buildDescription(theme),
-                            ],
-                          ),
-                          buildValue(context: context, theme: theme),
-                        ],
+                      child: Padding(
+                        padding: EdgeInsetsDirectional.only(
+                          end: trailing == null && !tileType.isSimple ? 2.scalable(ref) : 0,
+                        ),
+                        child: Wrap(
+                          crossAxisAlignment: WrapCrossAlignment.center,
+                          alignment: WrapAlignment.spaceBetween,
+                          spacing: 5,
+                          children: [
+                            /// Title & Description
+                            buildTitle(theme),
+                            buildValue(context: context, theme: theme),
+                          ],
+                        ),
                       ),
                     ),
                     if (onPressed != null && tileType == SettingsTileType.switchTile)
-                      buildDivider(context: context, theme: theme, ref: ref),
-                    buildTrailing(context: context, theme: theme, ref: ref),
+                      buildVerticalDivider(ref),
+                    buildTrailing(context, ref),
                   ],
                 ),
               ),
@@ -169,65 +164,65 @@ class IOSSettingsTile extends ConsumerWidget {
     );
   }
 
-  Widget buildLeading({
-    required SettingsTheme theme,
-    required WidgetRef ref,
-  }) {
-    return IconTheme.merge(
-      data: IconThemeData(
-        color: enabled ? theme.themeData.leadingIconsColor : theme.themeData.inactiveTitleColor,
-        size: 24.scalable(ref, maxFactor: 2),
-      ),
-      child: leading!,
-    );
-  }
+  Widget buildLeading(WidgetRef ref) => FitWithin(
+        size: Size.square(32.scalable(ref, maxFactor: 2)),
+        child: IconTheme.merge(
+          data: IconThemeData(
+            // color: enabled ? null : theme.themeData.inactiveTitleColor,
+            color: enabled ? null : LiveData.themeData(ref).disabledColor,
+          ),
+          child: leading!,
+        ),
+      );
 
-  Widget buildTitle(SettingsTheme theme) {
-    return DefaultTextStyle.merge(
-      style: TextStyle(
-        color: enabled ? theme.themeData.settingsTileTextColor : theme.themeData.inactiveTitleColor,
-        fontSize: 16,
-      ),
-      child: title,
-    );
-  }
+  Widget buildTitle(SettingsTheme theme) => DefaultTextStyle.merge(
+        style: TextStyle(
+          // color: enabled ? theme.themeData.settingsTileTextColor : theme.themeData.inactiveTitleColor,
+          color: enabled ? null : theme.themeData.inactiveTitleColor,
+          fontSize: 16,
+        ),
+        child: title,
+      );
 
-  Widget buildTrailing({
-    required BuildContext context,
-    required WidgetRef ref,
-    required SettingsTheme theme,
-  }) {
-    if (trailing != null) return trailing!;
+  Widget buildTrailing(BuildContext context, WidgetRef ref) {
+    if (trailing != null) {
+      return IconTheme.merge(
+        data: IconThemeData(
+          size: 24.scalable(
+            ref,
+            maxValue: 32,
+            allowBelow: false,
+          ),
+          color: enabled ? null : LiveData.themeData(ref).disabledColor,
+        ),
+
+        child: trailing!,
+      );
+    }
 
     final scaleFactor = LiveData.scalePercentage(ref);
     return switch (tileType) {
+      _ when loading => const NeatCircularIndicator(),
       SettingsTileType.simpleTile => const SizedBox(),
       SettingsTileType.switchTile => CupertinoSwitch(
           value: initialValue ?? true,
-          onChanged: onToggle,
-          activeColor: enabled ? activeSwitchColor : theme.themeData.inactiveTitleColor,
+          onChanged: enabled ? onToggle : null,
+          activeColor: enabled ? activeSwitchColor : LiveData.themeData(ref).disabledColor,
         ),
       SettingsTileType.navigationTile => Padding(
           padding: const EdgeInsetsDirectional.only(start: 6, end: 2),
-          child: IconTheme.merge(
-            data: IconTheme.of(context).copyWith(color: theme.themeData.leadingIconsColor),
-            child: Icon(
-              Directionality.of(context) == TextDirection.ltr
-                  ? CupertinoIcons.chevron_forward
-                  : CupertinoIcons.chevron_left,
-              size: 18 * scaleFactor,
-            ),
+          child: Icon(
+            color: enabled ? null : LiveData.themeData(ref).disabledColor,
+            Directionality.of(context) == TextDirection.ltr
+                ? CupertinoIcons.chevron_forward
+                : CupertinoIcons.chevron_left,
+            size: 18 * scaleFactor,
           ),
         ),
     };
   }
 
-  Widget buildDivider({
-    required BuildContext context,
-    required WidgetRef ref,
-    required SettingsTheme theme,
-  }) =>
-      Container(
+  Widget buildVerticalDivider(WidgetRef ref) => Container(
         width: 2,
         height: 26,
         margin: const EdgeInsetsDirectional.only(start: 3, end: 6),

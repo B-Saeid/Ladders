@@ -3,12 +3,20 @@ import 'package:flutter/material.dart';
 import '../../../../../Shared/Utilities/device_platform.dart';
 import '../../settings_ui.dart';
 import 'platforms/android_settings_tile.dart';
-import 'platforms/ios_settings_tile.dart';
+import 'platforms/apple_settings_tile.dart';
 import 'platforms/web_settings_tile.dart';
 
-enum SettingsTileType { simpleTile, switchTile, navigationTile }
+enum SettingsTileType {
+  simpleTile,
+  switchTile,
+  navigationTile;
 
-class SettingsTile extends AbstractSettingsTile {
+  bool get isSimple => this == SettingsTileType.simpleTile;
+
+  bool get isSwitch => this == SettingsTileType.switchTile;
+}
+
+class SettingsTile extends StatelessWidget {
   const SettingsTile({
     this.leading,
     this.trailing,
@@ -17,9 +25,10 @@ class SettingsTile extends AbstractSettingsTile {
     this.description,
     this.onPressed,
     this.enabled = true,
+    this.loading = false,
     super.key,
   })  : onToggle = null,
-        initialValue = null,
+        on = null,
         activeSwitchColor = null,
         tileType = SettingsTileType.simpleTile;
 
@@ -31,14 +40,15 @@ class SettingsTile extends AbstractSettingsTile {
     this.description,
     this.onPressed,
     this.enabled = true,
+    this.loading = false,
     super.key,
   })  : onToggle = null,
-        initialValue = null,
+        on = null,
         activeSwitchColor = null,
         tileType = SettingsTileType.navigationTile;
 
   const SettingsTile.switchTile({
-    required this.initialValue,
+    required this.on,
     required this.onToggle,
     this.activeSwitchColor,
     this.leading,
@@ -48,6 +58,7 @@ class SettingsTile extends AbstractSettingsTile {
     this.onPressed,
     this.enabled = true,
     super.key,
+    this.loading = false,
   })  : value = null,
         tileType = SettingsTileType.switchTile;
 
@@ -56,12 +67,13 @@ class SettingsTile extends AbstractSettingsTile {
   final Widget title;
   final Widget? description;
   final VoidCallback? onPressed;
+  final bool loading;
 
   final Color? activeSwitchColor;
   final Widget? value;
   final Function(bool value)? onToggle;
   final SettingsTileType tileType;
-  final bool? initialValue;
+  final bool? on;
   final bool enabled;
 
   @override
@@ -80,15 +92,16 @@ class SettingsTile extends AbstractSettingsTile {
           value: value,
           leading: leading,
           title: title,
-          enabled: enabled,
+          enabled: loading ? false : enabled,
           activeSwitchColor: activeSwitchColor,
-          initialValue: initialValue ?? false,
+          loading: loading,
+          on: on,
           trailing: trailing,
         );
       case DevicePlatform.iOS:
       case DevicePlatform.macOS:
       case DevicePlatform.windows:
-        return IOSSettingsTile(
+        return AppleSettingsTile(
           description: description,
           onPressed: onPressed,
           onToggle: onToggle,
@@ -97,9 +110,10 @@ class SettingsTile extends AbstractSettingsTile {
           leading: leading,
           title: title,
           trailing: trailing,
-          enabled: enabled,
+          enabled: loading ? false : enabled,
           activeSwitchColor: activeSwitchColor,
-          initialValue: initialValue ?? false,
+          loading: loading,
+          initialValue: on ?? false,
         );
       case DevicePlatform.web:
         return WebSettingsTile(
@@ -110,10 +124,11 @@ class SettingsTile extends AbstractSettingsTile {
           value: value,
           leading: leading,
           title: title,
-          enabled: enabled,
+          enabled: loading ? false : enabled,
           trailing: trailing,
+          loading: loading,
           activeSwitchColor: activeSwitchColor,
-          initialValue: initialValue ?? false,
+          initialValue: on ?? false,
         );
       case DevicePlatform.device:
         throw Exception(

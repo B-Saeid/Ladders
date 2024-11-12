@@ -8,53 +8,43 @@ class AndroidSettingsSection extends ConsumerWidget {
   const AndroidSettingsSection({
     required this.tiles,
     required this.margin,
-    this.title,
+    this.header,
     super.key,
   });
 
   final List<AbstractSettingsTile> tiles;
   final EdgeInsetsDirectional? margin;
-  final Widget? title;
+  final Widget? header;
 
   @override
-  Widget build(BuildContext context, WidgetRef ref) {
-    final theme = SettingsTheme.of(context);
-    final scaleFactor = LiveData.scalePercentage(ref);
-    final tileList = buildTileList();
+  Widget build(BuildContext context, WidgetRef ref) => Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          if (header != null) buildHeader(context, ref),
+          buildTileList(),
+        ],
+      );
 
-    if (title == null) return tileList;
-
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        Padding(
-          padding: EdgeInsetsDirectional.only(
-            top: 24 * scaleFactor,
-            bottom: 10 * scaleFactor,
-            start: 24,
-            end: 24,
-          ),
-          child: DefaultTextStyle.merge(
-            style: TextStyle(
-              color: theme.themeData.titleTextColor,
-            ),
-            child: title!,
-          ),
+  Padding buildHeader(BuildContext context, WidgetRef ref) => Padding(
+        padding: EdgeInsetsDirectional.only(
+          top: 24.scalable(ref),
+          bottom: 10.scalable(ref),
+          start: 24,
+          end: 24,
         ),
-        tileList,
-      ],
-    );
-  }
+        child: DefaultTextStyle.merge(
+          style: TextStyle(
+            color: SettingsTheme.of(context).themeData.titleTextColor,
+          ),
+          child: header!,
+        ),
+      );
 
-  Widget buildTileList() {
-    return ListView.builder(
-      shrinkWrap: true,
-      itemCount: tiles.length,
-      padding: EdgeInsets.zero,
-      physics: const NeverScrollableScrollPhysics(),
-      itemBuilder: (BuildContext context, int index) {
-        return tiles[index];
-      },
-    );
-  }
+  Widget buildTileList() => ListView.builder(
+        shrinkWrap: true,
+        itemCount: tiles.length,
+        padding: EdgeInsets.zero,
+        physics: const NeverScrollableScrollPhysics(),
+        itemBuilder: (BuildContext context, int index) => tiles[index],
+      );
 }

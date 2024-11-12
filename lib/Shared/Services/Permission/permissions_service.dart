@@ -18,6 +18,15 @@ abstract class PermissionsService {
     return MyPermissionStatus.values.firstWhere((element) => element.name == permissionStatus.name);
   }
 
+  static Future<bool> checkTF(MyPermission myPermission) async {
+    final permission = myPermission.packagePermission;
+    final permissionStatus = await permission.status;
+    final status = MyPermissionStatus.values.firstWhere(
+      (element) => element.name == permissionStatus.name,
+    );
+    return myPermission.acceptableStatuses.contains(status);
+  }
+
   /// request for a specific permission
   static Future<MyPermissionStatus> request(MyPermission myPermission) async {
     final permission = myPermission.packagePermission;

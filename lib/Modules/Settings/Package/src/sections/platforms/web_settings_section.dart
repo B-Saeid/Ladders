@@ -8,65 +8,55 @@ class WebSettingsSection extends ConsumerWidget {
   const WebSettingsSection({
     required this.tiles,
     required this.margin,
-    required this.title,
+    this.header,
     super.key,
   });
 
   final List<AbstractSettingsTile> tiles;
   final EdgeInsetsDirectional? margin;
-  final Widget? title;
+  final Widget? header;
 
   @override
-  Widget build(BuildContext context,WidgetRef ref) {
-    final theme = SettingsTheme.of(context);
-    final scaleFactor = LiveData.scalePercentage(ref);
-
-    return Padding(
-      padding: margin ?? EdgeInsets.zero,
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          if (title != null)
-            Container(
-              height: 65 * scaleFactor,
-              padding: EdgeInsetsDirectional.only(
-                bottom: 5 * scaleFactor,
-                start: 6,
-                top: 40 * scaleFactor,
-              ),
-              child: DefaultTextStyle.merge(
-                style: TextStyle(
-                  color: theme.themeData.titleTextColor,
-                  fontSize: 15,
-                ),
-                child: title!,
-              ),
+  Widget build(BuildContext context, WidgetRef ref) => Padding(
+        padding: margin ?? const EdgeInsets.symmetric(horizontal: 20),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            if (header != null) buildHeader(context, ref),
+            Card(
+              elevation: 4,
+              color: SettingsTheme.of(context).themeData.tileColor,
+              child: buildTileList(),
             ),
-          Card(
-            elevation: 4,
-            color: theme.themeData.settingsSectionBackground,
-            child: buildTileList(),
-          ),
-        ],
-      ),
-    );
-  }
+          ],
+        ),
+      );
 
-  Widget buildTileList() {
-    return ListView.separated(
-      shrinkWrap: true,
-      itemCount: tiles.length,
-      padding: EdgeInsets.zero,
-      physics: const NeverScrollableScrollPhysics(),
-      itemBuilder: (BuildContext context, int index) {
-        return tiles[index];
-      },
-      separatorBuilder: (BuildContext context, int index) {
-        return const Divider(
+  Container buildHeader(BuildContext context, WidgetRef ref) => Container(
+        height: 65.scalable(ref),
+        padding: EdgeInsetsDirectional.only(
+          bottom: 5.scalable(ref),
+          start: 6,
+          top: 40.scalable(ref),
+        ),
+        child: DefaultTextStyle.merge(
+          style: TextStyle(
+            color: SettingsTheme.of(context).themeData.titleTextColor,
+            fontSize: 15,
+          ),
+          child: header!,
+        ),
+      );
+
+  Widget buildTileList() => ListView.separated(
+        shrinkWrap: true,
+        itemCount: tiles.length,
+        padding: EdgeInsets.zero,
+        physics: const NeverScrollableScrollPhysics(),
+        itemBuilder: (_, index) => tiles[index],
+        separatorBuilder: (__, _) => const Divider(
           height: 0,
           thickness: 1,
-        );
-      },
-    );
-  }
+        ),
+      );
 }

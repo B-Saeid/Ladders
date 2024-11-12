@@ -20,6 +20,7 @@ enum MyPermission {
 
   String get readableName => switch (this) {
         MyPermission.locationAlways => L10nR.tLocationAlwaysReadableName(),
+        MyPermission.speech => L10nR.tSpeechRecognition(),
         _ => name.upperFirstLetter
       };
 

@@ -26,13 +26,12 @@ class SettingsThemeData {
   const SettingsThemeData({
     this.trailingTextColor,
     // this.settingsListBackground,
-    this.settingsSectionBackground,
+    this.tileColor,
     this.dividerColor,
     this.tileHighlightColor,
     this.titleTextColor,
     this.leadingIconsColor,
     this.tileDescriptionTextColor,
-    this.settingsTileTextColor,
     this.inactiveTitleColor,
     this.inactiveSubtitleColor,
   });
@@ -40,12 +39,11 @@ class SettingsThemeData {
   // final Color? settingsListBackground;
   final Color? trailingTextColor;
   final Color? leadingIconsColor;
-  final Color? settingsSectionBackground;
+  final Color? tileColor;
   final Color? dividerColor;
   final Color? tileDescriptionTextColor;
   final Color? tileHighlightColor;
   final Color? titleTextColor;
-  final Color? settingsTileTextColor;
   final Color? inactiveTitleColor;
   final Color? inactiveSubtitleColor;
 
@@ -60,8 +58,7 @@ class SettingsThemeData {
       dividerColor: theme.dividerColor,
       trailingTextColor: theme.trailingTextColor,
       // settingsListBackground: theme.settingsListBackground,
-      settingsSectionBackground: theme.settingsSectionBackground,
-      settingsTileTextColor: theme.settingsTileTextColor,
+      tileColor: theme.tileColor,
       tileHighlightColor: theme.tileHighlightColor,
       titleTextColor: theme.titleTextColor,
       inactiveTitleColor: theme.inactiveTitleColor,
@@ -73,7 +70,7 @@ class SettingsThemeData {
     Color? settingsListBackground,
     Color? trailingTextColor,
     Color? leadingIconsColor,
-    Color? settingsSectionBackground,
+    Color? tileColor,
     Color? dividerColor,
     Color? tileDescriptionTextColor,
     Color? tileHighlightColor,
@@ -81,19 +78,19 @@ class SettingsThemeData {
     Color? settingsTileTextColor,
     Color? inactiveTitleColor,
     Color? inactiveSubtitleColor,
+    Color? inactiveTileColor,
   }) {
     return SettingsThemeData(
       // settingsListBackground: settingsListBackground ?? this.settingsListBackground,
       trailingTextColor: trailingTextColor ?? this.trailingTextColor,
       leadingIconsColor: leadingIconsColor ?? this.leadingIconsColor,
-      settingsSectionBackground: settingsSectionBackground ?? this.settingsSectionBackground,
+      tileColor: tileColor ?? this.tileColor,
       dividerColor: dividerColor ?? this.dividerColor,
       tileDescriptionTextColor: tileDescriptionTextColor ?? this.tileDescriptionTextColor,
       tileHighlightColor: tileHighlightColor ?? this.tileHighlightColor,
       titleTextColor: titleTextColor ?? this.titleTextColor,
       inactiveTitleColor: inactiveTitleColor ?? this.inactiveTitleColor,
       inactiveSubtitleColor: inactiveSubtitleColor ?? this.inactiveSubtitleColor,
-      settingsTileTextColor: settingsTileTextColor ?? this.settingsTileTextColor,
     );
   }
 }

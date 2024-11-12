@@ -40,9 +40,6 @@ class ThemeProvider {
     const lightTileHighlightColor = Color.fromARGB(255, 220, 220, 220);
     const darkTileHighlightColor = Color.fromARGB(255, 46, 46, 46);
 
-    const lightSettingsTileTextColor = Color.fromARGB(255, 27, 27, 27);
-    const darkSettingsTileTextColor = Color.fromARGB(255, 240, 240, 240);
-
     const lightInactiveTitleColor = Color.fromARGB(255, 146, 144, 148);
     const darkInactiveTitleColor = Color.fromARGB(255, 118, 117, 122);
 
@@ -55,8 +52,6 @@ class ThemeProvider {
     // final listBackground = isLight ? lightSettingsListBackground : darkSettingsListBackground;
 
     final titleTextColor = isLight ? lightSettingsTitleColor : darkSettingsTitleColor;
-
-    final settingsTileTextColor = isLight ? lightSettingsTileTextColor : darkSettingsTileTextColor;
 
     final tileHighlightColor = isLight ? lightTileHighlightColor : darkTileHighlightColor;
 
@@ -73,7 +68,6 @@ class ThemeProvider {
       tileHighlightColor: tileHighlightColor,
       // settingsListBackground: listBackground,
       titleTextColor: titleTextColor,
-      settingsTileTextColor: settingsTileTextColor,
       tileDescriptionTextColor: tileDescriptionTextColor,
       leadingIconsColor: leadingIconsColor,
       inactiveTitleColor: inactiveTitleColor,
@@ -86,7 +80,7 @@ class ThemeProvider {
     // const darkSettingsListBackground = CupertinoColors.black;
 
     const lightSettingSectionColor = CupertinoColors.white;
-    const darkSettingSectionColor = Color.fromARGB(255, 28, 28, 30);
+    const darkSettingSectionColor = Color(0xff1C1C1E);
 
     const lightSettingsTitleColor = Color.fromRGBO(109, 109, 114, 1);
     const darkSettingsTitleColor = CupertinoColors.systemGrey;
@@ -100,19 +94,16 @@ class ThemeProvider {
     const lightTileHighlightColor = Color.fromARGB(255, 209, 209, 214);
     const darkTileHighlightColor = Color.fromARGB(255, 58, 58, 60);
 
-    const lightSettingsTileTextColor = CupertinoColors.black;
-    const darkSettingsTileTextColor = CupertinoColors.white;
+    const lightLeadingIconsColor = CupertinoColors.systemGrey;
+    const darkLeadingIconsColor = CupertinoColors.systemGrey;
 
-    const lightLeadingIconsColor = CupertinoColors.inactiveGray;
-    const darkLeadingIconsColor = CupertinoColors.inactiveGray;
-
+    const lightTileDescriptionTextColor = Color.fromARGB(255, 57, 57, 57);
+    const darkTileDescriptionTextColor = Color.fromARGB(154, 227, 227, 227);
     // final listBackground = isLight ? lightSettingsListBackground : darkSettingsListBackground;
 
-    final sectionBackground = isLight ? lightSettingSectionColor : darkSettingSectionColor;
+    final tileBackgroundColor = isLight ? lightSettingSectionColor : darkSettingSectionColor;
 
-    final titleTextColor = isLight ? lightSettingsTitleColor : darkSettingsTitleColor;
-
-    final settingsTileTextColor = isLight ? lightSettingsTileTextColor : darkSettingsTileTextColor;
+    final sectionTitleTextColor = isLight ? lightSettingsTitleColor : darkSettingsTitleColor;
 
     final dividerColor = isLight ? lightDividerColor : darkDividerColor;
 
@@ -122,17 +113,22 @@ class ThemeProvider {
 
     final leadingIconsColor = isLight ? lightLeadingIconsColor : darkLeadingIconsColor;
 
+    final tileDescriptionTextColor =
+        isLight ? lightTileDescriptionTextColor : darkTileDescriptionTextColor;
+    final inactiveTitleColor =
+        isLight ? CupertinoColors.inactiveGray : CupertinoColors.inactiveGray.darkColor.withOpacity(0.4);
+
     return SettingsThemeData(
       tileHighlightColor: tileHighlightColor,
       // settingsListBackground: listBackground,
-      settingsSectionBackground: sectionBackground,
-      titleTextColor: titleTextColor,
+      tileColor: tileBackgroundColor,
+      titleTextColor: sectionTitleTextColor,
       dividerColor: dividerColor,
       trailingTextColor: trailingTextColor,
-      settingsTileTextColor: settingsTileTextColor,
       leadingIconsColor: leadingIconsColor,
-      inactiveTitleColor: CupertinoColors.inactiveGray,
-      inactiveSubtitleColor: CupertinoColors.inactiveGray,
+      inactiveTitleColor: inactiveTitleColor,
+      inactiveSubtitleColor: inactiveTitleColor,
+      tileDescriptionTextColor: tileDescriptionTextColor,
     );
   }
 
@@ -155,18 +151,12 @@ class ThemeProvider {
     const lightTileHighlightColor = Color.fromARGB(255, 220, 220, 220);
     const darkTileHighlightColor = Color.fromARGB(255, 46, 46, 46);
 
-    const lightSettingsTileTextColor = Color.fromARGB(255, 27, 27, 27);
-    //done
-    const darkSettingsTileTextColor = Color.fromARGB(232, 234, 237, 240);
-
     const lightTileDescriptionTextColor = Color.fromARGB(255, 70, 70, 70);
     const darkTileDescriptionTextColor = Color.fromARGB(154, 160, 166, 198);
 
     // final listBackground = isLight ? lightSettingsListBackground : darkSettingsListBackground;
 
     final titleTextColor = isLight ? lightSettingsTitleColor : darkSettingsTitleColor;
-
-    final settingsTileTextColor = isLight ? lightSettingsTileTextColor : darkSettingsTileTextColor;
 
     final tileHighlightColor = isLight ? lightTileHighlightColor : darkTileHighlightColor;
 
@@ -181,8 +171,7 @@ class ThemeProvider {
       tileHighlightColor: tileHighlightColor,
       // settingsListBackground: listBackground,
       titleTextColor: titleTextColor,
-      settingsSectionBackground: sectionBackground,
-      settingsTileTextColor: settingsTileTextColor,
+      tileColor: sectionBackground,
       tileDescriptionTextColor: tileDescriptionTextColor,
       leadingIconsColor: leadingIconsColor,
     );

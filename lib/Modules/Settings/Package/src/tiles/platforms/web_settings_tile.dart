@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../../../../../../Shared/Utilities/SessionData/session_data.dart';
+import '../../../../../../Shared/Widgets/neat_circular_indicator.dart';
 import '../../../settings_ui.dart';
 
 class WebSettingsTile extends ConsumerWidget {
@@ -17,6 +18,7 @@ class WebSettingsTile extends ConsumerWidget {
     required this.activeSwitchColor,
     required this.enabled,
     required this.trailing,
+    required this.loading,
     super.key,
   });
 
@@ -30,6 +32,7 @@ class WebSettingsTile extends ConsumerWidget {
   final bool initialValue;
   final bool enabled;
   final Widget? trailing;
+  final bool loading;
   final Color? activeSwitchColor;
 
   @override
@@ -38,7 +41,7 @@ class WebSettingsTile extends ConsumerWidget {
     final scaleFactor = LiveData.scalePercentage(ref);
 
     final cantShowAnimation = tileType == SettingsTileType.switchTile
-        ? onToggle == null && onPressed == null
+        ? (onToggle == null && onPressed == null)
         : onPressed == null;
 
     return IgnorePointer(
@@ -51,6 +54,7 @@ class WebSettingsTile extends ConsumerWidget {
               ? null
               : () {
                   if (tileType == SettingsTileType.switchTile) {
+                    if (initialValue && onPressed != null) return onPressed!();
                     onToggle?.call(!initialValue);
                   } else {
                     onPressed?.call();
@@ -66,7 +70,9 @@ class WebSettingsTile extends ConsumerWidget {
                   ),
                   child: IconTheme.merge(
                     data: IconTheme.of(context).copyWith(
-                      color: theme.themeData.leadingIconsColor,
+                      color: enabled
+                          ? theme.themeData.leadingIconsColor
+                          : LiveData.themeData(ref).disabledColor,
                     ),
                     child: leading!,
                   ),
@@ -84,9 +90,9 @@ class WebSettingsTile extends ConsumerWidget {
                     children: [
                       DefaultTextStyle.merge(
                         style: TextStyle(
-                          color: theme.themeData.settingsTileTextColor,
                           fontSize: 18,
                           fontWeight: FontWeight.w400,
+                          color: enabled ? null : LiveData.themeData(ref).disabledColor,
                         ),
                         child: title ?? const SizedBox(),
                       ),
@@ -95,7 +101,9 @@ class WebSettingsTile extends ConsumerWidget {
                           padding: const EdgeInsets.only(top: 4.0),
                           child: DefaultTextStyle.merge(
                             style: TextStyle(
-                              color: theme.themeData.tileDescriptionTextColor,
+                              color: enabled
+                                  ? theme.themeData.tileDescriptionTextColor
+                                  : LiveData.themeData(ref).disabledColor,
                             ),
                             child: value!,
                           ),
@@ -103,9 +111,11 @@ class WebSettingsTile extends ConsumerWidget {
                       else if (description != null)
                         Padding(
                           padding: const EdgeInsets.only(top: 4.0),
-                          child: DefaultTextStyle(
+                          child: DefaultTextStyle.merge(
                             style: TextStyle(
-                              color: theme.themeData.tileDescriptionTextColor,
+                              color: enabled
+                                  ? theme.themeData.tileDescriptionTextColor
+                                  : LiveData.themeData(ref).disabledColor,
                             ),
                             child: description!,
                           ),
@@ -119,13 +129,15 @@ class WebSettingsTile extends ConsumerWidget {
               //     height: 30,
               //     child: VerticalDivider(),
               //   ),
-              if (tileType == SettingsTileType.switchTile)
+              if (tileType == SettingsTileType.switchTile || loading)
                 Padding(
                   padding: const EdgeInsetsDirectional.only(start: 16, end: 8),
-                  child: Switch.adaptive(
-                    value: initialValue,
-                    onChanged: onToggle,
-                  ),
+                  child: loading
+                      ? const NeatCircularIndicator()
+                      : Switch.adaptive(
+                          value: initialValue,
+                          onChanged: onToggle,
+                        ),
                 ),
             ],
           ),

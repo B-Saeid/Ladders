@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
+import '../../../../../../Shared/Widgets/neat_circular_indicator.dart';
 import '../../../settings_ui.dart';
 
 class AndroidSettingsTile extends ConsumerWidget {
@@ -12,10 +13,11 @@ class AndroidSettingsTile extends ConsumerWidget {
     required this.onPressed,
     required this.onToggle,
     required this.value,
-    required this.initialValue,
+    required this.on,
     required this.activeSwitchColor,
     required this.enabled,
     required this.trailing,
+    required this.loading,
     super.key,
   });
 
@@ -26,7 +28,8 @@ class AndroidSettingsTile extends ConsumerWidget {
   final VoidCallback? onPressed;
   final Function(bool value)? onToggle;
   final Widget? value;
-  final bool initialValue;
+  final bool loading;
+  final bool? on;
   final bool enabled;
   final Color? activeSwitchColor;
   final Widget? trailing;
@@ -155,16 +158,23 @@ class AndroidSettingsTile extends ConsumerWidget {
         subtitle: value ?? description,
         onTap: onPressed,
         enabled: enabled,
-        trailing: trailing,
+        trailing: loading ? const NeatCircularIndicator() : trailing,
       );
 
   Widget buildSwitchTile() {
+    final switchValue = on!;
     assert(trailing == null);
-    return SwitchListTile.adaptive(
-      secondary: leading,
+    return ListTile(
+      leading: leading,
+      enabled: enabled,
       title: title,
-      value: initialValue,
-      onChanged: enabled ? onToggle : null,
+      trailing: loading
+          ? const NeatCircularIndicator()
+          : Switch(
+              value: switchValue,
+              onChanged: enabled ? onToggle : null,
+            ),
+      onTap: onPressed ?? () => onToggle?.call(!switchValue),
       subtitle: description,
     );
   }
