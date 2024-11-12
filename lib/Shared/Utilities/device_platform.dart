@@ -33,6 +33,8 @@ enum DevicePlatform {
 
   bool get isIOS => this == DevicePlatform.iOS;
 
+  bool get isMobile => [DevicePlatform.android, DevicePlatform.iOS].contains(this);
+
   bool get isApple => [DevicePlatform.iOS, DevicePlatform.macOS].contains(this);
 
   bool get isLinux => this == DevicePlatform.linux;

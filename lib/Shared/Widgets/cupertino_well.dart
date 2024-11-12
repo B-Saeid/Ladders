@@ -40,6 +40,7 @@ class _CupertinoWellState extends State<CupertinoWell> {
         onTapCancel: () => widget.onPressed == null ? null : setIsPressed(false),
         child: RefWidget(
           (ref) => Container(
+            constraints: const BoxConstraints(minHeight: 44),
             color:
                 isPressed ? widget.pressedColor ?? LiveData.themeData(ref).highlightColor : widget.color,
             child: widget.child,

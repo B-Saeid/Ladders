@@ -52,12 +52,23 @@ extension LiveScaledValue on num {
 }
 
 extension LiveStringWidth on String {
-  double getWidth(TextStyle style) {
-    final textSpan = TextSpan(
-      text: this,
-      style: style,
-    );
-    final tp = TextPainter(text: textSpan, textDirection: TextDirection.ltr)..layout();
-    return tp.width;
+  TextPainter _getPainter(TextStyle style, {bool ltr = true}) {
+    final textSpan = TextSpan(text: this, style: style);
+    final tp = TextPainter(
+      text: textSpan,
+      textDirection: ltr ? TextDirection.ltr : TextDirection.rtl,
+    )..layout();
+
+    return tp;
   }
+
+  Size getSize(TextStyle style, {bool ltr = true}) {
+    final size = _getPainter(style, ltr: ltr).size;
+    // print('size $size');
+    return size;
+  }
+
+  double getWidth(TextStyle style, {bool ltr = true}) => getSize(style, ltr: ltr).width;
+
+  double getHeight(TextStyle style, {bool ltr = true}) => getSize(style, ltr: ltr).height;
 }
