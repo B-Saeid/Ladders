@@ -31,6 +31,11 @@ abstract class L10nR {
         SupportedLocale.ar => 'الضبط',
       };
 
+  static String tVoiceActions([WidgetRef? ref]) => switch (_currentLocale(ref)) {
+        SupportedLocale.en => 'Voice Actions',
+        SupportedLocale.ar => 'الأوامر الصوتية',
+      };
+
   static String tGENERAL([WidgetRef? ref]) => switch (_currentLocale(ref)) {
         SupportedLocale.en => 'GENERAL',
         SupportedLocale.ar => 'عام',
@@ -45,9 +50,112 @@ abstract class L10nR {
         SupportedLocale.en => 'Change Language',
         SupportedLocale.ar => 'تغيير اللغة',
       };
-  static String tChangeTheme([WidgetRef? ref]) => switch (_currentLocale(ref)) {
-        SupportedLocale.en => 'Change Theme',
-        SupportedLocale.ar => 'تغيير السمة',
+
+  static String tRestAlreadyCountingDown([WidgetRef? ref]) => switch (_currentLocale(ref)) {
+        SupportedLocale.en => 'Rest already counting down',
+        SupportedLocale.ar => 'وقت الراحة قيد العد',
+      };
+
+  static String tTimerIsPaused([WidgetRef? ref]) => switch (_currentLocale(ref)) {
+        SupportedLocale.en => 'Timer is paused',
+        SupportedLocale.ar => 'المؤقت معلق',
+      };
+
+  static String tTimerHasNotStartedYet([WidgetRef? ref]) => switch (_currentLocale(ref)) {
+        SupportedLocale.en => 'Timer has not started yet',
+        SupportedLocale.ar => 'المؤقت لم يبدأ بعد',
+      };
+
+  static String tSpokenContentLanguage([WidgetRef? ref]) => switch (_currentLocale(ref)) {
+        SupportedLocale.en => 'Spoken Content Language',
+        SupportedLocale.ar => 'لغة المحتوى المنطوق',
+      };
+
+  static String tChangeSpokenContentLanguage([WidgetRef? ref]) => switch (_currentLocale(ref)) {
+        SupportedLocale.en => 'Change Spoken Content Language',
+        SupportedLocale.ar => 'تغيير لغة المحتوى المنطوق',
+      };
+
+  static String tCountBeforeStart([WidgetRef? ref]) => switch (_currentLocale(ref)) {
+        SupportedLocale.en => 'Count Before Start',
+        SupportedLocale.ar => 'العد قبل البدء',
+      };
+
+  static String tSayReadyBeforeGo([WidgetRef? ref]) => switch (_currentLocale(ref)) {
+        SupportedLocale.en => 'Say "Ready" Before ${tGO(ref)}',
+        SupportedLocale.ar => 'النطق ب "استعد" قبل ${tGO(ref)}',
+      };
+
+  static String tSpeakCountBeforeStart([WidgetRef? ref]) => switch (_currentLocale(ref)) {
+        SupportedLocale.en => 'Speak Count Before Start',
+        SupportedLocale.ar => 'النطق بالعد قبل البدء',
+      };
+
+  static String tSayGoWhenRestIsOver([WidgetRef? ref]) => switch (_currentLocale(ref)) {
+        SupportedLocale.en => 'Say "${tGO(ref)}" When Rest Is Over',
+        SupportedLocale.ar => 'النطق ب "${tGO(ref)}" عند انتهاء الراحة',
+      };
+
+  static String tHalfTotalTimeReminder([WidgetRef? ref]) => switch (_currentLocale(ref)) {
+        SupportedLocale.en => 'Half Total Time Reminder',
+        SupportedLocale.ar => 'تذكير بمنتصف الوقت الكلي',
+      };
+
+  static String tNearEndReminder([WidgetRef? ref]) => switch (_currentLocale(ref)) {
+        SupportedLocale.en => 'Near End Reminder',
+        SupportedLocale.ar => 'تذكير باقتراب النهاية',
+      };
+
+  static String tEnableFeature([WidgetRef? ref]) => switch (_currentLocale(ref)) {
+        SupportedLocale.en => 'Enable Feature',
+        SupportedLocale.ar => 'تمكين الخاصية',
+      };
+
+  static String tActionsList([WidgetRef? ref]) => switch (_currentLocale(ref)) {
+        SupportedLocale.en => 'Actions List',
+        SupportedLocale.ar => 'قائمة الأوامر',
+      };
+
+  static String tRestTriggerByMicrophone([WidgetRef? ref]) => switch (_currentLocale(ref)) {
+        SupportedLocale.en => 'Rest Trigger by Microphone',
+        SupportedLocale.ar => 'تفعيل الراحة بالميكروفون',
+      };
+
+  static String tVoiceInput([WidgetRef? ref]) => switch (_currentLocale(ref)) {
+        SupportedLocale.en => 'Voice Input:',
+        SupportedLocale.ar => 'دخل الصوت:',
+      };
+
+  static String tVoiceInputsAreUpToDate([WidgetRef? ref]) => switch (_currentLocale(ref)) {
+        SupportedLocale.en => 'Voice Inputs are up to date.',
+        SupportedLocale.ar => 'أجهزة الإدخال محدثة',
+      };
+
+  static String tUpdatedVoiceInputDevice([WidgetRef? ref]) => switch (_currentLocale(ref)) {
+        SupportedLocale.en => 'Updated Voice Input Devices',
+        SupportedLocale.ar => 'تم تحديث أجهزة الإدخال الصوتية',
+      };
+
+  static String tRestToDefaultSettings([WidgetRef? ref]) => switch (_currentLocale(ref)) {
+        SupportedLocale.en => 'Reset to Default Settings',
+        SupportedLocale.ar => 'اعادة تعيين الإعدادات الافتراضية',
+      };
+
+  static String tRestOnlyTriggerDescription([WidgetRef? ref]) => switch (_currentLocale(ref)) {
+        SupportedLocale.en => 'Only use the mic to start the rest count down '
+            'if a voice raise is detected according to trigger sensitivity.',
+        SupportedLocale.ar => 'استخدم الميكروفون فقط لبدء العد التنازلي للراحة '
+            'عند استشعار ارتفاع في الصوت وفقًا لحساسية التفعيل.'
+      };
+
+  static String tActivationSensitivity([WidgetRef? ref]) => switch (_currentLocale(ref)) {
+        SupportedLocale.en => 'Trigger Sensitivity',
+        SupportedLocale.ar => 'حساسية التفعيل',
+      };
+
+  static String tChangeThemeMode([WidgetRef? ref]) => switch (_currentLocale(ref)) {
+        SupportedLocale.en => 'Change Theme Mode',
+        SupportedLocale.ar => 'تغيير وضع السمة',
       };
 
   static String tThemeMode([WidgetRef? ref]) => switch (_currentLocale(ref)) {
@@ -55,10 +163,17 @@ abstract class L10nR {
         SupportedLocale.ar => 'وضع السمة',
       };
 
-  static String tDeviceLanguage([WidgetRef? ref]) => switch (_currentLocale(ref)) {
+  static String tDeviceLanguageColon([WidgetRef? ref]) => switch (_currentLocale(ref)) {
         SupportedLocale.en => 'Device Language: ',
         SupportedLocale.ar => 'لغة الجهاز: ',
       };
+
+  static String tAppLanguage([WidgetRef? ref]) => switch (_currentLocale(ref)) {
+        SupportedLocale.en => 'App Language',
+        SupportedLocale.ar => 'لغة التطبيق',
+      };
+
+  static String get tColonSpace => ': ';
 
   static String tAuto([WidgetRef? ref]) => switch (_currentLocale(ref)) {
         SupportedLocale.en => 'Auto',
@@ -80,8 +195,64 @@ abstract class L10nR {
             SupportedLocale.en => 'Device Language',
             SupportedLocale.ar => 'لغة الجهاز',
           },
-        LocaleSetting.arabic => 'العربية',
-        LocaleSetting.english => 'English',
+        _ => SupportedLocale.fromLocale(setting.locale!).displayName
+      };
+
+  static String tTimerAndSpokenContentCAPS([WidgetRef? ref]) => switch (_currentLocale(ref)) {
+        SupportedLocale.en => 'TIMER AND SPOKEN CONTENT',
+        SupportedLocale.ar => 'المؤقت و الكلام المنطوق',
+      };
+
+  static String tVoiceActionsCAPS([WidgetRef? ref]) => switch (_currentLocale(ref)) {
+        SupportedLocale.en => 'VOICE ACTIONS',
+        SupportedLocale.ar => 'الأوامر الصوتية',
+      };
+
+  static String tVoiceTriggerCAPS([WidgetRef? ref]) => switch (_currentLocale(ref)) {
+        SupportedLocale.en => 'VOICE TRIGGER',
+        SupportedLocale.ar => 'التفعيل الصوتية',
+      };
+
+  static String tVoiceActionsIsEnabled([WidgetRef? ref]) => switch (_currentLocale(ref)) {
+        SupportedLocale.en => 'Voice Actions Is Enabled',
+        SupportedLocale.ar => 'الأوامر الصوتية ممكّنة',
+      };
+
+  static String tVoiceActionsIsDisabled([WidgetRef? ref]) => switch (_currentLocale(ref)) {
+        SupportedLocale.en => 'Voice Actions Is Disabled',
+        SupportedLocale.ar => 'الأوامر الصوتية معطلة',
+      };
+
+  static String tCannotBeEnabledWithRestOnly([WidgetRef? ref]) => switch (_currentLocale(ref)) {
+        // SupportedLocale.en => 'Switch OFF ${tRestTriggerByMicrophone(ref)} to enable Voice Actions',
+        SupportedLocale.en => 'Cannot be enabled when ${tRestTriggerByMicrophone(ref)} is ON',
+        SupportedLocale.ar => 'لا يمكن تمكين الأوامر الصوتية عند تفعيل ${tRestTriggerByMicrophone(ref)}',
+      };
+
+  static String tEitherRestTriggerOrVoiceActions([WidgetRef? ref]) => switch (_currentLocale(ref)) {
+        SupportedLocale.en => 'Either ${tRestTriggerByMicrophone(ref)} '
+            'or ${tVoiceActions()} must be ON.',
+        SupportedLocale.ar => 'قم ب ${tRestTriggerByMicrophone(ref)} أو تمكين خاصية ${tVoiceActions()}'
+      };
+
+  static String tThree([WidgetRef? ref]) => switch (_currentLocale(ref)) {
+        SupportedLocale.en => 'Three',
+        SupportedLocale.ar => 'ثلاثة',
+      };
+
+  static String tTwo([WidgetRef? ref]) => switch (_currentLocale(ref)) {
+        SupportedLocale.en => 'Two',
+        SupportedLocale.ar => 'اثنين',
+      };
+
+  static String tOne([WidgetRef? ref]) => switch (_currentLocale(ref)) {
+        SupportedLocale.en => 'One',
+        SupportedLocale.ar => 'واحد',
+      };
+
+  static String tGO([WidgetRef? ref]) => switch (_currentLocale(ref)) {
+        SupportedLocale.en => 'GO',
+        SupportedLocale.ar => 'انطلق',
       };
 
   /// Toasts
@@ -204,9 +375,15 @@ abstract class L10nR {
         SupportedLocale.en => 'Keep Default',
         SupportedLocale.ar => 'إبقاء الأصل',
       };
+
   static String tHide([WidgetRef? ref]) => switch (_currentLocale(ref)) {
         SupportedLocale.en => 'Hide',
         SupportedLocale.ar => 'إخفاء',
+      };
+
+  static String tHideMenu([WidgetRef? ref]) => switch (_currentLocale(ref)) {
+        SupportedLocale.en => 'Hide Menu',
+        SupportedLocale.ar => 'إخفاء القائمة',
       };
 
   static String tTapOnIcon(String name, [WidgetRef? ref]) => switch (_currentLocale(ref)) {
@@ -543,10 +720,78 @@ abstract class L10nR {
 //     };
 //   }
 //
-//   static String get tNote => switch (_currentLocale) {
-//         SupportedLocale.ar => 'تنويه',
-//         SupportedLocale.en => 'Note',
-//       };
+  static String tNote([WidgetRef? ref]) => switch (_currentLocale(ref)) {
+        SupportedLocale.ar => 'تنويه',
+        SupportedLocale.en => 'Note',
+      };
+
+  static String tGoogleMicRequiredMessage([WidgetRef? ref]) => switch (_currentLocale(ref)) {
+        SupportedLocale.en => 'Speech Recognition on Android is powered by Google. '
+            'In order to use this feature, It is required that '
+            'Google App has permission to access microphone.',
+        SupportedLocale.ar => ' يعمل التعرف على الصوت في أجهزة Android بواسطة Google. '
+            'لاستخدام هذه الخاصية، يجب السماح لتطبيق Google بالوصول للميكروفون.',
+      };
+
+  static String tNotAvailable([WidgetRef? ref]) => switch (_currentLocale(ref)) {
+        SupportedLocale.ar => 'غير متاح',
+        SupportedLocale.en => 'Not Available',
+      };
+
+  static String tSpeechNotAvailable([WidgetRef? ref]) => switch (_currentLocale(ref)) {
+        SupportedLocale.en => 'Speech Recognition is not available on your device.',
+        SupportedLocale.ar => 'التعرف على الصوت غير متوفر على جهازك.',
+      };
+
+  static String tSpokenContentNotAvailable([WidgetRef? ref]) => switch (_currentLocale(ref)) {
+        SupportedLocale.en => 'Spoken Content is not available in ${SupportedLocale.en.displayName}.',
+        SupportedLocale.ar => 'الكلام المنطوق غير متوفر باللغة ${SupportedLocale.ar.displayName}.',
+      };
+
+  static String tSpokenContentError([WidgetRef? ref]) => switch (_currentLocale(ref)) {
+        SupportedLocale.en => 'An Error is encountered with Spoken Content.',
+        // '\n\nMake sure to install the ${SupportedLocale.en.displayName} '
+        // 'voice data in Text to Speech Settings in your device.',
+        SupportedLocale.ar => 'حدث خطأ في الكلام المنطوق.',
+        // '\n\nيرجى التأكد من تثبيث أصوات اللغة ${SupportedLocale.ar.displayName}'
+        // ' في إعدادات تحويل النص إلى صوت في جهازك.',
+      };
+
+  static String tConfirmStop([WidgetRef? ref]) => switch (_currentLocale(ref)) {
+        SupportedLocale.en => 'Confirm Stop',
+        SupportedLocale.ar => 'تأكيد الايقاف',
+      };
+
+  static String tConfirmStopMessage([WidgetRef? ref]) => switch (_currentLocale(ref)) {
+        SupportedLocale.en => 'Do you want to cancel and discard the current stats ?',
+        SupportedLocale.ar => 'هل تريد الإلغاء ,وتجاهل الاحصائيات الحالية ؟',
+      };
+
+  static String tCouldNotUnderstandMeaning([WidgetRef? ref]) => switch (_currentLocale(ref)) {
+        SupportedLocale.en => 'Could not understand meaning',
+        SupportedLocale.ar => 'لم يتم التعرف على العبارة',
+      };
+
+  static String tNotAKnownCommand([WidgetRef? ref]) => switch (_currentLocale(ref)) {
+        SupportedLocale.en => 'Not a known command',
+        SupportedLocale.ar => 'أمر غير معروف',
+      };
+
+  static String tNoSpeechDetected([WidgetRef? ref]) => switch (_currentLocale(ref)) {
+        SupportedLocale.en => 'No speech detected',
+        SupportedLocale.ar => 'لم يتم اكتشاف أي كلمة',
+      };
+
+  static String tGreatJob([WidgetRef? ref]) => switch (_currentLocale(ref)) {
+        SupportedLocale.en => 'Great Job',
+        SupportedLocale.ar => 'نجاح عظيم',
+      };
+
+  static String tGreatJobMessage([WidgetRef? ref]) => switch (_currentLocale(ref)) {
+        SupportedLocale.en => 'You have completed the challenge. Good Job!',
+        SupportedLocale.ar => 'لقد قمت بتنفيذ الخطة. نتمنى لك النجاح!',
+      };
+
 //
 //   static String get _autoSettingRelaunchRequired => switch (_currentLocale) {
 //         SupportedLocale.ar =>
@@ -1054,10 +1299,26 @@ abstract class L10nR {
 //             ' غير مسموح بها. برجاء المحاولة في وقت لاحق.',
 //       };
 //
-//   static String get tOK => switch (_currentLocale) {
-//         SupportedLocale.en => 'OK',
-//         SupportedLocale.ar => 'حسنا',
-//       };
+  static String tOK([WidgetRef? ref]) => switch (_currentLocale(ref)) {
+        SupportedLocale.en => 'OK',
+        SupportedLocale.ar => 'حسنا',
+      };
+
+  static String tRESET([WidgetRef? ref]) => switch (_currentLocale(ref)) {
+        SupportedLocale.en => 'RESET',
+        SupportedLocale.ar => 'إعادة الضبط',
+      };
+
+  static String tConfirmReset([WidgetRef? ref]) => switch (_currentLocale(ref)) {
+        SupportedLocale.en => 'Confirm Reset',
+        SupportedLocale.ar => 'تأكيد إعادة الضبط',
+      };
+
+  static String tConfirmResetMessage([WidgetRef? ref]) => switch (_currentLocale(ref)) {
+        SupportedLocale.en => 'Are you sure you want to reset your settings back to default ones ?',
+        SupportedLocale.ar => 'هل أنت متاكد من إعادة ضبط الاعدادات الخاصة بك ؟',
+      };
+
 //
 //   static String get tPreviousMatch => switch (_currentLocale) {
 //         SupportedLocale.en => 'Previous Match',
@@ -1658,10 +1919,11 @@ abstract class L10nR {
 //         SupportedLocale.ar => 'إدخال',
 //       };
 //
-//   static String get tDone => switch (_currentLocale) {
-//         SupportedLocale.en => 'Done',
-//         SupportedLocale.ar => 'تم',
-//       };
+  static String tDone([WidgetRef? ref]) => switch (_currentLocale(ref)) {
+        SupportedLocale.en => 'Done',
+        SupportedLocale.ar => 'تم',
+      };
+
 //
 //   static String get tFinish => switch (_currentLocale) {
 //         SupportedLocale.en => 'Finish',
@@ -1675,12 +1937,12 @@ abstract class L10nR {
 
   static String tSetTotalTime([WidgetRef? ref]) => switch (_currentLocale(ref)) {
         SupportedLocale.en => 'Set Total Time',
-        SupportedLocale.ar => 'حدد الوقت الإجمالي',
+        SupportedLocale.ar => 'حدد الوقت الكلي',
       };
 
   static String tPleaseSetTotalTime([WidgetRef? ref]) => switch (_currentLocale(ref)) {
         SupportedLocale.en => 'Please set total time',
-        SupportedLocale.ar => 'قد بتحديد وقت الكلي',
+        SupportedLocale.ar => 'قم بتحديد الوقت الكلي',
       };
 
   static String tMin([WidgetRef? ref]) => switch (_currentLocale(ref)) {
@@ -1693,34 +1955,64 @@ abstract class L10nR {
         SupportedLocale.ar => 'ثانية',
       };
 
-  static String tGo([WidgetRef? ref]) => switch (_currentLocale(ref)) {
-        SupportedLocale.en => 'Go',
-        SupportedLocale.ar => 'إبدأ',
-      };
+  // static String tGo([WidgetRef? ref]) => switch (_currentLocale(ref)) {
+  //       SupportedLocale.en => 'Go',
+  //       SupportedLocale.ar => 'إبدأ',
+  //     };
 
-  static String tStart([WidgetRef? ref]) => switch (_currentLocale(ref)) {
+  static String tSTART([WidgetRef? ref]) => switch (_currentLocale(ref)) {
         SupportedLocale.en => 'START',
         SupportedLocale.ar => 'إبدأ',
       };
 
-  static String tPause([WidgetRef? ref]) => switch (_currentLocale(ref)) {
-        SupportedLocale.en => 'Pause',
-        SupportedLocale.ar => 'إيقاف',
+  static String tStartDescription([WidgetRef? ref]) => switch (_currentLocale(ref)) {
+        SupportedLocale.en => 'Starts the total timer after if it is set.',
+        SupportedLocale.ar => 'يبدأ الوقت الكلي المحدد مسبقاً.',
       };
 
-  static String tResume([WidgetRef? ref]) => switch (_currentLocale(ref)) {
-        SupportedLocale.en => 'Resume',
-        SupportedLocale.ar => 'إكمال',
-      };
-
-  static String tAbort([WidgetRef? ref]) => switch (_currentLocale(ref)) {
-        SupportedLocale.en => 'Abort',
-        SupportedLocale.ar => 'إنهاء',
-      };
+  // static String tPause([WidgetRef? ref]) => switch (_currentLocale(ref)) {
+  //       SupportedLocale.en => 'Pause',
+  //       SupportedLocale.ar => 'إيقاف',
+  //     };
+  //
+  // static String tResume([WidgetRef? ref]) => switch (_currentLocale(ref)) {
+  //       SupportedLocale.en => 'Resume',
+  //       SupportedLocale.ar => 'إكمال',
+  //     };
+  //
+  // static String tAbort([WidgetRef? ref]) => switch (_currentLocale(ref)) {
+  //       SupportedLocale.en => 'Abort',
+  //       SupportedLocale.ar => 'إنهاء',
+  //     };
 
   static String tRest([WidgetRef? ref]) => switch (_currentLocale(ref)) {
         SupportedLocale.en => 'Rest',
         SupportedLocale.ar => 'راحة',
+      };
+
+  static String tVoiceAction([WidgetRef? ref]) => switch (_currentLocale(ref)) {
+        SupportedLocale.en => 'Voice Action',
+        SupportedLocale.ar => 'أمر صوتي',
+      };
+
+  static String tMonitorRestTrigger([WidgetRef? ref]) => switch (_currentLocale(ref)) {
+        SupportedLocale.en => 'Monitor Rest Trigger',
+        SupportedLocale.ar => 'مراقبة تفعيل الراحة',
+      };
+
+  static String tListening([WidgetRef? ref]) => switch (_currentLocale(ref)) {
+        SupportedLocale.en => 'Listening ...',
+        SupportedLocale.ar => 'يستمع ...',
+      };
+
+  static String tListeningForRestTrigger([WidgetRef? ref]) => switch (_currentLocale(ref)) {
+        SupportedLocale.en => 'Listening for rest trigger ...',
+        SupportedLocale.ar => 'يستمع لتفعيل الراحة ...',
+      };
+
+  static String tSpeak([WidgetRef? ref]) => switch (_currentLocale(ref)) {
+        SupportedLocale.en => 'Speak ...',
+        SupportedLocale.ar => 'تحدث ...',
       };
 
 //
@@ -2041,9 +2333,14 @@ abstract class L10nR {
         SupportedLocale.ar => 'الاختيار من الصور',
       };
 
+  static String tSpeechRecognition([WidgetRef? ref]) => switch (_currentLocale(ref)) {
+        SupportedLocale.en => 'Speech Recognition',
+        SupportedLocale.ar => 'التعرف على الصوت',
+      };
+
   static String tSpeechReason([WidgetRef? ref]) => switch (_currentLocale(ref)) {
         SupportedLocale.en => 'perform voice action',
-        SupportedLocale.ar => 'تنفيذ الأمر الصوتي',
+        SupportedLocale.ar => 'تنفيذ الأوامر الصوتية',
       };
 
   static String tLocationAlwaysReadableName([WidgetRef? ref]) => switch (_currentLocale(ref)) {
@@ -2295,6 +2592,62 @@ abstract class L10nR {
         SupportedLocale.en => 'Rate Us',
         SupportedLocale.ar => 'قيمنا',
       };
+
+  static String tUnderstood([WidgetRef? ref]) => switch (_currentLocale(ref)) {
+        SupportedLocale.en => 'Understood',
+        SupportedLocale.ar => 'أعي ذلك',
+      };
+
+  static String tSave([WidgetRef? ref]) => switch (_currentLocale(ref)) {
+        SupportedLocale.en => 'Save',
+        SupportedLocale.ar => 'حفظ',
+      };
+
+  static String tDiscard([WidgetRef? ref]) => switch (_currentLocale(ref)) {
+        SupportedLocale.en => 'Discard',
+        SupportedLocale.ar => 'تجاهل',
+      };
+
+  static String tRetryingToStopRecognition([WidgetRef? ref]) => switch (_currentLocale(ref)) {
+        SupportedLocale.en => 'Retrying to stop recognition',
+        SupportedLocale.ar => 'إعادة محاولة إيقاف التعرف الصوتي',
+      };
+
+  static String tRecognitionStopped([WidgetRef? ref]) => switch (_currentLocale(ref)) {
+        SupportedLocale.en => 'Recognition stopped',
+        SupportedLocale.ar => 'تم إيقاف التعرف الصوتي',
+      };
+
+  static String tPAUSE([WidgetRef? ref]) => switch (_currentLocale(ref)) {
+        SupportedLocale.ar => 'توقف',
+        SupportedLocale.en => 'PAUSE',
+      };
+
+  static String tPauseDescription([WidgetRef? ref]) => switch (_currentLocale(ref)) {
+        SupportedLocale.ar => 'يقوم بتعليق الوقت الكلي.',
+        SupportedLocale.en => 'Pauses the overall Timer.',
+      };
+
+  static String tREST([WidgetRef? ref]) => switch (_currentLocale(ref)) {
+        SupportedLocale.ar => 'راحة',
+        SupportedLocale.en => 'REST',
+      };
+
+  static String tRestDescription([WidgetRef? ref]) => switch (_currentLocale(ref)) {
+        SupportedLocale.en => 'Starts a countdown timer equal to the last training period.',
+        SupportedLocale.ar => 'يقوم بالعد عكسيا لآخر وقت مستغرق في التمرين.',
+      };
+
+  static String tRESUME([WidgetRef? ref]) => switch (_currentLocale(ref)) {
+        SupportedLocale.ar => 'أكمل',
+        SupportedLocale.en => 'RESUME',
+      };
+
+  static String tResumeDescription([WidgetRef? ref]) => switch (_currentLocale(ref)) {
+        SupportedLocale.en => 'Resumes the overall timer if it was paused.',
+        SupportedLocale.ar => 'يقوم باستئناف الوقت الكلي إذا كان معلّق.',
+      };
+
 //
 //   static String get tVersion => switch (_currentLocale) {
 //         SupportedLocale.en => 'Version 3.0',

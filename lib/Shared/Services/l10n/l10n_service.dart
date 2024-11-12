@@ -28,7 +28,15 @@ abstract class L10nService {
 
   static void init(BuildContext context) {
     if (deviceLocale == null) _deviceLocale = Localizations.localeOf(context);
-    _setCachedSettings(context);
+    /// This is calling and forgetting
+    /// i.e. [init] will not wait until [_setCachedSettings] finishes execution
+    /// which caused an exception of using a deactivated context...
+     // _setCachedSettings(context);
+
+    /// By returning [_setCachedSettings] here we are making sure that
+    /// the call to [_setCachedSettings] is executed then [init] returns
+    /// which is what we want when we call [init] in the momentary splash screen
+    return _setCachedSettings(context);
   }
 
   static void _setCachedSettings(BuildContext context) {

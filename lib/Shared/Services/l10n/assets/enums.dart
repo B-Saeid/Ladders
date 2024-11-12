@@ -32,6 +32,10 @@ enum SupportedLocale {
   ar,
   en;
 
+  bool get isArabic => this == SupportedLocale.ar;
+
+  bool get isEnglish => this == SupportedLocale.en;
+
   static SupportedLocale fromLocale(Locale locale) =>
       SupportedLocale.values.firstWhere((element) => element.name == locale.languageCode);
 
