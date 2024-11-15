@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:flutter_svg/svg.dart';
 
+import '../../../Shared/Constants/assets_strings.dart';
 import '../../../Shared/Services/Routing/routes_base.dart';
 import '../../../Shared/Services/l10n/assets/l10n_resources.dart';
 import '../../../Shared/Styles/adaptive_icons.dart';
@@ -18,13 +20,11 @@ class HomeDrawer extends ConsumerWidget {
             children: [
               DrawerHeader(
                 padding: EdgeInsets.zero,
-                /// TODO : Have logo pattern background and the name in the center as nice design
-                // decoration: const BoxDecoration(
-                //   image: DecorationImage(
-                //     image: AssetImage(ImageAssets.defaultProfileAvatar),
-                //   ),
-                // ),
-                child: Container(color: Colors.transparent),
+                /// T O D O : DONE Have logo pattern background and the name in the center as nice design
+                child: SvgPicture.asset(
+                  VectorAssets.drawerPatternOutlinedWide,
+                  fit: BoxFit.cover,
+                ),
               ),
               const _DrawerBody(),
             ],

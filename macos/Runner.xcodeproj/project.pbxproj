@@ -200,6 +200,13 @@
 			remoteGlobalIDString = C0C9A074EEF12F27AC2F536567F9FAE1;
 			remoteInfo = url_launcher_macos;
 		};
+		48646CAE2CCE568200A60523 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 4823DCE92C99D87A00AD0829 /* Pods.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = 55C13EDD7E201D71A889791B31B8A36F;
+			remoteInfo = wakelock_plus;
+		};
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXCopyFilesBuildPhase section */
@@ -466,6 +473,7 @@
 				4823DC722C99D81300AD0829 /* speech_to_text.framework */,
 				4823DC742C99D81300AD0829 /* Try.framework */,
 				4823DC762C99D81300AD0829 /* url_launcher_macos.framework */,
+				48646CC82CCE568300A60523 /* wakelock_plus.framework */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -718,6 +726,7 @@
 				4823DD0A2C99D87A00AD0829 /* speech_to_text.framework */,
 				4823DD0C2C99D87A00AD0829 /* Try.framework */,
 				4823DD0E2C99D87A00AD0829 /* url_launcher_macos.framework */,
+				48646CAF2CCE568200A60523 /* wakelock_plus.framework */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -992,6 +1001,13 @@
 			path = url_launcher_macos.framework;
 			remoteRef = 4823DD0D2C99D87A00AD0829 /* PBXContainerItemProxy */;
 			sourceTree = BUILT_PRODUCTS_DIR;
+		48646CC82CCE568300A60523 /* wakelock_plus.framework */ = {
+			isa = PBXReferenceProxy;
+			fileType = wrapper.framework;
+			path = wakelock_plus.framework;
+			remoteRef = 48646CC72CCE568300A60523 /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
 		};
 /* End PBXReferenceProxy section */
 

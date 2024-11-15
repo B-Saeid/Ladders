@@ -4,30 +4,27 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../../../Shared/Extensions/time_package.dart';
-import '../../../Shared/Styles/adaptive_icons.dart';
-import '../../../Shared/Styles/app_colors.dart';
 import '../../../Shared/Utilities/SessionData/session_data.dart';
 import '../../../Shared/Widgets/custom_animated_size.dart';
 import '../../../Shared/Widgets/custom_animated_switcher.dart';
 import '../../../Shared/Widgets/riverpod_helper_widgets.dart';
 import '../provider/home_provider.dart';
-import '../utilities/enums.dart';
 
 class InnerGoRestCycles extends ConsumerWidget {
   const InnerGoRestCycles({super.key});
 
   @override
   Widget build(BuildContext context, WidgetRef ref) => Selector(
-        selector: homeProvider.select((p) => (total: p.totalState, ladder: p.ladderState)),
-        builder: (_, state, child) => CustomAnimatedSize(
-          child: state.total.isStopped
+        selector: homeProvider.select((p) => p.totalState),
+        builder: (_, totalState, child) => CustomAnimatedSize(
+          child: totalState.isStopped
               ? const SizedBox()
               : Center(
                   child: Column(
                     children: [
-                      _IndicatingIcon(state),
+                      const _IndicatingIcon(),
                       SizedBox(height: 20.scalable(ref, maxFactor: 2)),
-                      _TimerCard(state, child!),
+                      _TimerCard(child!),
                       const SizedBox(height: 50),
                     ],
                   ),
@@ -38,37 +35,42 @@ class InnerGoRestCycles extends ConsumerWidget {
 }
 
 class _TimerCard extends ConsumerWidget {
-  const _TimerCard(this.state, this.child);
+  const _TimerCard(this.child);
 
-  final ({LadderState ladder, TotalState total}) state;
   final Widget child;
 
   @override
-  Widget build(BuildContext context, WidgetRef ref) => Card.filled(
-        margin: EdgeInsets.zero,
-        shape: const StadiumBorder(side: BorderSide()),
-        color: state.ladder.isTraining ? AppColors.adaptiveBlue(ref) : null,
-        child: child,
+  Widget build(BuildContext context, WidgetRef ref) => Selector(
+        selector: homeProvider.select((p) => p.ladderState),
+        builder: (_, ladderState, __) => Card.filled(
+          margin: EdgeInsets.zero,
+          shape: const StadiumBorder(side: BorderSide()),
+          color: ladderState.indicatingColor(ref),
+          child: child,
+        ),
       );
 }
 
 class _IndicatingIcon extends ConsumerWidget {
-  const _IndicatingIcon(this.state);
-
-  final ({LadderState ladder, TotalState total}) state;
+  const _IndicatingIcon();
 
   @override
-  Widget build(BuildContext context, WidgetRef ref) => CircleAvatar(
-        backgroundColor: Colors.transparent,
-        radius: 20.scalable(ref, maxFactor: 2),
-        child: CustomAnimatedSwitcher(
-          child: state.total.isPaused
-              ? AdaptiveIcons.wFlatBar(ref: ref)
-              : state.ladder.isTraining
-                  ? AdaptiveIcons.wTraining(ref: ref)
-                  : AdaptiveIcons.wResting(ref: ref),
+  Widget build(BuildContext context, WidgetRef ref) {
+    final ladderState = ref.watch(homeProvider.select((p) => p.ladderState));
+    return CircleAvatar(
+      backgroundColor: Colors.transparent,
+      radius: 20.scalable(ref, maxFactor: 2),
+      child: CustomAnimatedSwitcher(
+        child: SizedBox(
+          ///  TODO : IMPORTANT TO NOTE
+          ///  This is the first time to use keys in a very plausible and convenient way
+          ///  https://youtu.be/2W7POjFb88g?t=58
+          key: ValueKey(ladderState),
+          child: ladderState.indicatingIcon(ref),
         ),
-      );
+      ),
+    );
+  }
 }
 
 class _GoRestTimer extends ConsumerWidget {

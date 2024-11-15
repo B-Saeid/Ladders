@@ -3,6 +3,7 @@ import 'dart:async';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:wakelock_plus/wakelock_plus.dart';
 
 import '../../../Shared/Components/Toast/toast.dart';
 import '../../../Shared/Extensions/time_package.dart';
@@ -21,31 +22,37 @@ class HomeProvider extends ChangeNotifier {
 
   TotalState totalState = TotalState.stopped;
 
+  static int get storedMin => HiveService.storedCache.get(StoredCacheKeys.lastLadderMinute) ?? 0;
+
+  static int get storedSec => HiveService.storedCache.get(StoredCacheKeys.lastLadderSecond) ?? 0;
+
   void setTotalState(TotalState state) {
     if (totalState != state) {
+      /// Important to keep the screen on while the timer is running or paused
+      state.isStopped ? WakelockPlus.disable() : WakelockPlus.enable();
+
       totalState = state;
       notifyListeners();
     }
   }
 
-  int minute = 0;
+  int minute = storedMin;
 
   void setMinute(int value) {
-    if (minute != value) {
-      minute = value;
-      notifyListeners();
-    }
+    if (minute == value) return;
+    minute = value;
+    notifyListeners();
   }
 
-  int second = 0;
+  int second = storedSec;
 
   void setSecond(int value) {
-    if (second != value) {
-      second = value;
-      notifyListeners();
-    }
+    if (second == value) return;
+    second = value;
+    notifyListeners();
   }
 
+  final _stopwatch = Stopwatch();
   Timer? _ladderTimer;
 
   void refreshPositions() {
@@ -54,19 +61,39 @@ class HomeProvider extends ChangeNotifier {
   }
 
   /// Main Logic to run the timer and animate the wheels
-  void _timerLogic(_) {
-    if (second == 0) {
-      secondController.jumpToItem(59);
-      second = 59;
+  void _timerLogic() {
+    final totalDuration = Duration(minutes: storedMin, seconds: storedSec);
+    final lapsed = _stopwatch.elapsed;
+    final shouldBeCurrent = totalDuration - lapsed;
+
+    final shouldBeCurrentNNN = shouldBeCurrent.nHHnMMnSS;
+    if (shouldBeCurrent.isNegative) {
+      abortLadder();
+
+      /// TODO : Play a sound effect or a voice Later on
+      //     final shouldSave = await Dialogues.showLadderFinishSuccess();
+      //     if (shouldSave ?? false) {
+      //       /// TODO : Implement Saving of results and CREATE THEM ^^
+      //     }
+      return;
+    }
+
+    if (second != shouldBeCurrentNNN.$3 + 1) {
+      second = shouldBeCurrentNNN.$3 + 1;
+      second == 59
+          ? secondController.jumpToItem(59)
+          : secondController.animateToItem(
+              second == 60 ? 0 : second,
+              duration: 800.milliseconds,
+              curve: Curves.easeInOutCubicEmphasized,
+            );
+    }
+
+    if (second != 60 && minute != shouldBeCurrentNNN.$2) {
+      minute = shouldBeCurrentNNN.$2;
       minuteController.animateToItem(
-        --minute,
-        duration: 300.milliseconds,
-        curve: Curves.easeInOutCubicEmphasized,
-      );
-    } else {
-      secondController.animateToItem(
-        --second,
-        duration: 300.milliseconds,
+        minute,
+        duration: 800.milliseconds,
         curve: Curves.easeInOutCubicEmphasized,
       );
     }

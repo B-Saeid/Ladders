@@ -141,11 +141,7 @@ class _ZeroTo59Wheel extends ConsumerWidget {
 
   double _itemExtent(WidgetRef ref) {
     Future(ref.read(homeProvider).refreshPositions);
-    return 50.scalable(
-      ref,
-      allowBelow: false,
-      maxFactor: 2,
-    );
+    return 50.scalable(ref, maxValue: 80);
   }
 }
 

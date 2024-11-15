@@ -58,6 +58,8 @@ dependencies:
   flutter_svg: any
   speech_to_text: any
   record: ^5.1.2
+  record: any
+  wakelock_plus: any
 
 dev_dependencies:
   flutter_test:
