@@ -20,6 +20,7 @@ class NearEndReminderTile extends AbstractSettingsTile {
 
   int countValue(WidgetRef ref) => ref.watch(settingProvider).nearEndReminderValue;
 
+  bool available(WidgetRef ref) => ref.watch(settingProvider).ttsAvailable;
   static const _min = 20;
   static const _max = 60;
 
@@ -27,6 +28,7 @@ class NearEndReminderTile extends AbstractSettingsTile {
   Widget build(BuildContext context) => RefWidget(
         (ref) => SettingsTile.switchTile(
           on: switchValue(ref),
+          enabled: available(ref),
           onToggle: ref.read(settingProvider).setEnableNearEndReminder,
           onPressed: switchValue(ref) ? () => onTilePressed(context, ref) : null,
           leading: buildLeading(context, ref),
@@ -79,6 +81,7 @@ class _MyCupertinoActionSheet extends ConsumerWidget {
   const _MyCupertinoActionSheet(this.controller);
 
   final FixedExtentScrollController controller;
+
   @override
   Widget build(BuildContext context, WidgetRef ref) => CupertinoActionSheet(
         title: Text(

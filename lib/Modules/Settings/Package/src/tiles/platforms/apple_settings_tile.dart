@@ -3,6 +3,7 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
+import '../../../../../../Shared/Styles/app_colors.dart';
 import '../../../../../../Shared/Utilities/SessionData/session_data.dart';
 import '../../../../../../Shared/Widgets/cupertino_well.dart';
 import '../../../../../../Shared/Widgets/fit_within.dart';
@@ -117,7 +118,8 @@ class AppleSettingsTile extends ConsumerWidget {
     //   ),
     // );
     return CupertinoWell(
-      color: theme.themeData.tileColor,
+      color: AppColors.onScaffoldBackground(ref),
+      // color: theme.themeData.tileColor,
       pressedColor: theme.themeData.tileHighlightColor,
       onPressed: onPressed,
       child: Padding(
@@ -144,7 +146,7 @@ class AppleSettingsTile extends ConsumerWidget {
                           alignment: WrapAlignment.spaceBetween,
                           spacing: 5,
                           children: [
-                            /// Title & Description
+                            /// Title & Value
                             buildTitle(theme),
                             buildValue(context: context, theme: theme),
                           ],
@@ -205,7 +207,7 @@ class AppleSettingsTile extends ConsumerWidget {
       _ when loading => const NeatCircularIndicator(),
       SettingsTileType.simpleTile => const SizedBox(),
       SettingsTileType.switchTile => CupertinoSwitch(
-          value: initialValue ?? true,
+          value: initialValue!,
           onChanged: enabled ? onToggle : null,
           activeColor: enabled ? activeSwitchColor : LiveData.themeData(ref).disabledColor,
         ),

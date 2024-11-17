@@ -26,6 +26,15 @@ abstract class TTSService {
 
   static String? _localeID;
 
+  /// As per https://pub.dev/packages/flutter_tts#features
+  /// [isLanguageAvailable] is not available for Windows
+  /// and this is the only method that we call on [_flutterTts]
+  /// which is not common between our supported platforms
+  static Future<bool> _checkIfLangIsAvailable(String foundLanguage) async {
+    if (StaticData.platform.isWindows) return true;
+    return await _flutterTts.isLanguageAvailable(foundLanguage);
+  }
+
   static Future<void> _setLocaleID({bool ensure = false}) async {
     final current = SpeechService.getLocaleID;
     if (_localeID == current && !ensure) return;
@@ -43,7 +52,7 @@ abstract class TTSService {
 
     print('foundLanguage = $foundLanguage');
 
-    if (foundLanguage != null && await _flutterTts.isLanguageAvailable(foundLanguage)) {
+    if (foundLanguage != null && await _checkIfLangIsAvailable(foundLanguage)) {
       await _flutterTts.setLanguage(foundLanguage);
       RoutesBase.activeContext!.read(settingProvider).setTtsAvailable(true);
     } else {
@@ -78,7 +87,7 @@ abstract class TTSService {
     SpeechService.resetTTS();
   }
 
-  /// TODO : ANY ARABIC talk lAZEM TE SHA KEL OH
+  /// T O D O : DONE! ANY ARABIC talk lAZEM TE SHA KEL OH
   static Future<void> speak(String talk, {bool now = false, bool isEnd = true}) async {
     if (!RoutesBase.activeContext!.read(settingProvider).ttsAvailable) return;
 
@@ -92,7 +101,7 @@ abstract class TTSService {
 
     /// This is the number of seconds to wait after the speech is completed.
     final restOnly = RoutesBase.activeContext!.read(settingProvider).restOnlyTrigger;
-    final  waitAmount = restOnly ? 1 : 0.5;
+    final waitAmount = restOnly ? 1 : 0.5;
     _flutterTts.speak(talk).then(
           /// This delay is To Avoid:
           ///
@@ -102,8 +111,8 @@ abstract class TTSService {
           /// This is wierd and should be removed as we sat [_flutterTts.awaitSpeakCompletion(true)]
           /// But for now it works with this delay.
           (_) => waitAmount.seconds.delay.then(
-                (_) => isEnd ? SpeechService.flagTTS(false) : null,
-              ),
+            (_) => isEnd ? SpeechService.flagTTS(false) : null,
+          ),
         );
   }
 

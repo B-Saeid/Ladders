@@ -23,27 +23,19 @@ class WebSettingsSection extends ConsumerWidget {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             if (header != null) buildHeader(context, ref),
-            Card(
-              elevation: 4,
-              color: SettingsTheme.of(context).themeData.tileColor,
-              child: buildTileList(),
-            ),
+            buildTileList(),
           ],
         ),
       );
 
-  Container buildHeader(BuildContext context, WidgetRef ref) => Container(
-        height: 65.scalable(ref),
+  Padding buildHeader(BuildContext context, WidgetRef ref) => Padding(
         padding: EdgeInsetsDirectional.only(
-          bottom: 5.scalable(ref),
+          bottom: 15.scalable(ref),
           start: 6,
           top: 40.scalable(ref),
         ),
         child: DefaultTextStyle.merge(
-          style: TextStyle(
-            color: SettingsTheme.of(context).themeData.titleTextColor,
-            fontSize: 15,
-          ),
+          style: LiveData.textTheme(ref).titleLarge,
           child: header!,
         ),
       );
@@ -54,9 +46,8 @@ class WebSettingsSection extends ConsumerWidget {
         padding: EdgeInsets.zero,
         physics: const NeverScrollableScrollPhysics(),
         itemBuilder: (_, index) => tiles[index],
-        separatorBuilder: (__, _) => const Divider(
-          height: 0,
-          thickness: 1,
+        separatorBuilder: (__, _) => const Padding(
+          padding: EdgeInsets.symmetric(vertical: 4),
         ),
       );
 }

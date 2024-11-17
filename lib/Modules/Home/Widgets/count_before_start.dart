@@ -20,7 +20,7 @@ class CountBeforeStart extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    _count(ref);
+    _count();
     return ValueListenableBuilder(
       valueListenable: valueListenable,
       builder: (_, value, __) => CustomAnimatedSize(
@@ -37,13 +37,16 @@ class CountBeforeStart extends ConsumerWidget {
     final string = value == 0 ? L10nR.tGO() : value.toString();
 
     if (/*voiced && */ ref.read(settingProvider).speakStartCount) {
-      TTSService.speak(value == 0 ? L10nSC.tGo() : string, isEnd: value == 0);
+      /// previous way - without future - threw: setState is called during build
+      Future(
+        () => TTSService.speak(value == 0 ? L10nSC.tGo() : string, isEnd: value == 0),
+      );
     }
 
     return string;
   }
 
-  void _count(WidgetRef ref) => timer ??= Timer.periodic(
+  void _count() => timer ??= Timer.periodic(
         1.seconds,
         (timer) => valueListenable.value--,
       );

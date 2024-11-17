@@ -82,8 +82,6 @@ class SettingsTile extends StatelessWidget {
 
     switch (theme.platform) {
       case DevicePlatform.android:
-      case DevicePlatform.fuchsia:
-      case DevicePlatform.linux:
         return AndroidSettingsTile(
           description: description,
           onPressed: onPressed,
@@ -100,7 +98,6 @@ class SettingsTile extends StatelessWidget {
         );
       case DevicePlatform.iOS:
       case DevicePlatform.macOS:
-      case DevicePlatform.windows:
         return AppleSettingsTile(
           description: description,
           onPressed: onPressed,
@@ -116,6 +113,9 @@ class SettingsTile extends StatelessWidget {
           initialValue: on ?? false,
         );
       case DevicePlatform.web:
+      case DevicePlatform.windows:
+      case DevicePlatform.fuchsia:
+      case DevicePlatform.linux:
         return WebSettingsTile(
           description: description,
           onPressed: onPressed,

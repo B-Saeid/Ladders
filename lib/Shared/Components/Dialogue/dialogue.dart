@@ -71,7 +71,7 @@ class MyDialogue extends StatelessWidget {
                         customAndroidActions != null ||
                         customAdaptiveActions != null))
                   Padding(
-                    padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 5),
+                    padding: const EdgeInsets.symmetric(horizontal: 15 , vertical: 15),
                     child: Row(
                       mainAxisAlignment: MainAxisAlignment.end,
                       children: customAndroidActions ??

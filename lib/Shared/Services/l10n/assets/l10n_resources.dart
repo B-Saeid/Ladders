@@ -210,7 +210,7 @@ abstract class L10nR {
 
   static String tVoiceTriggerCAPS([WidgetRef? ref]) => switch (_currentLocale(ref)) {
         SupportedLocale.en => 'VOICE TRIGGER',
-        SupportedLocale.ar => 'التفعيل الصوتية',
+        SupportedLocale.ar => 'التفعيل الصوتي',
       };
 
   static String tVoiceActionsIsEnabled([WidgetRef? ref]) => switch (_currentLocale(ref)) {

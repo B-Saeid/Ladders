@@ -17,7 +17,7 @@ import '../Models/mic_type_enum.dart';
 import '../Models/microphone_model.dart';
 
 final settingProvider = ChangeNotifierProvider((_) {
-  if (StaticData.platform.isMobile) AudioSessionService.listenOnDeviceChanges();
+  AudioSessionService.listenOnDeviceChanges();
   return SettingsProvider();
 });
 
@@ -47,7 +47,7 @@ class SettingsProvider extends ChangeNotifier {
     if (newSetting != localeSettings || notInitialized) {
       localeSettings = newSetting;
       notifyListeners();
-      SpeechService.actOnLocaleChange();
+      if (SpeechService.isSupported) SpeechService.actOnLocaleChange();
     }
   }
 
@@ -326,6 +326,5 @@ extension OnThemeMode on ThemeMode {
         ThemeMode.dark => L10nR.tDark(ref),
       };
 
-  static ThemeMode? fromStored(storedValue) =>
-      ThemeMode.values.firstWhereOrNull((e) => e.name == storedValue);
+  static ThemeMode? fromStored(storedValue) => ThemeMode.values.firstWhereOrNull((e) => e.name == storedValue);
 }

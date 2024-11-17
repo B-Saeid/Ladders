@@ -91,6 +91,7 @@ class _InputDevicesDropDown extends ConsumerWidget {
                   label: e.name,
                   leadingIcon: e.type?.icon(false),
                   style: FilledButton.styleFrom(
+                    padding: const EdgeInsets.symmetric(vertical: 15, horizontal: 10),
                     shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(15)),
                   ),
                 ),
@@ -104,21 +105,28 @@ class _InputDevicesDropDown extends ConsumerWidget {
             border: OutlineInputBorder(borderRadius: BorderRadius.circular(15)),
             filled: microphones.length > 1 ? true : false,
           ),
+          /// Super nice documentation of this attribute.
+          requestFocusOnTap: false,
           onSelected: (value) => value != null ? ref.read(settingProvider).setMicrophone(value) : null,
           trailingIcon: Icon(AdaptiveIcons.arrowDown),
           selectedTrailingIcon: Icon(AdaptiveIcons.arrowUp),
           initialSelection: microphone,
+          /// If allowed it threw:
+          /// Unhandled Exception: 'package:flutter/src/rendering/object.dart': Failed assertion: line 3347 pos 14: 'renderer.parent != null': is not true.
+          /// encountered on Windows.
+          ///
+          /// we did allowed it to highlight the currently selected mic
+          /// we can do this by another way. TODO
+          enableSearch: false,
           menuStyle: const MenuStyle(
-            padding: WidgetStatePropertyAll(EdgeInsets.all(5)),
+            padding: WidgetStatePropertyAll(EdgeInsets.symmetric(vertical: 15,horizontal: 10)),
           ),
         ),
       );
 
   Widget leading(WidgetRef ref) {
     final micType = microphone?.type;
-    return micType == null || micType == MicType.builtIn
-        ? Icon(AdaptiveIcons.microphoneCircle)
-        : micType.icon(false);
+    return micType == null || micType == MicType.builtIn ? Icon(AdaptiveIcons.microphoneCircle) : micType.icon(false);
   }
 
   /// [PopupMenuButton] was not updating lively with microphone list changes
@@ -127,57 +135,57 @@ class _InputDevicesDropDown extends ConsumerWidget {
   /// to select it, the thing that can lead to an unexpected behavior.
   ///
   /// This was Experienced.
-  // @override
-  // Widget build(BuildContext context, WidgetRef ref) => PopupMenuButton<Microphone>(
-  //       onSelected: (value) => ref.read(settingProvider).setMicrophone(value),
-  //
-  //       /// null: will display the default: 'Show Menu'
-  //       tooltip: microphones(ref).length > 1 ? null : '',
-  //       // enabled: microphones.length > 1,
-  //       position: PopupMenuPosition.under,
-  //
-  //       child: buildTextContainer(ref),
-  //       itemBuilder: (_) => microphones(ref)
-  //           .map(
-  //             (mic) => buildPopupMenuItem(mic, ref),
-  //           )
-  //           .toList(),
-  //     );
-  //
-  // TextContainer buildTextContainer(WidgetRef ref) => TextContainer(
-  //       animated: true,
-  //       margin: EdgeInsets.zero,
-  //       color: microphones.length > 1 && enabled ? AppColors.adaptivePrimary(ref) : null,
-  //       padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 6),
-  //       child: Text(
-  //         microphone?.name ?? '---',
-  //         maxLines: 1,
-  //         overflow: TextOverflow.ellipsis,
-  //         style: LiveData.textTheme(ref).bodyMedium?.copyWith(
-  //               color: enabled ? null : LiveData.themeData(ref).disabledColor,
-  //             ),
-  //       ),
-  //     );
-  //
-  // PopupMenuItem<Microphone> buildPopupMenuItem(
-  //   Microphone mic,
-  //   WidgetRef ref,
-  // ) =>
-  //     PopupMenuItem(
-  //       padding: EdgeInsets.zero,
-  //       value: mic,
-  //       child: ListTile(
-  //         leading: mic.type?.icon(false),
-  //         // OPTIONALLY LATER ON
-  //         title: Text(
-  //           mic.name,
-  //           style: LiveData.textTheme(ref).titleMedium,
-  //         ),
-  //         contentPadding: const EdgeInsets.symmetric(horizontal: 12),
-  //         shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(5)),
-  //         visualDensity: VisualDensity.compact,
-  //         selected: microphone == mic,
-  //         selectedTileColor: AppColors.adaptivePrimary(ref).withAlpha(100),
-  //       ),
-  //     );
+// @override
+// Widget build(BuildContext context, WidgetRef ref) => PopupMenuButton<Microphone>(
+//       onSelected: (value) => ref.read(settingProvider).setMicrophone(value),
+//
+//       /// null: will display the default: 'Show Menu'
+//       tooltip: microphones(ref).length > 1 ? null : '',
+//       // enabled: microphones.length > 1,
+//       position: PopupMenuPosition.under,
+//
+//       child: buildTextContainer(ref),
+//       itemBuilder: (_) => microphones(ref)
+//           .map(
+//             (mic) => buildPopupMenuItem(mic, ref),
+//           )
+//           .toList(),
+//     );
+//
+// TextContainer buildTextContainer(WidgetRef ref) => TextContainer(
+//       animated: true,
+//       margin: EdgeInsets.zero,
+//       color: microphones.length > 1 && enabled ? AppColors.adaptivePrimary(ref) : null,
+//       padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 6),
+//       child: Text(
+//         microphone?.name ?? '---',
+//         maxLines: 1,
+//         overflow: TextOverflow.ellipsis,
+//         style: LiveData.textTheme(ref).bodyMedium?.copyWith(
+//               color: enabled ? null : LiveData.themeData(ref).disabledColor,
+//             ),
+//       ),
+//     );
+//
+// PopupMenuItem<Microphone> buildPopupMenuItem(
+//   Microphone mic,
+//   WidgetRef ref,
+// ) =>
+//     PopupMenuItem(
+//       padding: EdgeInsets.zero,
+//       value: mic,
+//       child: ListTile(
+//         leading: mic.type?.icon(false),
+//         // OPTIONALLY LATER ON
+//         title: Text(
+//           mic.name,
+//           style: LiveData.textTheme(ref).titleMedium,
+//         ),
+//         contentPadding: const EdgeInsets.symmetric(horizontal: 12),
+//         shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(5)),
+//         visualDensity: VisualDensity.compact,
+//         selected: microphone == mic,
+//         selectedTileColor: AppColors.adaptivePrimary(ref).withAlpha(100),
+//       ),
+//     );
 }

@@ -94,7 +94,7 @@ class ThemeProvider {
     const lightTileHighlightColor = Color.fromARGB(255, 209, 209, 214);
     const darkTileHighlightColor = Color.fromARGB(255, 58, 58, 60);
 
-    const lightLeadingIconsColor = CupertinoColors.systemGrey;
+    const lightLeadingIconsColor = darkTileHighlightColor;
     const darkLeadingIconsColor = CupertinoColors.systemGrey;
 
     const lightTileDescriptionTextColor = Color.fromARGB(255, 57, 57, 57);

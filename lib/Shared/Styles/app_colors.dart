@@ -14,19 +14,22 @@ abstract class AppColors {
   static TextStyle? positiveChoiceStyle(WidgetRef ref, {bool bold = true}) =>
       LiveData.textTheme(ref).bodyMedium?.copyWith(
             fontWeight: bold ? FontWeight.bold : FontWeight.normal,
-            color: primary,
+            color: LiveData.themeData(ref).colorScheme.surfaceTint,
           );
 
-  static TextStyle? negativeChoiceStyle(WidgetRef ref) =>
-      LiveData.textTheme(ref).bodyMedium?.copyWith(color: negativeColor(ref));
+  static TextStyle? negativeChoiceStyle(WidgetRef ref) => LiveData.textTheme(ref).bodyMedium?.copyWith(
+        color: negativeColor(ref),
+      );
 
   static Color negativeColor(WidgetRef ref) => LiveData.themeData(ref).colorScheme.error;
-  static Color whileDarkLightBlack(WidgetRef ref) => LiveData.isLight(ref) ? Colors.black:Colors.white;
+
+  static Color whileDarkLightBlack(WidgetRef ref) => LiveData.isLight(ref) ? Colors.black : Colors.white;
 
   static const primary = Color(0xff55361f);
 
-  static LinearGradient opacityGradient([Color? color, (double from, double to)? bounds]) =>
-      LinearGradient(
+  static const lightPrimary = Color(0xffcc9b76);
+
+  static LinearGradient opacityGradient([Color? color, (double from, double to)? bounds]) => LinearGradient(
         colors: [
           (color ?? AppColors.primary).withOpacity(bounds?.$1 ?? 0.15),
           (color ?? AppColors.primary).withOpacity(bounds?.$2 ?? 0.05),
@@ -35,8 +38,7 @@ abstract class AppColors {
         end: AlignmentDirectional.bottomEnd,
       );
 
-  static Color adaptivePrimary(WidgetRef ref) =>
-      LiveData.isLight(ref) ? const Color(0xffcc9b76) : const Color(0xff55361f);
+  static Color adaptivePrimary(WidgetRef ref) => LiveData.isLight(ref) ? lightPrimary : primary;
 
   static Color get green => Colors.green.shade700;
 
@@ -48,8 +50,7 @@ abstract class AppColors {
 
   static Color get greyLight => const Color(0xffd2d2d2);
 
-  static Color adaptiveGrey(WidgetRef ref) =>
-      LiveData.isLight(ref) ? const Color(0xffd2d2d2) : const Color(0xff4b4b4b);
+  static Color adaptiveGrey(WidgetRef ref) => LiveData.isLight(ref) ? const Color(0xffd2d2d2) : const Color(0xff4b4b4b);
 
   static Color get yellow => const Color(0xffb3973c);
 
@@ -74,4 +75,16 @@ abstract class AppColors {
   static Color emojiRowThemed(WidgetRef ref) => LiveData.isLight(ref) ? Colors.grey : Colors.black87;
 
   static Color scaffoldBackground(WidgetRef ref) => LiveData.themeData(ref).scaffoldBackgroundColor;
+
+  static Color onScaffoldBackground(WidgetRef ref) {
+    final scaBg = LiveData.themeData(ref).scaffoldBackgroundColor;
+    return LiveData.isLight(ref)
+        ? Colors.white
+        : Color.fromARGB(
+            255,
+            scaBg.red + 4,
+            scaBg.green + 4,
+            scaBg.blue + 4,
+          );
+  }
 }

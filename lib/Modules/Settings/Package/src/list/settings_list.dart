@@ -60,7 +60,12 @@ class SettingsList extends ConsumerWidget {
               physics: physics,
               shrinkWrap: shrinkWrap,
               itemCount: sections.length,
-              padding: contentPadding,
+              padding: contentPadding ??
+                  EdgeInsets.only(
+                    bottom: LiveData.viewPadding(ref).bottom < 10
+                        ? (30 - LiveData.viewPadding(ref).bottom).scalable(ref, maxValue: 50)
+                        : 0,
+                  ),
               itemBuilder: (_, index) => sections[index],
             ),
           ),

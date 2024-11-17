@@ -20,7 +20,7 @@ class SettingsSection extends AbstractSettingsSection {
 
   @override
   Widget build(BuildContext context) {
-    final platform = StaticData.platform; 
+    final platform = StaticData.platform;
 
     if (platform.isApple) {
       return AppleSettingsSection(
@@ -28,14 +28,14 @@ class SettingsSection extends AbstractSettingsSection {
         tiles: tiles,
         margin: margin,
       );
-    } else if (platform.isWeb) {
-      return WebSettingsSection(
+    } else if (platform.isAndroid) {
+      return AndroidSettingsSection(
         header: header,
         tiles: tiles,
         margin: margin,
       );
     } else {
-      return AndroidSettingsSection(
+      return WebSettingsSection(
         header: header,
         tiles: tiles,
         margin: margin,
