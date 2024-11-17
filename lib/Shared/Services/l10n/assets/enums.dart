@@ -44,6 +44,15 @@ enum SupportedLocale {
         SupportedLocale.en => 'English',
       };
 
+  String get speechID => switch (this) {
+        SupportedLocale.ar => 'ar-EG',
+        SupportedLocale.en => 'en-US',
+      };
+
+  static SupportedLocale fromSpeechID(String speechID) => SupportedLocale.values.firstWhere(
+        (element) => element.speechID == speechID,
+      );
+
   /// If rootApp widget locale is set to null and device locale is set to a locale no in this list
   /// The root app will take the first locale supported AFTER THE MAIN ONE IN DEVICE SETTINGS LIST
   /// and if can't find any IT WILL THEN TAKE THE first locale in THIS list.

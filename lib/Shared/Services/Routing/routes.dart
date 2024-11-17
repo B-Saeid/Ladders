@@ -2,12 +2,14 @@
 enum Routes {
   home,
   account,
-  settings;
+  settings,
+  voiceActions;
 
   String get path => switch (this) {
         Routes.home => '/$name',
         Routes.account => '${home.path}/$name',
         Routes.settings => '${home.path}/$name',
+        Routes.voiceActions => '${settings.path}/$name',
       };
 }
 

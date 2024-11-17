@@ -3,6 +3,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 
 import '../../../Modules/Home/home_screen.dart';
+import '../../../Modules/Settings/Widgets/voice_actions_screen.dart';
 import '../../../Modules/Settings/settings_screen.dart';
 import '../l10n/l10n_service.dart';
 import 'routes.dart';
@@ -70,10 +71,75 @@ class _SplashScreen extends StatelessWidget {
       RoutesBase.router.go(_Home.redirect);
       // Navigator.of(context).push(
       //   MaterialPageRoute(
-      //     builder: (context) => const MyOverlayTestWidget(),
+      //     builder: (context) => const TEST(),
       //   ),
       // );
     });
     return const Scaffold();
   }
 }
+
+// class TEST extends StatelessWidget {
+//   const TEST({super.key});
+//
+//   @override
+//   Widget build(BuildContext context) {
+//     return const Scaffold(
+//       body: Center(
+//         child: Column(
+//           mainAxisSize: MainAxisSize.min,
+//           children: [
+//             CustomButton(
+//               icon: _ButtonIcon(outlined: true),
+//               onPressed: AudioSessionService.printRecorderInputDevices,
+//               child: Text('Ha poo'),
+//             ),
+//             CustomButton(
+//               icon: _ButtonIcon(outlined: false),
+//               onPressed: AudioSessionService.printRecorderInputDevices,
+//               child: Text('Ha poo'),
+//             ),
+//           ],
+//         ),
+//       ),
+//     );
+//   }
+// }
+//
+// class _ButtonIcon extends ConsumerStatefulWidget {
+//   const _ButtonIcon({required this.outlined});
+//
+//   final bool outlined;
+//
+//   @override
+//   ConsumerState<_ButtonIcon> createState() => _ButtonIconState();
+// }
+//
+// class _ButtonIconState extends ConsumerState<_ButtonIcon> {
+//   @override
+//   void initState() {
+//     super.initState();
+//     AudioSessionService.listenOnDeviceChanges();
+//   }
+//
+//   @override
+//   void dispose() {
+//     AudioSessionService.dispose();
+//     super.dispose();
+//   }
+//
+//   @override
+//   Widget build(BuildContext context) => ValueListenableBuilder(
+//         valueListenable: SpeechService.isTTSNotifier,
+//         builder: (_, isTTS, __) => ValueListenableBuilder(
+//           valueListenable: AudioSessionService.micTypeNotifier,
+//           builder: (_, micType, __) => IconTheme.merge(
+//             data: IconThemeData(
+//               // color: isTTS || widget.outlined ? LiveData.themeData(ref).disabledColor : null,
+//             ),
+//             // child: micType.icon(isTTS || widget.outlined),
+//             child: widget.outlined?MicType.builtIn.icon(true):MicType.bluetooth.icon(true),
+//           ),
+//         ),
+//       );
+// }

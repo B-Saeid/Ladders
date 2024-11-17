@@ -33,19 +33,36 @@ class LaddersStyles {
     cupertinoOverrideTheme: _cupertinoThemeData,
   );
 
-  CupertinoThemeData get _cupertinoThemeData => CupertinoThemeData(
-        applyThemeToAll: true,
-        textTheme: CupertinoTextThemeData(
-          textStyle: _overriddenFontFamilyStyle,
-          actionTextStyle: _overriddenFontFamilyStyle,
-          dateTimePickerTextStyle: _overriddenFontFamilyStyle,
-          navActionTextStyle: _overriddenFontFamilyStyle,
-          navLargeTitleTextStyle: _overriddenFontFamilyStyle,
-          navTitleTextStyle: _overriddenFontFamilyStyle,
-          pickerTextStyle: _overriddenFontFamilyStyle,
-          tabLabelTextStyle: _overriddenFontFamilyStyle,
-        ),
-      );
+  // CupertinoThemeData cupertinoThemeData(WidgetRef ref) {
+  //   // final cupertinoThemeData = _cupertinoThemeData(overriddenFontFamilyStyle);
+  //   final mode = ref.watch(settingProvider.select((p) => p.themeMode));
+  //   return switch (mode) {
+  //     ThemeMode.system => MaterialBasedCupertinoThemeData(
+  //         materialTheme: (LiveData.isLight(ref) ? light : dark)
+  //             .copyWith(cupertinoOverrideTheme: _cupertinoThemeData),
+  //       ),
+  //     ThemeMode.light => MaterialBasedCupertinoThemeData(
+  //         materialTheme: light.copyWith(cupertinoOverrideTheme: _cupertinoThemeData),
+  //       ),
+  //     ThemeMode.dark => MaterialBasedCupertinoThemeData(
+  //         materialTheme: dark.copyWith(cupertinoOverrideTheme: _cupertinoThemeData),
+  //       ),
+  //   };
+  // }
+
+  late final CupertinoThemeData _cupertinoThemeData = CupertinoThemeData(
+    applyThemeToAll: true,
+    textTheme: CupertinoTextThemeData(
+      textStyle: _overriddenFontFamilyStyle,
+      actionTextStyle: _overriddenFontFamilyStyle,
+      dateTimePickerTextStyle: _overriddenFontFamilyStyle,
+      navActionTextStyle: _overriddenFontFamilyStyle,
+      navLargeTitleTextStyle: _overriddenFontFamilyStyle,
+      navTitleTextStyle: _overriddenFontFamilyStyle,
+      pickerTextStyle: _overriddenFontFamilyStyle,
+      tabLabelTextStyle: _overriddenFontFamilyStyle,
+    ),
+  );
 
   late final TextStyle _overriddenFontFamilyStyle = TextStyle(fontFamily: topLevelFamily);
 

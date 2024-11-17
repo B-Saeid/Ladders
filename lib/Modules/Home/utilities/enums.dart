@@ -9,6 +9,7 @@ import '../../../Shared/Styles/adaptive_icons.dart';
 import '../../../Shared/Styles/app_colors.dart';
 import '../../../Shared/Widgets/buttons.dart';
 import '../provider/home_provider.dart';
+import 'Speech/helpers/spoken_phrases.dart';
 
 enum TotalState {
   stopped,
@@ -72,4 +73,108 @@ enum LadderState {
         LadderState.training => AppColors.adaptiveGreen(ref),
         LadderState.resting => AppColors.adaptiveBlue(ref),
       };
+}
+
+enum SpeechState {
+  /// Encountered when speech recognition has become
+  /// available right after calling the initialize method
+  /// usually when the user has just opened the app.
+  available,
+
+  /// when speech recognition begins after calling the listen method.
+  listening,
+
+  /// when speech recognition is no longer listening to the microphone
+  /// after a timeout, cancel or stop call.
+  notListening,
+
+  /// when all results have been delivered.
+  done;
+
+  bool get isListening => this == SpeechState.listening;
+
+  bool get isNotListening => this == SpeechState.notListening;
+
+  bool get isDone => this == SpeechState.done;
+
+  bool get doneOrNotListening => [SpeechState.done, SpeechState.notListening].contains(this);
+
+  bool get availableOrListening => [SpeechState.available, SpeechState.listening].contains(this);
+
+  static SpeechState? from(String string) => SpeechState.values.firstWhereOrNull(
+        (element) => element.name == string,
+      );
+}
+
+enum VoiceAction {
+  start,
+  rest,
+  pause,
+  resume;
+
+  static VoiceAction? fromText(String text, String speechID) => VoiceAction.values.firstWhereOrNull(
+        (action) => action._alternates(speechID).any(
+              (alternate) => text.contains(alternate),
+            ),
+      );
+
+  List<String> _alternates(String speechID) {
+    final supportedLocale = SupportedLocale.fromSpeechID(speechID);
+    return switch (this) {
+      VoiceAction.start => switch (supportedLocale) {
+          SupportedLocale.ar => ['ابدأ', 'بدء', 'ابدا', 'إبدأ', 'أبدا', 'أبدأ'],
+          SupportedLocale.en => ['start'],
+        },
+      VoiceAction.pause => switch (supportedLocale) {
+          SupportedLocale.ar => ['توقف', 'ايقاف', 'إيقاف', 'وقف'],
+          SupportedLocale.en => ['pause'],
+        },
+      VoiceAction.rest => switch (supportedLocale) {
+          SupportedLocale.ar => ['راحة'],
+          SupportedLocale.en => ['rest', 'breast', 'wrist', 'press'],
+        },
+      VoiceAction.resume => switch (supportedLocale) {
+          SupportedLocale.ar => ['أكمل', 'اكمل', 'إكمل'],
+          SupportedLocale.en => ['resume'],
+        },
+    };
+  }
+
+  String get word => switch (this) {
+        VoiceAction.start => L10nR.tSTART(),
+        VoiceAction.pause => L10nR.tPAUSE(),
+        VoiceAction.rest => L10nR.tREST(),
+        VoiceAction.resume => L10nR.tRESUME(),
+      };
+
+  String get spokenWord => switch (this) {
+        VoiceAction.start => L10nSC.tSTART(),
+        VoiceAction.pause => L10nSC.tPAUSE(),
+        VoiceAction.rest => L10nSC.tREST(),
+        VoiceAction.resume => L10nSC.tRESUME(),
+      };
+
+  String get description => switch (this) {
+        VoiceAction.start => L10nR.tStartDescription(),
+        VoiceAction.pause => L10nR.tPauseDescription(),
+        VoiceAction.rest => L10nR.tRestDescription(),
+        VoiceAction.resume => L10nR.tResumeDescription(),
+      };
+
+  Widget get icon => switch (this) {
+        VoiceAction.start => AdaptiveIcons.wTraining(size: 24),
+        VoiceAction.rest => AdaptiveIcons.wResting(size: 24),
+        VoiceAction.pause => Icon(AdaptiveIcons.pause),
+        VoiceAction.resume => AdaptiveIcons.wFlatBar(size: 24),
+      };
+
+  Function get function {
+    final provider = RoutesBase.activeContext!.read(homeProvider);
+    return switch (this) {
+      VoiceAction.start => () => provider.startLadder(voiced: true),
+      VoiceAction.pause => () => provider.pauseLadder(voiced: true),
+      VoiceAction.rest => () => provider.rest(voiced: true),
+      VoiceAction.resume => () => provider.resumeLadder(voiced: true),
+    };
+  }
 }

@@ -1,4 +1,8 @@
+import 'package:flutter/widgets.dart';
+
 import '../Extensions/time_package.dart';
+
+part 'bluetooth_mic_icon.dart';
 
 abstract class ImageAssets {
   static const defaultProfileAvatar = 'assets/images/default_profile_avatar.png';

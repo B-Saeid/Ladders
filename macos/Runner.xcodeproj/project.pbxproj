@@ -200,12 +200,89 @@
 			remoteGlobalIDString = C0C9A074EEF12F27AC2F536567F9FAE1;
 			remoteInfo = url_launcher_macos;
 		};
+		483580752CABBE2A009F5C96 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 4823DCE92C99D87A00AD0829 /* Pods.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = 01E45A15AB8BA1B99F116F1BE1C66960;
+			remoteInfo = audioplayers_darwin;
+		};
+		483580842CABBE2A009F5C96 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 4823DC522C99D81300AD0829 /* Pods.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = 01E45A15AB8BA1B99F116F1BE1C66960;
+			remoteInfo = audioplayers_darwin;
+		};
+		48646CA82CCE568200A60523 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 4823DCE92C99D87A00AD0829 /* Pods.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = F43FE4258608DD1EA2F82D2D8E504688;
+			remoteInfo = flutter_tts;
+		};
+		48646CAA2CCE568200A60523 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 4823DCE92C99D87A00AD0829 /* Pods.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = C39BE06027F24EB0328A76E7507FA463;
+			remoteInfo = package_info_plus;
+		};
+		48646CAC2CCE568200A60523 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 4823DCE92C99D87A00AD0829 /* Pods.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = 64FB8D36F3D5FD1F4E08A8CB92BCD154;
+			remoteInfo = "package_info_plus-package_info_plus_privacy";
+		};
 		48646CAE2CCE568200A60523 /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = 4823DCE92C99D87A00AD0829 /* Pods.xcodeproj */;
 			proxyType = 2;
 			remoteGlobalIDString = 55C13EDD7E201D71A889791B31B8A36F;
 			remoteInfo = wakelock_plus;
+		};
+		48646CC12CCE568300A60523 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 4823DC522C99D81300AD0829 /* Pods.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = F43FE4258608DD1EA2F82D2D8E504688;
+			remoteInfo = flutter_tts;
+		};
+		48646CC32CCE568300A60523 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 4823DC522C99D81300AD0829 /* Pods.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = C39BE06027F24EB0328A76E7507FA463;
+			remoteInfo = package_info_plus;
+		};
+		48646CC52CCE568300A60523 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 4823DC522C99D81300AD0829 /* Pods.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = 64FB8D36F3D5FD1F4E08A8CB92BCD154;
+			remoteInfo = "package_info_plus-package_info_plus_privacy";
+		};
+		48646CC72CCE568300A60523 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 4823DC522C99D81300AD0829 /* Pods.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = 55C13EDD7E201D71A889791B31B8A36F;
+			remoteInfo = wakelock_plus;
+		};
+		48B533092CDE4AFC0049FE40 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 4823DCE92C99D87A00AD0829 /* Pods.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = DA105FC7B7CEC70A42A6278B43296D3C;
+			remoteInfo = audio_session;
+		};
+		48B5331D2CDE4AFC0049FE40 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 4823DC522C99D81300AD0829 /* Pods.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = DA105FC7B7CEC70A42A6278B43296D3C;
+			remoteInfo = audio_session;
 		};
 /* End PBXContainerItemProxy section */
 
@@ -462,9 +539,14 @@
 		4823DC532C99D81300AD0829 /* Products */ = {
 			isa = PBXGroup;
 			children = (
+				48B5331E2CDE4AFC0049FE40 /* audio_session.framework */,
+				483580852CABBE2A009F5C96 /* audioplayers_darwin.framework */,
 				4823DC622C99D81300AD0829 /* device_info_plus.framework */,
 				4823DC642C99D81300AD0829 /* file_selector_macos.framework */,
 				4823DC662C99D81300AD0829 /* flutter_local_notifications.framework */,
+				48646CC22CCE568300A60523 /* flutter_tts.framework */,
+				48646CC42CCE568300A60523 /* package_info_plus.framework */,
+				48646CC62CCE568300A60523 /* package_info_plus_privacy.bundle */,
 				4823DC682C99D81300AD0829 /* path_provider_foundation.framework */,
 				4823DC6A2C99D81300AD0829 /* path_provider_foundation_privacy.bundle */,
 				4823DC6C2C99D81300AD0829 /* Pods_Runner.framework */,
@@ -715,9 +797,14 @@
 		4823DCEB2C99D87A00AD0829 /* Products */ = {
 			isa = PBXGroup;
 			children = (
+				48B5330A2CDE4AFC0049FE40 /* audio_session.framework */,
+				483580762CABBE2A009F5C96 /* audioplayers_darwin.framework */,
 				4823DCFA2C99D87A00AD0829 /* device_info_plus.framework */,
 				4823DCFC2C99D87A00AD0829 /* file_selector_macos.framework */,
 				4823DCFE2C99D87A00AD0829 /* flutter_local_notifications.framework */,
+				48646CA92CCE568200A60523 /* flutter_tts.framework */,
+				48646CAB2CCE568200A60523 /* package_info_plus.framework */,
+				48646CAD2CCE568200A60523 /* package_info_plus_privacy.bundle */,
 				4823DD002C99D87A00AD0829 /* path_provider_foundation.framework */,
 				4823DD022C99D87A00AD0829 /* path_provider_foundation_privacy.bundle */,
 				4823DD042C99D87A00AD0829 /* Pods_Runner.framework */,
@@ -1001,6 +1088,70 @@
 			path = url_launcher_macos.framework;
 			remoteRef = 4823DD0D2C99D87A00AD0829 /* PBXContainerItemProxy */;
 			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+		483580762CABBE2A009F5C96 /* audioplayers_darwin.framework */ = {
+			isa = PBXReferenceProxy;
+			fileType = wrapper.framework;
+			path = audioplayers_darwin.framework;
+			remoteRef = 483580752CABBE2A009F5C96 /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+		483580852CABBE2A009F5C96 /* audioplayers_darwin.framework */ = {
+			isa = PBXReferenceProxy;
+			fileType = wrapper.framework;
+			path = audioplayers_darwin.framework;
+			remoteRef = 483580842CABBE2A009F5C96 /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+		48646CA92CCE568200A60523 /* flutter_tts.framework */ = {
+			isa = PBXReferenceProxy;
+			fileType = wrapper.framework;
+			path = flutter_tts.framework;
+			remoteRef = 48646CA82CCE568200A60523 /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+		48646CAB2CCE568200A60523 /* package_info_plus.framework */ = {
+			isa = PBXReferenceProxy;
+			fileType = wrapper.framework;
+			path = package_info_plus.framework;
+			remoteRef = 48646CAA2CCE568200A60523 /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+		48646CAD2CCE568200A60523 /* package_info_plus_privacy.bundle */ = {
+			isa = PBXReferenceProxy;
+			fileType = wrapper.cfbundle;
+			path = package_info_plus_privacy.bundle;
+			remoteRef = 48646CAC2CCE568200A60523 /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+		48646CAF2CCE568200A60523 /* wakelock_plus.framework */ = {
+			isa = PBXReferenceProxy;
+			fileType = wrapper.framework;
+			path = wakelock_plus.framework;
+			remoteRef = 48646CAE2CCE568200A60523 /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+		48646CC22CCE568300A60523 /* flutter_tts.framework */ = {
+			isa = PBXReferenceProxy;
+			fileType = wrapper.framework;
+			path = flutter_tts.framework;
+			remoteRef = 48646CC12CCE568300A60523 /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+		48646CC42CCE568300A60523 /* package_info_plus.framework */ = {
+			isa = PBXReferenceProxy;
+			fileType = wrapper.framework;
+			path = package_info_plus.framework;
+			remoteRef = 48646CC32CCE568300A60523 /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+		48646CC62CCE568300A60523 /* package_info_plus_privacy.bundle */ = {
+			isa = PBXReferenceProxy;
+			fileType = wrapper.cfbundle;
+			path = package_info_plus_privacy.bundle;
+			remoteRef = 48646CC52CCE568300A60523 /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
 		48646CC82CCE568300A60523 /* wakelock_plus.framework */ = {
 			isa = PBXReferenceProxy;
 			fileType = wrapper.framework;
@@ -1008,6 +1159,19 @@
 			remoteRef = 48646CC72CCE568300A60523 /* PBXContainerItemProxy */;
 			sourceTree = BUILT_PRODUCTS_DIR;
 		};
+		48B5330A2CDE4AFC0049FE40 /* audio_session.framework */ = {
+			isa = PBXReferenceProxy;
+			fileType = wrapper.framework;
+			path = audio_session.framework;
+			remoteRef = 48B533092CDE4AFC0049FE40 /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+		48B5331E2CDE4AFC0049FE40 /* audio_session.framework */ = {
+			isa = PBXReferenceProxy;
+			fileType = wrapper.framework;
+			path = audio_session.framework;
+			remoteRef = 48B5331D2CDE4AFC0049FE40 /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
 		};
 /* End PBXReferenceProxy section */
 

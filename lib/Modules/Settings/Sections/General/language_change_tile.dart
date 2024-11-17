@@ -2,16 +2,16 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-import '../../../Shared/Constants/assets_strings.dart';
-import '../../../Shared/Services/l10n/assets/enums.dart';
-import '../../../Shared/Services/l10n/assets/l10n_resources.dart';
-import '../../../Shared/Services/l10n/helper_widgets.dart';
-import '../../../Shared/Styles/adaptive_icons.dart';
-import '../../../Shared/Styles/app_themes.dart';
-import '../../../Shared/Utilities/SessionData/session_data.dart';
-import '../../../Shared/Widgets/riverpod_helper_widgets.dart';
-import '../Package/settings_ui.dart';
-import '../Provider/setting_provider.dart';
+import '../../../../Shared/Constants/assets_strings.dart';
+import '../../../../Shared/Services/l10n/assets/enums.dart';
+import '../../../../Shared/Services/l10n/assets/l10n_resources.dart';
+import '../../../../Shared/Styles/adaptive_icons.dart';
+import '../../../../Shared/Styles/app_themes.dart';
+import '../../../../Shared/Utilities/SessionData/session_data.dart';
+import '../../../../Shared/Widgets/apple_action_sheet.dart';
+import '../../../../Shared/Widgets/riverpod_helper_widgets.dart';
+import '../../Package/settings_ui.dart';
+import '../../Provider/setting_provider.dart';
 
 class LanguageChangeTile extends AbstractSettingsTile {
   const LanguageChangeTile({super.key});
@@ -22,7 +22,7 @@ class LanguageChangeTile extends AbstractSettingsTile {
   Widget build(BuildContext context) => RefWidget(
         (ref) => SettingsTile(
           leading: Icon(AdaptiveIcons.language),
-          title: const L10nRText(L10nR.tLanguage),
+          title: Text(L10nR.tLanguage(ref)),
           value: Text(currentLanguage(ref)),
           onPressed: () => StaticData.platform.isApple
               ? _showAppleActionSheet(context, ref)
@@ -35,14 +35,14 @@ class LanguageChangeTile extends AbstractSettingsTile {
         builder: (context) => CupertinoActionSheet(
           title: Text(
             L10nR.tChangeLanguage(ref),
-            style: TextStyle(fontFamily: ref.read(stylesProvider).topLevelFamily),
+            style: LiveData.textTheme(ref).titleLarge!,
           ),
           message: Wrap(
             alignment: WrapAlignment.center,
             crossAxisAlignment: WrapCrossAlignment.center,
             children: [
               Text(
-                L10nR.tDeviceLanguage(ref),
+                L10nR.tDeviceLanguageColon(ref),
                 style: TextStyle(fontFamily: ref.read(stylesProvider).topLevelFamily),
               ),
               Text(
@@ -57,30 +57,22 @@ class LanguageChangeTile extends AbstractSettingsTile {
           ),
           actions: LocaleSetting.values
               .map(
-                (setting) => CupertinoActionSheetAction(
-                  onPressed: () => _onPressed(ref, setting, context),
-                  child: Text(
-                    setting.displayName(ref),
-                    style: _cupertinoActionSheetTextStyle(ref, setting),
-                  ),
+                (setting) => AppleSheetAction(
+                  context: context,
+                  title: setting.displayName,
+                  style: _highlightSelected(ref, setting),
+                  onPressed: () => _action(ref, setting),
                 ),
               )
               .toList(),
-          cancelButton: CupertinoActionSheetAction(
-            onPressed: Navigator.of(context).pop,
-            isDestructiveAction: true,
-            child: Text(
-              L10nR.tDismiss(ref),
-              style: _destructiveTextStyle(ref),
-            ),
-          ),
+          cancelButton: AppleSheetAction(context: context, title: L10nR.tDone),
         ),
       );
 
   String get deviceLanguage => SupportedLocale.fromLocale(LocaleSetting.auto.locale!).displayName;
 
   /// Since CupertinoThemeData until now does not follow up with global ThemeData
-  TextStyle _cupertinoActionSheetTextStyle(WidgetRef ref, LocaleSetting setting) =>
+  TextStyle _highlightSelected(WidgetRef ref, LocaleSetting setting) =>
       LiveData.textTheme(ref).titleLarge!.copyWith(
             fontFamily: setting.isArabic ? ref.read(stylesProvider).arabicFontFamily : null,
             color: currentLanguage(ref) == setting.displayName(ref)
@@ -88,16 +80,8 @@ class LanguageChangeTile extends AbstractSettingsTile {
                 : null,
           );
 
-  TextStyle _destructiveTextStyle(WidgetRef ref) => LiveData.textTheme(ref)
-          .titleLarge! /*.copyWith(
-        color: CupertinoColors.destructiveRed,
-      )*/
-      ;
-
-  void _onPressed(WidgetRef ref, LocaleSetting element, BuildContext context) {
-    ref.read(settingProvider).setLocaleSetting(element);
-    Navigator.of(context).pop();
-  }
+  void _action(WidgetRef ref, LocaleSetting element) =>
+      ref.read(settingProvider).setLocaleSetting(element);
 
   void _showMaterialBottomSheet(BuildContext context, WidgetRef ref) {
     showModalBottomSheet(
@@ -110,7 +94,10 @@ class LanguageChangeTile extends AbstractSettingsTile {
           children: LocaleSetting.values
               .map(
                 (setting) => RadioListTile(
-                  onChanged: (_) => _onPressed(ref, setting, context),
+                  onChanged: (_) {
+                    Navigator.of(context).pop();
+                    _action(ref, setting);
+                  },
                   title: Text(
                     setting.displayName(ref),
                     style: TextStyle(fontFamily: setting.isArabic ? AssetFonts.cairo : null),

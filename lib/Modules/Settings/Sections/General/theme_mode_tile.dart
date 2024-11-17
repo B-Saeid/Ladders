@@ -2,15 +2,15 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-import '../../../Shared/Services/l10n/assets/l10n_resources.dart';
-import '../../../Shared/Services/l10n/helper_widgets.dart';
-import '../../../Shared/Styles/adaptive_icons.dart';
-import '../../../Shared/Styles/app_themes.dart';
-import '../../../Shared/Utilities/SessionData/session_data.dart';
-import '../../../Shared/Widgets/riverpod_helper_widgets.dart';
-import '../Package/src/tiles/abstract_settings_tile.dart';
-import '../Package/src/tiles/settings_tile.dart';
-import '../Provider/setting_provider.dart';
+import '../../../../../Shared/Services/l10n/assets/l10n_resources.dart';
+import '../../../../../Shared/Services/l10n/helper_widgets.dart';
+import '../../../../../Shared/Styles/adaptive_icons.dart';
+import '../../../../../Shared/Utilities/SessionData/session_data.dart';
+import '../../../../../Shared/Widgets/apple_action_sheet.dart';
+import '../../../../../Shared/Widgets/riverpod_helper_widgets.dart';
+import '../../Package/src/tiles/abstract_settings_tile.dart';
+import '../../Package/src/tiles/settings_tile.dart';
+import '../../Provider/setting_provider.dart';
 
 class ThemeModeTile extends AbstractSettingsTile {
   const ThemeModeTile({super.key});
@@ -35,49 +35,33 @@ class ThemeModeTile extends AbstractSettingsTile {
         context: context,
         builder: (context) => CupertinoActionSheet(
           title: Text(
-            L10nR.tChangeTheme(ref),
-            style: TextStyle(fontFamily: ref.read(stylesProvider).topLevelFamily),
+            L10nR.tChangeThemeMode(ref),
+            style: LiveData.textTheme(ref).titleLarge!,
           ),
           actions: ThemeMode.values
               .map(
-                (mode) => CupertinoActionSheetAction(
-                  onPressed: () => _onPressed(ref, mode, context),
-                  child: Text(
-                    mode.displayName(ref),
-                    style: _cupertinoActionSheetTextStyle(ref, mode),
-                  ),
+                (mode) => AppleSheetAction(
+                  context: context,
+                  onPressed: () => _action(ref, mode),
+                  title: mode.displayName,
+                  style: _highlightSelected(ref, mode),
                 ),
               )
               .toList(),
-          cancelButton: CupertinoActionSheetAction(
-            onPressed: Navigator.of(context).pop,
-            isDestructiveAction: true,
-            child: Text(
-              L10nR.tDismiss(ref),
-              style: _destructiveTextStyle(ref),
-            ),
+          cancelButton: AppleSheetAction(
+            context: context,
+            title: L10nR.tDone,
           ),
         ),
       );
 
   /// Since CupertinoThemeData until now does not follow up with global ThemeData
-  TextStyle _cupertinoActionSheetTextStyle(WidgetRef ref, ThemeMode mode) =>
+  TextStyle _highlightSelected(WidgetRef ref, ThemeMode mode) =>
       LiveData.textTheme(ref).titleLarge!.copyWith(
-            fontFamily: ref.read(stylesProvider).topLevelFamily,
             color: currentThemeMode(ref) == mode ? StaticData.themeData.colorScheme.primary : null,
           );
 
-  TextStyle _destructiveTextStyle(WidgetRef ref) => LiveData.textTheme(ref)
-          .titleLarge! /*.copyWith(
-        fontFamily: ref.read(stylesProvider).topLevelFamily,
-        color: CupertinoColors.destructiveRed,
-      )*/
-      ;
-
-  void _onPressed(WidgetRef ref, ThemeMode mode, BuildContext context) {
-    ref.read(settingProvider).setThemeMode(mode);
-    Navigator.of(context).pop();
-  }
+  void _action(WidgetRef ref, ThemeMode mode) => ref.read(settingProvider).setThemeMode(mode);
 
   void _showMaterialBottomSheet(BuildContext context, WidgetRef ref) {
     showModalBottomSheet(
@@ -90,7 +74,10 @@ class ThemeModeTile extends AbstractSettingsTile {
           children: ThemeMode.values
               .map(
                 (mode) => RadioListTile(
-                  onChanged: (_) => _onPressed(ref, mode, context),
+                  onChanged: (_) {
+                    Navigator.of(context).pop();
+                    _action(ref, mode);
+                  },
                   title: Text(mode.displayName(ref)),
                   value: mode,
                   groupValue: currentThemeMode(ref),

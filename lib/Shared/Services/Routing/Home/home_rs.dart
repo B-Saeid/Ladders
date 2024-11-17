@@ -16,7 +16,14 @@ abstract class _Home {
               name: Routes.settings.name,
               path: Routes.settings.name,
               builder: (context, state) => const SettingsScreen(),
-            )
+              routes: [
+                GoRoute(
+                  name: Routes.voiceActions.name,
+                  path: Routes.voiceActions.name,
+                  builder: (context, state) => const VoiceActionsScreen(),
+                )
+              ],
+            ),
           ],
         )
       ];

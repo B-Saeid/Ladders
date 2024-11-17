@@ -5,9 +5,11 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:iconify_flutter/iconify_flutter.dart';
 import 'package:iconify_flutter/icons/bi.dart';
 import 'package:iconify_flutter/icons/fa.dart';
+import 'package:iconify_flutter/icons/fluent_emoji_high_contrast.dart';
 import 'package:iconify_flutter/icons/game_icons.dart';
 import 'package:iconify_flutter/icons/ion.dart';
 
+import '../Constants/assets_strings.dart';
 import '../Utilities/SessionData/session_data.dart';
 
 abstract class AdaptiveIcons {
@@ -78,6 +80,13 @@ abstract class AdaptiveIcons {
         color: color ?? _adaptiveColor(ref),
       );
 
+  static Widget wSpeakingHead({WidgetRef? ref, Color? color, double? size}) => Iconify(
+        // EmojioneMonotone.speaking_head,
+        FluentEmojiHighContrast.speaking_head,
+        size: size ?? 32,
+        color: color ?? _adaptiveColor(ref),
+      );
+
   static IconData get home => isApple ? CupertinoIcons.home : Icons.home_rounded;
 
   static IconData get star => isApple ? CupertinoIcons.star_fill : Icons.star_rounded;
@@ -93,6 +102,8 @@ abstract class AdaptiveIcons {
   static IconData get check => isApple ? CupertinoIcons.check_mark : Icons.check;
 
   static IconData get upload => isApple ? CupertinoIcons.arrow_up_circle_fill : Icons.upload_rounded;
+
+  static IconData get list => isApple ? CupertinoIcons.square_list_fill : Icons.list_alt_rounded;
 
   static IconData get circle => isApple ? CupertinoIcons.circle : Icons.circle_outlined;
 
@@ -111,7 +122,12 @@ abstract class AdaptiveIcons {
 
   static IconData get report => isApple ? CupertinoIcons.exclamationmark_circle_fill : Icons.report;
 
-  static IconData get reload => isApple ? CupertinoIcons.refresh : Icons.refresh_rounded;
+  static IconData get reload => isApple ? CupertinoIcons.refresh_circled_solid : Icons.refresh_rounded;
+
+  static IconData get reset =>
+      isApple ? CupertinoIcons.gobackward : Icons.settings_backup_restore_rounded;
+
+  static IconData get headSet => isApple ? CupertinoIcons.headphones : Icons.headset_mic_rounded;
 
   static IconData get theme => isApple ? CupertinoIcons.circle_righthalf_fill : Icons.contrast_rounded;
 
@@ -152,7 +168,27 @@ abstract class AdaptiveIcons {
 
   static IconData get camera => isApple ? CupertinoIcons.camera_fill : Icons.camera_alt_rounded;
 
+  static IconData get speaker => isApple ? CupertinoIcons.speaker_2_fill : Icons.volume_up_rounded;
+
   static IconData get microphone => isApple ? CupertinoIcons.mic_fill : Icons.mic_rounded;
+
+  static IconData get microphoneCircle => CupertinoIcons.mic_circle_fill;
+
+  static IconData get microphoneOutlined => isApple ? CupertinoIcons.mic : Icons.mic_none_rounded;
+
+  static IconData get bluetoothMic =>
+      isApple ? BluetoothMicIcon.iosFilled : BluetoothMicIcon.androidFilled;
+
+  static IconData get bluetoothMicOutlined =>
+      isApple ? BluetoothMicIcon.iosOutlined : BluetoothMicIcon.androidOutlined;
+
+  static IconData get microphoneMuted => isApple ? CupertinoIcons.mic_slash_fill : Icons.mic_off_rounded;
+
+  static IconData get speakWave => CupertinoIcons.waveform_circle_fill;
+
+  static IconData get oneTwoThree => Icons.onetwothree_rounded;
+
+  static IconData get close => isApple ? CupertinoIcons.clear : Icons.close_rounded;
 
   static IconData get email => isApple ? CupertinoIcons.mail_solid : Icons.email_rounded;
 

@@ -228,6 +228,11 @@ abstract class L10nR {
         SupportedLocale.en => 'Cannot be enabled when ${tRestTriggerByMicrophone(ref)} is ON',
         SupportedLocale.ar => 'لا يمكن تمكين الأوامر الصوتية عند تفعيل ${tRestTriggerByMicrophone(ref)}',
       };
+  static String tCannotAccessMicrophone([WidgetRef? ref]) => switch (_currentLocale(ref)) {
+        // SupportedLocale.en => 'Switch OFF ${tRestTriggerByMicrophone(ref)} to enable Voice Actions',
+        SupportedLocale.en => 'Cannot access microphone',
+        SupportedLocale.ar => 'لا يمكن الوصول للميكروفون',
+      };
 
   static String tEitherRestTriggerOrVoiceActions([WidgetRef? ref]) => switch (_currentLocale(ref)) {
         SupportedLocale.en => 'Either ${tRestTriggerByMicrophone(ref)} '

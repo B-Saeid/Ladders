@@ -94,7 +94,7 @@ class _GoRestTimer extends ConsumerWidget {
             height: min(60.scalable(ref), freeWidth / 2.5),
             padding: EdgeInsets.symmetric(horizontal: hPadding),
             child: ValueListenableBuilder(
-              valueListenable: ref.read(homeProvider).timerDuration,
+              valueListenable: ref.read(homeProvider).innerTimerNotifier,
               builder: (_, value, __) {
                 final (minute, second, moment) = value.nMMnSSnFF;
                 return Row(

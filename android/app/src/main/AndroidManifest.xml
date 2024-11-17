@@ -14,6 +14,13 @@
     </queries>
 
     <!--  END Required by speech recognition package  -->
+    <!--  START Required by text to speech package  -->
+    <queries>
+        <intent>
+            <action android:name="android.intent.action.TTS_SERVICE" />
+        </intent>
+    </queries>
+    <!--  END Required by text to speech package  -->
 
     <!--  START Required by record package  -->
     <!-- Optional: Add this permission if you want to use bluetooth telephony device like headset/earbuds -->
