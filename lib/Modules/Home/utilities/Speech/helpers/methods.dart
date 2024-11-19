@@ -46,7 +46,7 @@ abstract class _Methods {
       5.seconds.delay.then((_) => _dismissHandler = null);
     }
     _displayText.value = wordsString.toLowerCase();
-    final recognizedAction = VoiceAction.fromText(_displayText.value, SpeechService._currentLocaleId);
+    final recognizedAction = VoiceAction.fromText(_displayText.value, SpeechService.getLocaleID);
     _gotIt = recognizedAction != null;
     print('recognizedAction = $recognizedAction');
     // _isHandled = wordsString.split(' ').length == 1 && wordsString.split(' ').first.length > 3;

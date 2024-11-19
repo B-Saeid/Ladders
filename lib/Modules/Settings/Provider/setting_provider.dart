@@ -3,6 +3,7 @@ import 'package:collection/collection.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
+import '../../../Shared/Components/Toast/toast.dart';
 import '../../../Shared/Extensions/on_context.dart';
 import '../../../Shared/Services/AudioSession/audio_session_service.dart';
 import '../../../Shared/Services/Database/Hive/hive_service.dart';
@@ -202,19 +203,24 @@ class SettingsProvider extends ChangeNotifier {
       /// Updating microphones List
       final ok2 = await updateInputDevices();
       if (!ok2) return rollBack();
-    } else {
-      await _disposeAnyVoiceActivity();
     }
 
     enableVoiceActions = value;
     await HiveService.settings.put(SettingsKeys.enableVoiceActions, value);
+    if (!enableVoiceActions) await _disposeAnyVoiceActivity();
     loadingEnablingVoiceActions = false;
     notifyListeners();
   }
 
   Future<void> _disposeAnyVoiceActivity() async {
     final provider = RoutesBase.activeContext!.read(homeProvider);
-    if (provider.monitoring || provider.recognizing || provider.loading) await SpeechService.dispose();
+    if (provider.monitoring || provider.recognizing || provider.loading) {
+      if (!provider.loading) {
+        Toast.show(restOnlyTrigger ? L10nR.tStoppedListening() : L10nR.tRecognitionStopped());
+      }
+      await SpeechService.dispose();
+    }
+    if (!restOnlyTrigger && !enableVoiceActions) await AudioSessionService.dispose();
   }
 
   bool restOnlyTrigger = HiveService.settings.get(SettingsKeys.restOnlyTrigger) ?? false;
@@ -242,16 +248,18 @@ class SettingsProvider extends ChangeNotifier {
       if (!ok2) return rollBack();
     }
 
+    restOnlyTrigger = value;
+    await HiveService.settings.put(SettingsKeys.restOnlyTrigger, value);
+
     /// Since [restOnlyTrigger] Mode functions differently from the speech mode
     /// we dispose previous session if exists to avoid any unexpected behavior.
     await _disposeAnyVoiceActivity();
-
-    restOnlyTrigger = value;
-    await HiveService.settings.put(SettingsKeys.restOnlyTrigger, value);
     restOnlyTriggerLoading = false;
     notifyListeners();
   }
 
+  // Microphone? microphone;
+  //
   late Microphone? microphone = _getMicrophone;
 
   Microphone? get _getMicrophone {
@@ -259,12 +267,11 @@ class SettingsProvider extends ChangeNotifier {
     return presetMic != null ? Microphone.fromJson(presetMic) : null;
   }
 
-  Future<void> setMicrophone(Microphone newMic) async {
+  Future<void> setMicrophone(Microphone newMic, {bool disposeSession = true}) async {
     if (microphone == newMic) return;
-    await _disposeAnyVoiceActivity();
+    if (disposeSession) await _disposeAnyVoiceActivity();
     microphone = newMic;
     await HiveService.settings.put(SettingsKeys.presetMic, newMic.toJson);
-    Recorder.inputDevice = microphone!.inputDevice;
     notifyListeners();
   }
 
@@ -274,14 +281,19 @@ class SettingsProvider extends ChangeNotifier {
     bool toast = false,
     Set<AudioDevice>? sessionInputDevices,
     bool userAction = true,
+    bool disposeSession = true,
   }) async {
-    final newMicrophones = await AudioSessionService.updateNotifiers(
-      microphones,
+    final newMicrophones = await AudioSessionService.currentInputDevices(
+      oldList: microphones,
       toast: toast,
       sessionInputDevices: sessionInputDevices,
       userAction: userAction,
     );
-    if (newMicrophones == null || newMicrophones.isEmpty) return false;
+
+    if (newMicrophones == null || newMicrophones.isEmpty) {
+      if (userAction && newMicrophones == null) Toast.showError(L10nR.tCannotAccessMicrophone());
+      return false;
+    }
 
     if (microphones.equals(newMicrophones)) return true;
     microphones = newMicrophones;
@@ -291,9 +303,11 @@ class SettingsProvider extends ChangeNotifier {
         (element) => element.type != MicType.builtIn,
         orElse: () => microphones.first,
       ),
+      disposeSession: disposeSession,
     );
     notifyListeners();
 
+    AudioSessionService.listenOnDeviceChanges(noLoop: true);
     return true;
   }
 
@@ -326,5 +340,6 @@ extension OnThemeMode on ThemeMode {
         ThemeMode.dark => L10nR.tDark(ref),
       };
 
-  static ThemeMode? fromStored(storedValue) => ThemeMode.values.firstWhereOrNull((e) => e.name == storedValue);
+  static ThemeMode? fromStored(storedValue) =>
+      ThemeMode.values.firstWhereOrNull((e) => e.name == storedValue);
 }

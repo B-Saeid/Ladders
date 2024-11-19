@@ -15,15 +15,8 @@ abstract class Recorder {
   //   return null;
   // }
 
-  static InputDevice? _inputDevice = _storedInputDevice;
-
-  static InputDevice? get _storedInputDevice {
-    final stored = HiveService.settings.get(SettingsKeys.presetMic);
-    if (stored != null) return Microphone.fromJson(stored).toInputDevice();
-    return null;
-  }
-
-  static set inputDevice(InputDevice? value) => _inputDevice = value;
+  static InputDevice? get _inputDevice =>
+      RoutesBase.activeContext!.read(settingProvider).microphone?.inputDevice;
 
   // static int _repeatCount = 0;
 
@@ -62,7 +55,7 @@ abstract class Recorder {
       print('===================== Initialized Recorder =====================');
       // _repeatCount = 0;
       // final input = await _checkExistence(inputDevice);
-       _recorder!.startStream(
+      _recorder!.startStream(
         RecordConfig(
           /// According to the package documentation:
           /// https://pub.dev/packages/record#stream

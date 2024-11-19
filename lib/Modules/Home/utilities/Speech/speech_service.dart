@@ -19,7 +19,6 @@ import '../../../../Shared/Services/Routing/routes_base.dart';
 import '../../../../Shared/Services/l10n/assets/enums.dart';
 import '../../../../Shared/Services/l10n/assets/l10n_resources.dart';
 import '../../../../Shared/Utilities/SessionData/session_data.dart';
-import '../../../Settings/Models/microphone_model.dart';
 import '../../../Settings/Provider/setting_provider.dart';
 import '../../provider/home_provider.dart';
 import '../dialogues.dart';
@@ -35,8 +34,6 @@ part 'helpers/tts_service.dart';
 abstract class SpeechService {
   static final isSupported = !(StaticData.platform.isWindows || StaticData.platform.isWeb);
   static final SpeechToText _speech = SpeechToText();
-
-  static late String _currentLocaleId;
 
   static void logEvent(String eventDescription) {
     final eventTime = DateTime.now().toIso8601String();
@@ -68,8 +65,11 @@ abstract class SpeechService {
       // );
 
       if (hasSpeech) {
-        _currentLocaleId = getLocaleID;
         await TTSService.init();
+        final ok = await RoutesBase.activeContext!.read(settingProvider).updateInputDevices(
+              disposeSession: false,
+            );
+        if (!ok) return false;
       }
 
       if (context.mounted) context.read(settingProvider).setSpeechAvailable(hasSpeech);
@@ -149,8 +149,9 @@ abstract class SpeechService {
   static Future<void> startMonitoring() async {
     RoutesBase.activeContext!.read(homeProvider).setLoading(true);
 
-    final ok = await PermissionsHelper.microphoneCheck(RoutesBase.activeContext!);
-
+    final ok = await RoutesBase.activeContext!.read(settingProvider).updateInputDevices(
+          disposeSession: false,
+        );
     if (ok) {
       final started = await Recorder._start();
       if (started) {
@@ -163,6 +164,7 @@ abstract class SpeechService {
       }
     } else {
       RoutesBase.activeContext!.read(homeProvider).setLoading(false);
+      await PermissionsHelper.microphoneCheck(RoutesBase.activeContext!);
     }
   }
 
@@ -187,8 +189,7 @@ abstract class SpeechService {
       listenFor: const Duration(seconds: /*listenFor ??*/ 6),
       pauseFor: const Duration(seconds: /*pauseFor ??*/ 3),
       // localeId: id,
-      localeId: _currentLocaleId,
-      // localeId: getLocaleID,
+      localeId: getLocaleID,
       // onSoundLevelChange: _soundLevelListener,
       listenOptions: options,
     );
