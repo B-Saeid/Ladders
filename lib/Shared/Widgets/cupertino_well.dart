@@ -11,12 +11,18 @@ class CupertinoWell extends StatefulWidget {
     required this.child,
     this.pressedColor,
     this.color,
+    this.borderRadius,
+    this.margin,
+    this.padding,
   });
 
   final VoidCallback? onPressed;
   final Widget child;
   final Color? pressedColor;
   final Color? color;
+  final BorderRadius? borderRadius;
+  final EdgeInsetsGeometry? margin;
+  final EdgeInsetsGeometry? padding;
 
   @override
   State<CupertinoWell> createState() => _CupertinoWellState();
@@ -40,9 +46,20 @@ class _CupertinoWellState extends State<CupertinoWell> {
         onTapCancel: () => widget.onPressed == null ? null : setIsPressed(false),
         child: RefWidget(
           (ref) => Container(
+            margin: widget.margin,
+            padding: widget.padding,
             constraints: const BoxConstraints(minHeight: 44),
-            color:
-                isPressed ? widget.pressedColor ?? LiveData.themeData(ref).highlightColor : widget.color,
+            decoration: BoxDecoration(
+              border: Border.all(
+                width: 0.5,
+                style: LiveData.isLight(ref) ? BorderStyle.solid : BorderStyle.none,
+                color: Colors.grey,
+              ),
+              borderRadius: widget.borderRadius,
+              color: isPressed
+                  ? widget.pressedColor ?? LiveData.themeData(ref).highlightColor
+                  : widget.color,
+            ),
             child: widget.child,
           ),
         ),
