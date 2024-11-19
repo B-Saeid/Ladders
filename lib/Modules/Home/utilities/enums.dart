@@ -7,6 +7,7 @@ import '../../../Shared/Services/Routing/routes_base.dart';
 import '../../../Shared/Services/l10n/l10n_service.dart';
 import '../../../Shared/Styles/adaptive_icons.dart';
 import '../../../Shared/Styles/app_colors.dart';
+import '../../../Shared/Utilities/SessionData/session_data.dart';
 import '../../../Shared/Widgets/buttons.dart';
 import '../provider/home_provider.dart';
 import 'Speech/helpers/spoken_phrases.dart';
@@ -161,12 +162,18 @@ enum VoiceAction {
         VoiceAction.resume => L10nR.tResumeDescription(),
       };
 
-  Widget get icon => switch (this) {
-        VoiceAction.start => AdaptiveIcons.wTraining(size: 24),
-        VoiceAction.rest => AdaptiveIcons.wResting(size: 24),
-        VoiceAction.pause => Icon(AdaptiveIcons.pause),
-        VoiceAction.resume => AdaptiveIcons.wFlatBar(size: 24),
-      };
+  Widget icon(WidgetRef ref) {
+    final size = 32.scalable(
+      ref,
+      maxFactor: 1.7,
+    );
+    return switch (this) {
+      VoiceAction.start => AdaptiveIcons.wTraining(size: size),
+      VoiceAction.rest => AdaptiveIcons.wResting(size: size),
+      VoiceAction.pause => Icon(AdaptiveIcons.pause, size: size),
+      VoiceAction.resume => AdaptiveIcons.wFlatBar(size: size),
+    };
+  }
 
   Function get function {
     final provider = RoutesBase.activeContext!.read(homeProvider);

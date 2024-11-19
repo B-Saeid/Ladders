@@ -3,6 +3,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../../../../Shared/Services/l10n/assets/l10n_resources.dart';
 import '../../../../Shared/Styles/adaptive_icons.dart';
+import '../../../../Shared/Utilities/SessionData/session_data.dart';
 import '../../../../Shared/Widgets/riverpod_helper_widgets.dart';
 import '../../Models/mic_type_enum.dart';
 import '../../Models/microphone_model.dart';
@@ -89,7 +90,11 @@ class _InputDevicesDropDown extends ConsumerWidget {
                 (e) => DropdownMenuEntry(
                   value: e,
                   label: e.name,
-                  leadingIcon: e.type?.icon(false),
+                  labelWidget: FittedBox(child: Text(e.name)),
+                  leadingIcon: Icon(
+                    e.type?.iconData(false),
+                    size: 24.scalable(ref, maxFactor: 1.5),
+                  ),
                   style: FilledButton.styleFrom(
                     padding: const EdgeInsets.symmetric(vertical: 15, horizontal: 10),
                     shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(15)),
@@ -100,33 +105,40 @@ class _InputDevicesDropDown extends ConsumerWidget {
           enabled: enabled,
           // enabled: enabled && microphones.length > 1,
           leadingIcon: leading(ref),
-          label: Text(L10nR.tVoiceInput(ref)),
+          label: FittedBox(child: Text(L10nR.tVoiceInput(ref))),
           inputDecorationTheme: InputDecorationTheme(
             border: OutlineInputBorder(borderRadius: BorderRadius.circular(15)),
             filled: microphones.length > 1 ? true : false,
           ),
+
           /// Super nice documentation of this attribute.
           requestFocusOnTap: false,
           onSelected: (value) => value != null ? ref.read(settingProvider).setMicrophone(value) : null,
           trailingIcon: Icon(AdaptiveIcons.arrowDown),
           selectedTrailingIcon: Icon(AdaptiveIcons.arrowUp),
           initialSelection: microphone,
+
           /// If allowed it threw:
           /// Unhandled Exception: 'package:flutter/src/rendering/object.dart': Failed assertion: line 3347 pos 14: 'renderer.parent != null': is not true.
           /// encountered on Windows.
           ///
           /// we did allowed it to highlight the currently selected mic
-          /// we can do this by another way. TODO
-          enableSearch: false,
+          /// we can do this by another way. T O D O DONE! by [requestFocusOnTap: false]
+          // enableSearch: false,
           menuStyle: const MenuStyle(
-            padding: WidgetStatePropertyAll(EdgeInsets.symmetric(vertical: 15,horizontal: 10)),
+            padding: WidgetStatePropertyAll(EdgeInsets.symmetric(vertical: 15, horizontal: 10)),
           ),
         ),
       );
 
   Widget leading(WidgetRef ref) {
     final micType = microphone?.type;
-    return micType == null || micType == MicType.builtIn ? Icon(AdaptiveIcons.microphoneCircle) : micType.icon(false);
+    return Icon(
+      micType == null || micType == MicType.builtIn
+          ? AdaptiveIcons.microphoneCircle
+          : micType.iconData(false),
+      size: 24.scalable(ref, maxFactor: 1.5),
+    );
   }
 
   /// [PopupMenuButton] was not updating lively with microphone list changes

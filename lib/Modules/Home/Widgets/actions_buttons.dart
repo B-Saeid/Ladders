@@ -101,8 +101,8 @@ class _VoiceActionButton extends ConsumerWidget {
   }
 
   StringRef _buildRestOnlyText(LadderState ladder, TotalState total) {
-    if (total.isStopped || ladder.isNone) return L10nR.tTimerHasNotStartedYet;
     if (total.isPaused) return L10nR.tTimerIsPaused;
+    if (total.isStopped || ladder.isNone) return L10nR.tTimerHasNotStartedYet;
     if (ladder.isResting) return L10nR.tRestAlreadyCountingDown;
     return L10nR.tListeningForRestTrigger;
   }
@@ -128,7 +128,7 @@ class _ButtonIcon extends ConsumerWidget {
           data: IconThemeData(
             color: notFilled(ref, isTTS) ? LiveData.themeData(ref).disabledColor : null,
           ),
-          child: (microphone?.type ?? MicType.builtIn).icon(notFilled(ref, isTTS)),
+          child: Icon((microphone?.type ?? MicType.builtIn).iconData(notFilled(ref, isTTS))),
         );
       });
 }
@@ -141,7 +141,7 @@ class _StopIcon extends ConsumerWidget {
         onPressed: TotalState.stopped.delegateAction(ref),
         icon: Icon(
           AdaptiveIcons.stop,
-          size: 24.scalable(ref),
+          size: 24.scalable(ref, maxFactor: 2),
         ),
       );
 }
@@ -158,7 +158,7 @@ class _PauseResumeIcon extends ConsumerWidget {
             : TotalState.running.delegateAction(ref),
         icon: Icon(
           state.isRunning ? AdaptiveIcons.pause : AdaptiveIcons.play,
-          size: 24.scalable(ref),
+          size: 24.scalable(ref, maxFactor: 2),
         ),
       );
 }

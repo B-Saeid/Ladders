@@ -23,7 +23,7 @@ class LadderTimerScrollWheels extends ConsumerWidget {
         const _SetTotalTimeText(),
         Container(
           padding: const EdgeInsets.symmetric(horizontal: 20),
-          height: 350.scalable(ref, maxValue: 500),
+          height: 350.scalable(ref, maxValue: 450),
           child: const Row(
             mainAxisSize: MainAxisSize.min,
             textDirection: TextDirection.ltr,
@@ -106,7 +106,8 @@ class _ZeroTo59Wheel extends ConsumerWidget {
                 controller: isMinute
                     ? ref.read(homeProvider).minuteController
                     : ref.read(homeProvider).secondController,
-                diameterRatio: 0.6,
+                diameterRatio: 0.8.scalable(ref,maxValue: 1.2),
+                squeeze: 1.2.scalable(ref, maxValue: 1.35),
                 itemExtent: _itemExtent(ref),
                 useMagnifier: true,
                 overAndUnderCenterOpacity: 0.3,

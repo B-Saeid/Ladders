@@ -48,11 +48,10 @@ enum MicType {
         // AudioDeviceType.remoteSubmix => throw UnimplementedError(),
       };
 
-  Widget icon(bool outlined) => switch (this) {
-        MicType.builtIn => Icon(outlined ? AdaptiveIcons.microphoneOutlined : AdaptiveIcons.microphone),
-        MicType.bluetooth =>
-          Icon(outlined ? AdaptiveIcons.bluetoothMicOutlined : AdaptiveIcons.bluetoothMic),
-        MicType.wired => Icon(AdaptiveIcons.headSet),
+  IconData iconData(bool outlined) => switch (this) {
+        MicType.builtIn => outlined ? AdaptiveIcons.microphoneOutlined : AdaptiveIcons.microphone,
+        MicType.bluetooth => outlined ? AdaptiveIcons.bluetoothMicOutlined : AdaptiveIcons.bluetoothMic,
+        MicType.wired => AdaptiveIcons.headSet,
       };
 
   static MicType? fromString(String? value) => MicType.values.firstWhereOrNull(
