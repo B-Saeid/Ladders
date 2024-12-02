@@ -215,7 +215,9 @@ class SettingsProvider extends ChangeNotifier {
     final provider = RoutesBase.activeContext!.read(homeProvider);
     if (provider.monitoring || provider.recognizing || provider.loading) {
       if (!provider.loading) {
-        Toast.show(restOnlyTrigger ? L10nR.tStoppedListening() : L10nR.tRecognitionStopped());
+        Toast.show(
+          restOnlyTrigger ? L10nR.tStoppedListening() : L10nR.tRecognitionStopped(),
+        );
       }
       await SpeechService.dispose();
     }
@@ -247,12 +249,13 @@ class SettingsProvider extends ChangeNotifier {
       if (!ok2) return rollBack();
     }
 
-    restOnlyTrigger = value;
-    await HiveService.settings.put(SettingsKeys.restOnlyTrigger, value);
-
     /// Since [restOnlyTrigger] Mode functions differently from the speech mode
     /// we dispose previous session if exists to avoid any unexpected behavior.
     await _disposeAnyVoiceActivity();
+
+    restOnlyTrigger = value;
+    await HiveService.settings.put(SettingsKeys.restOnlyTrigger, value);
+
     restOnlyTriggerLoading = false;
     notifyListeners();
   }
@@ -267,11 +270,13 @@ class SettingsProvider extends ChangeNotifier {
   }
 
   Future<void> setMicrophone(Microphone newMic, {bool disposeSession = true}) async {
+    print('==================================== setMicrophone');
     if (microphone == newMic) return;
     if (disposeSession) await _disposeAnyVoiceActivity();
     microphone = newMic;
     await HiveService.settings.put(SettingsKeys.presetMic, newMic.toJson);
     notifyListeners();
+    print('====================== NEW ======== $newMic');
   }
 
   List<Microphone> microphones = [];
@@ -286,11 +291,10 @@ class SettingsProvider extends ChangeNotifier {
       oldList: microphones,
       toast: toast,
       sessionInputDevices: sessionInputDevices,
-      userAction: userAction,
     );
 
     if (newMicrophones == null || newMicrophones.isEmpty) {
-      if (userAction && newMicrophones == null) Toast.showError(L10nR.tCannotAccessMicrophone());
+      if (userAction) Toast.showError(L10nR.tCannotAccessMicrophone());
       return false;
     }
 
@@ -309,6 +313,14 @@ class SettingsProvider extends ChangeNotifier {
     // print('Calling listenOnDeviceChanges from updateInputDevices');
     // AudioSessionService.listenOnDeviceChanges(noLoop: true);
     return true;
+  }
+
+  bool useBarsList = HiveService.settings.get(SettingsKeys.useBarsList) ?? false;
+
+  void toggleBarsList() {
+    useBarsList = !useBarsList;
+    HiveService.settings.put(SettingsKeys.useBarsList, useBarsList);
+    notifyListeners();
   }
 
   /// RESET TO DEFAULT SETTINGS

@@ -42,17 +42,17 @@ class Microphone {
   }
 
   @override
-  bool operator ==(Object other) =>
+  bool operator ==(covariant Microphone other) =>
       identical(this, other) ||
-      other is Microphone &&
-          runtimeType == other.runtimeType &&
-          id == other.id &&
-          name == other.name &&
-          type == other.type;
+      runtimeType == other.runtimeType && id == other.id && name == other.name && type == other.type;
 
   @override
   int get hashCode => Object.hashAll([id, name, type]);
 
   @override
-  String toString() => 'Microphone(id: $id, name: $name, type: $type)';
+  String toString() => 'Microphone('
+      'id: $id,\n'
+      'name: $name,\n'
+      'type: $type,\n'
+      ')';
 }

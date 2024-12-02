@@ -82,8 +82,8 @@ abstract class L10nR {
       };
 
   static String tSayReadyBeforeGo([WidgetRef? ref]) => switch (_currentLocale(ref)) {
-        SupportedLocale.en => 'Say "Ready" Before ${tGO(ref)}',
-        SupportedLocale.ar => 'النطق ب "استعد" قبل ${tGO(ref)}',
+        SupportedLocale.en => 'Say "Ready" Before Rest Is Over',
+        SupportedLocale.ar => 'النطق ب "استعد" قبل انتهاء الراحة',
       };
 
   static String tSpeakCountBeforeStart([WidgetRef? ref]) => switch (_currentLocale(ref)) {
@@ -148,9 +148,14 @@ abstract class L10nR {
             'عند استشعار ارتفاع في الصوت وفقًا لحساسية التفعيل.'
       };
 
-  static String tActivationSensitivity([WidgetRef? ref]) => switch (_currentLocale(ref)) {
+  static String tTriggerSensitivity([WidgetRef? ref]) => switch (_currentLocale(ref)) {
         SupportedLocale.en => 'Trigger Sensitivity',
         SupportedLocale.ar => 'حساسية التفعيل',
+      };
+
+  static String t100MayNotBeReached([WidgetRef? ref]) => switch (_currentLocale(ref)) {
+        SupportedLocale.en => 'NOTE: 100% may never be reached',
+        SupportedLocale.ar => 'ملاحظة: 100% قد لا يتم الوصول إليها',
       };
 
   static String tChangeThemeMode([WidgetRef? ref]) => switch (_currentLocale(ref)) {

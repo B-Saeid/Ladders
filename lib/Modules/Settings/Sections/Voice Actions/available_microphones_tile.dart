@@ -9,6 +9,7 @@ import '../../Models/mic_type_enum.dart';
 import '../../Models/microphone_model.dart';
 import '../../Package/settings_ui.dart';
 import '../../Provider/setting_provider.dart';
+import 'trigger_sensitivity/tile.dart';
 
 class AvailableMicrophonesTile extends AbstractSettingsTile {
   const AvailableMicrophonesTile({super.key});
@@ -37,7 +38,10 @@ class AvailableMicrophonesTile extends AbstractSettingsTile {
           // leading: leading(ref),
           enabled: enabled(ref) && microphones(ref).isNotEmpty,
           trailing: IconButton(
-            onPressed: () => ref.read(settingProvider).updateInputDevices(toast: true),
+            onPressed: () {
+              ref.read(settingProvider).updateInputDevices(toast: true);
+              ref.invalidate(amplitudeStreamProvider);
+            },
             icon: Icon(AdaptiveIcons.reload),
           ),
           title: _InputDevicesDropDown(
@@ -70,7 +74,7 @@ class AvailableMicrophonesTile extends AbstractSettingsTile {
 //       );
 // }
 
-class _InputDevicesDropDown extends ConsumerWidget {
+class _InputDevicesDropDown extends ConsumerStatefulWidget {
   const _InputDevicesDropDown(
     this.microphones,
     this.microphone,
@@ -82,9 +86,35 @@ class _InputDevicesDropDown extends ConsumerWidget {
   final bool enabled;
 
   @override
-  Widget build(BuildContext context, WidgetRef ref) => LayoutBuilder(
+  ConsumerState<ConsumerStatefulWidget> createState() => _InputDevicesDropDownState();
+}
+
+class _InputDevicesDropDownState extends ConsumerState<_InputDevicesDropDown> {
+  List<Microphone> get microphones => widget.microphones;
+
+  Microphone? get microphone => widget.microphone;
+
+  bool get enabled => widget.enabled;
+
+  late final TextEditingController controller;
+
+  @override
+  void initState() {
+    super.initState();
+    controller = TextEditingController(text: microphone?.name);
+  }
+
+  @override
+  void dispose() {
+    controller.dispose();
+    super.dispose();
+  }
+
+  @override
+  Widget build(BuildContext context) => LayoutBuilder(
         builder: (_, constraints) => DropdownMenu(
           width: constraints.maxWidth,
+          controller: controller,
           dropdownMenuEntries: microphones
               .map(
                 (e) => DropdownMenuEntry(
@@ -126,13 +156,19 @@ class _InputDevicesDropDown extends ConsumerWidget {
           /// we can do this by another way. T O D O DONE! by [requestFocusOnTap: false]
           // enableSearch: false,
           menuStyle: const MenuStyle(
-            padding: WidgetStatePropertyAll(EdgeInsets.symmetric(vertical: 15, horizontal: 10)),
+            padding: WidgetStatePropertyAll(
+              EdgeInsets.symmetric(
+                vertical: 15,
+                horizontal: 10,
+              ),
+            ),
           ),
         ),
       );
 
   Widget leading(WidgetRef ref) {
     final micType = microphone?.type;
+    print('IN LEADING microphone $microphone');
     return Icon(
       micType == null || micType == MicType.builtIn
           ? AdaptiveIcons.microphoneCircle

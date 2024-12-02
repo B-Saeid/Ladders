@@ -7,20 +7,7 @@ import '../../Shared/Services/l10n/l10n_service.dart';
 import '../../Shared/Utilities/Responsiveness/responsive_layout.dart';
 import '../Home/utilities/Speech/speech_service.dart';
 import 'Package/settings_ui.dart';
-import 'Sections/General/language_change_tile.dart';
-import 'Sections/General/theme_mode_tile.dart';
-import 'Sections/Timer/half_total_time_reminder.dart';
-import 'Sections/Timer/near_end_reminder_tile.dart';
-import 'Sections/Timer/say_go_when_rest_is_over.dart';
-import 'Sections/Timer/say_ready_before_go_tile.dart';
-import 'Sections/Timer/speak_start_count_tile.dart';
-import 'Sections/Timer/start_count_tile.dart';
-import 'Sections/Voice Actions/available_microphones_tile.dart';
-import 'Sections/Voice Actions/available_voice_actions_tile.dart';
-import 'Sections/Voice Actions/rest_mic_trigger_tile.dart';
-import 'Sections/Voice Actions/rest_only_trigger_tile.dart';
-import 'Sections/Voice Actions/voice_actions_enabled_tile.dart';
-import 'Sections/reset_to_defaults.dart';
+import 'Sections/all_tiles.dart';
 
 class SettingsScreen extends ConsumerWidget {
   const SettingsScreen({super.key});
@@ -67,6 +54,7 @@ class _SettingContent extends ConsumerWidget {
                     AvailableVoiceActionsTile(),
                     RestOnlyTriggerTile(),
                     AvailableMicrophonesTile(),
+                    TriggerSensitivityTile(),
                   ],
                 )
               : const SettingsSection(
@@ -74,6 +62,7 @@ class _SettingContent extends ConsumerWidget {
                   tiles: [
                     MicRestTriggerTile(),
                     AvailableMicrophonesTile(),
+                    TriggerSensitivityTile(),
                   ],
                 ),
           const SettingsSection(

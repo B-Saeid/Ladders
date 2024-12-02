@@ -18,4 +18,6 @@ abstract class SettingsKeys {
   static const nearEndReminderValue = 'nearEndReminderValue';
   static const speechAvailable = 'speechAvailable';
   static const presetMic = 'presetMic';
+  static const useBarsList = 'useBarsList';
+
 }

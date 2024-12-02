@@ -52,7 +52,7 @@ abstract class Recorder {
 
       /// Initializing Recorder and start recording
       _recorder = AudioRecorder();
-      print('===================== Initialized Recorder =====================');
+      print('===================== Initialized Recorder and inputDevice $_inputDevice');
       // _repeatCount = 0;
       // final input = await _checkExistence(inputDevice);
       _recorder!.startStream(
@@ -68,10 +68,10 @@ abstract class Recorder {
       await _amplitudeSub?.cancel();
       _firstCall = true;
 
-      _lastThreeReads.clear();
+      _lastAmpReads.clear();
       // _liveMic = false;
 
-      _amplitudeSub = _recorder!.onAmplitudeChanged(300.milliseconds).distinct(
+      _amplitudeSub = _recorder!.onAmplitudeChanged(200.milliseconds).distinct(
         /// IN HERE: we are using [.distinct] in a really Distinct way.
         ///
         /// We could have used the [previous] and [next] arguments
@@ -103,23 +103,23 @@ abstract class Recorder {
 
   /// This is to detect whether amplitude is not dead
   // static bool _liveMic = false;
-  static final List<double> _lastThreeReads = [];
+  static final List<double> _lastAmpReads = [];
 
   static bool _checkForDeadStream(Amplitude event) {
     // RoutesBase.activeContext!.read(homeProvider).setLoading(true);
     final current = event.current.abs().toStringAsFixed(5);
     // print('Amplitude : $current');
 
-    if (_lastThreeReads.length < 4) {
+    if (_lastAmpReads.length < 5) {
       print('Added to list');
-      _lastThreeReads.add(double.parse(current));
+      _lastAmpReads.add(double.parse(current));
       return false;
-    } else if (_lastThreeReads.toSet().length == 1 && _lastThreeReads.sum != 0) {
+    } else if (_lastAmpReads.toSet().length == 1 && _lastAmpReads.sum != 0) {
       return true;
       // print('Amplitude is dead');
       // await _onErrorHandler();
     } else {
-      _lastThreeReads.clear();
+      _lastAmpReads.clear();
       print('-- List cleared');
       return false;
       // final can = SpeechService.setCanStart();
@@ -145,17 +145,20 @@ abstract class Recorder {
     print('------------------------------');
     // print('current Amplitude : ${event.current.toStringAsFixed(2)}');
     print('current Amplitude : ${event.current}');
-    print('MAX Amplitude : ${event.max.toStringAsFixed(2)}');
-    print('------------------------------');
+    // print('MAX Amplitude : ${event.max.toStringAsFixed(2)}');
+    // print('------------------------------');
     // print('max Amplitude : ${event.max}');
     // print('max ABS Amplitude : ${event.max.abs()}');
-    final current = event.current.abs();
+    final amplitude = event.current;
+    final from0ToMax = max(0, amplitude + SensitivityConstants.maxDBValue);
+    final double triggerPercentage = HiveService.settings.get(_inputDevice!.id) ?? 0.8;
+    final currentPercentage = from0ToMax / SensitivityConstants.maxDBValue;
     if (SpeechService._isTTS) {
       print('===== IGNORING AMPLITUDE IN TTS MODE ----------');
 
-      /// TODO : Have a setting for sensitivity instead of this 22
-    } else if (current <= 22 /*|| _repeatCount > 0*/) {
-      print('====================== in IF current <= 22 ======================');
+      /// T O D O  DONE! : Have a setting for sensitivity instead of this hard-coded value
+    } else if (currentPercentage >= triggerPercentage /*|| _repeatCount > 0*/) {
+      print('====================== in IF current >= ${triggerPercentage.toStringAsFixed(2)}');
       await _handleAmpRaise();
     }
   }
