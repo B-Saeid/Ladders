@@ -19,11 +19,11 @@ class AppleSettingsSection extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) => ListView(
-    padding: EdgeInsets.zero,
-    shrinkWrap: true,
-    physics: const NeverScrollableScrollPhysics(),
-    children: _getTilesList(context, ref),
-  );
+        padding: EdgeInsets.zero,
+        shrinkWrap: true,
+        physics: const NeverScrollableScrollPhysics(),
+        children: _getTilesList(context, ref),
+      );
 
   /// Since iOS design impose displaying the description separated under the setting tile.
   ///
@@ -93,15 +93,15 @@ class AppleSettingsSection extends ConsumerWidget {
       );
 
   Widget buildDescription(BuildContext context, Widget description) => Padding(
-    padding: const EdgeInsets.symmetric(horizontal: 8.0),
-    child: DefaultTextStyle.merge(
-      style: TextStyle(
-        color: SettingsTheme.of(context).themeData.tileDescriptionTextColor,
-        fontSize: 13,
-      ),
-      child: description,
-    ),
-  );
+        padding: const EdgeInsets.symmetric(horizontal: 8.0),
+        child: DefaultTextStyle.merge(
+          style: TextStyle(
+            color: SettingsTheme.of(context).themeData.tileDescriptionTextColor,
+            fontSize: 13,
+          ),
+          child: description,
+        ),
+      );
 
   _CustomCupertinoListSection _nonDescriptive(WidgetRef ref, int start, int end) =>
       _CustomCupertinoListSection(
@@ -146,12 +146,12 @@ class _CustomCupertinoListSection extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) => CupertinoListSection.insetGrouped(
-    header: header,
-    dividerMargin: 0,
-    hasLeading: false,
-    additionalDividerMargin: 12,
-    backgroundColor: AppColors.scaffoldBackground(ref),
-    footer: footer,
-    children: tiles,
-  );
+        header: header,
+        dividerMargin: 0,
+        hasLeading: false,
+        additionalDividerMargin: 12,
+        backgroundColor: AppColors.scaffoldBackground(ref),
+        footer: footer,
+        children: tiles,
+      );
 }

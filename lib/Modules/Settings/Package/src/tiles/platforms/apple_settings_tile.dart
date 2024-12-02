@@ -1,6 +1,4 @@
 import 'package:flutter/cupertino.dart';
-import 'package:flutter/foundation.dart';
-import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../../../../../../Shared/Styles/app_colors.dart';
@@ -46,49 +44,13 @@ class AppleSettingsTile extends ConsumerWidget {
 
     return IgnorePointer(
       ignoring: !enabled,
-      child: buildTile(
+      child: buildContent(
         context: context,
-        ref: ref,
         theme: theme,
+        ref: ref,
       ),
     );
   }
-
-  Widget buildTile({
-    required BuildContext context,
-    required WidgetRef ref,
-    required SettingsTheme theme,
-  }) {
-    var content = buildContent(
-      context: context,
-      theme: theme,
-      ref: ref,
-    );
-    final device = StaticData.platform;
-    if (kIsWeb || !device.isApple) {
-      content = Material(
-        color: Colors.transparent,
-        child: content,
-      );
-    }
-
-    return content;
-  }
-
-  Widget buildValue({
-    required BuildContext context,
-    required SettingsTheme theme,
-  }) =>
-      switch (tileType) {
-        SettingsTileType.switchTile => const SizedBox(),
-        _ => DefaultTextStyle.merge(
-            style: TextStyle(
-              color: enabled ? theme.themeData.trailingTextColor : theme.themeData.inactiveTitleColor,
-              fontSize: 17,
-            ),
-            child: value ?? const SizedBox(),
-          ),
-      };
 
   Widget buildContent({
     required BuildContext context,
@@ -118,6 +80,7 @@ class AppleSettingsTile extends ConsumerWidget {
     //   ),
     // );
     return CupertinoWell(
+      separated: false,
       color: AppColors.onScaffoldBackground(ref),
       // color: theme.themeData.tileColor,
       pressedColor: theme.themeData.tileHighlightColor,
@@ -145,10 +108,15 @@ class AppleSettingsTile extends ConsumerWidget {
                           crossAxisAlignment: WrapCrossAlignment.center,
                           alignment: WrapAlignment.spaceBetween,
                           spacing: 5,
+                          // runSpacing: 5,
                           children: [
                             /// Title & Value
                             buildTitle(theme),
-                            buildValue(context: context, theme: theme),
+                            if (value != null && tileType != SettingsTileType.switchTile)
+                              Padding(
+                                padding: EdgeInsets.only(top: 5.0.scalable(ref)),
+                                child: buildValue(context: context, theme: theme),
+                              ),
                           ],
                         ),
                       ),
@@ -186,6 +154,18 @@ class AppleSettingsTile extends ConsumerWidget {
         child: title,
       );
 
+  Widget buildValue({
+    required BuildContext context,
+    required SettingsTheme theme,
+  }) =>
+      DefaultTextStyle.merge(
+        style: TextStyle(
+          color: enabled ? theme.themeData.trailingTextColor : theme.themeData.inactiveTitleColor,
+          fontSize: 17,
+        ),
+        child: value!,
+      );
+
   Widget buildTrailing(BuildContext context, WidgetRef ref) {
     if (trailing != null) {
       return IconTheme.merge(
@@ -197,7 +177,6 @@ class AppleSettingsTile extends ConsumerWidget {
           ),
           color: enabled ? null : LiveData.themeData(ref).disabledColor,
         ),
-
         child: trailing!,
       );
     }

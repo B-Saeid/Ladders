@@ -14,6 +14,7 @@ class CupertinoWell extends StatefulWidget {
     this.borderRadius,
     this.margin,
     this.padding,
+    this.separated = true,
   });
 
   final VoidCallback? onPressed;
@@ -23,6 +24,7 @@ class CupertinoWell extends StatefulWidget {
   final BorderRadius? borderRadius;
   final EdgeInsetsGeometry? margin;
   final EdgeInsetsGeometry? padding;
+  final bool separated;
 
   @override
   State<CupertinoWell> createState() => _CupertinoWellState();
@@ -50,11 +52,13 @@ class _CupertinoWellState extends State<CupertinoWell> {
             padding: widget.padding,
             constraints: const BoxConstraints(minHeight: 44),
             decoration: BoxDecoration(
-              border: Border.all(
-                width: 0.5,
-                style: LiveData.isLight(ref) ? BorderStyle.solid : BorderStyle.none,
-                color: Colors.grey,
-              ),
+              border: widget.separated
+                  ? Border.all(
+                      width: 0.5,
+                      style: LiveData.isLight(ref) ? BorderStyle.solid : BorderStyle.none,
+                      color: Colors.grey,
+                    )
+                  : null,
               borderRadius: widget.borderRadius,
               color: isPressed
                   ? widget.pressedColor ?? LiveData.themeData(ref).highlightColor

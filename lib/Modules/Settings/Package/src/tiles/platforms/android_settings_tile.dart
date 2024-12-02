@@ -146,10 +146,13 @@ class AndroidSettingsTile extends ConsumerWidget {
     //   ),
     // );
 
-    return switch (tileType) {
-      SettingsTileType.switchTile => buildSwitchTile(),
-      _ => buildListTile(),
-    };
+    return IgnorePointer(
+      ignoring: !enabled,
+      child: switch (tileType) {
+        SettingsTileType.switchTile => buildSwitchTile(),
+        _ => buildListTile(),
+      },
+    );
   }
 
   Widget buildListTile() => ListTile(
