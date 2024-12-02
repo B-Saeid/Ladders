@@ -27,27 +27,32 @@ abstract class AudioSessionService {
     return restOnlyTrigger || enableVoiceActions;
   }
 
-  static Future<void> listenOnDeviceChanges({bool noLoop = false}) async {
-    print('==================== object');
+  static Future<void> listenOnDeviceChanges() async {
+    print('==================== listenOnDeviceChanges');
     final session = await AudioSession.instance;
 
     final provider = RoutesBase.activeContext!.read(settingProvider);
     if (_isMobile) {
+      print('CHECK ============== Entered mobile');
       // _sub ??= session.devicesStream.listen(_onDevicesChanges);
       _sub ??= session.devicesStream.listen(
         (event) async {
-          if (!_shouldContinue || noLoop) return;
-          print('==================== event = $event');
+          if (!_shouldContinue) {
+            print('Event captured but !Processed since _shouldContinue: $_shouldContinue}');
+            print('==================== !Processed event = $event');
+            return;
+          }
+          print('==================== Processed event = $event');
           await provider.updateInputDevices(
             sessionInputDevices: event,
             userAction: false,
           );
         },
       );
-    } else {
+    } /*else {
       if (!_shouldContinue || noLoop) return;
       await provider.updateInputDevices(userAction: false);
-    }
+    }*/
 
     // listen to *any device* connection state changes
     // _sub3 ??= FlutterBluePlus.events.onConnectionStateChanged.listen(
@@ -67,9 +72,8 @@ abstract class AudioSessionService {
     List<Microphone> oldList = const [],
     Set<AudioDevice>? sessionInputDevices,
     bool toast = false,
-    bool userAction = true,
   }) async {
-    if (!userAction && !_shouldContinue) return oldList;
+    // if (!_shouldContinue) return oldList;
 
     final devices = sessionInputDevices ?? await _sessionInputDevices();
 
@@ -77,7 +81,6 @@ abstract class AudioSessionService {
       devices,
       oldList,
       toast: toast,
-      userAction: userAction,
     );
   }
 
@@ -91,13 +94,11 @@ abstract class AudioSessionService {
     Set<AudioDevice> audioSessionInputDevices,
     List<Microphone> oldList, {
     bool toast = false,
-    bool userAction = true,
   }) async {
     final permission = await _recorder.hasPermission();
 
     if (!permission) {
       print('In _updateVoiceInputs: Microphone permission is not granted');
-      if (userAction) Toast.showError(L10nR.tCannotAccessMicrophone());
       return null;
     }
 
@@ -137,6 +138,8 @@ abstract class AudioSessionService {
               (audioSessionInputDevice) => audioSessionInputDevice.id == recordInputDevice.id,
             );
 
+            if (matchedInputDevice == null) return null;
+
             /// That is added because - on HTC Desire 10 Pro Android 6 - the list contained devices
             /// that are not capable of recording like:
             ///
@@ -146,7 +149,8 @@ abstract class AudioSessionService {
             ///
             /// So we are going to remove them from the list as long as their type is other than
             /// the known ones i.e. null see [Microphone.from]
-            if (matchedInputDevice == null) return null;
+            final type = MicType.from(matchedInputDevice.type);
+            if (type == null) return null;
 
             return Microphone.fromInputDevice(
               recordInputDevice,

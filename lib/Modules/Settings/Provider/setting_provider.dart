@@ -9,7 +9,6 @@ import '../../../Shared/Services/AudioSession/audio_session_service.dart';
 import '../../../Shared/Services/Database/Hive/hive_service.dart';
 import '../../../Shared/Services/Routing/routes_base.dart';
 import '../../../Shared/Services/l10n/l10n_service.dart';
-import '../../../Shared/Utilities/SessionData/session_data.dart';
 import '../../Home/provider/home_provider.dart';
 import '../../Home/utilities/Speech/helpers/permissions.dart';
 import '../../Home/utilities/Speech/speech_service.dart';
@@ -220,7 +219,7 @@ class SettingsProvider extends ChangeNotifier {
       }
       await SpeechService.dispose();
     }
-    if (!restOnlyTrigger && !enableVoiceActions) await AudioSessionService.dispose();
+    // if (!restOnlyTrigger && !enableVoiceActions) await AudioSessionService.dispose();
   }
 
   bool restOnlyTrigger = HiveService.settings.get(SettingsKeys.restOnlyTrigger) ?? false;
@@ -307,7 +306,8 @@ class SettingsProvider extends ChangeNotifier {
     );
     notifyListeners();
 
-    AudioSessionService.listenOnDeviceChanges(noLoop: true);
+    // print('Calling listenOnDeviceChanges from updateInputDevices');
+    // AudioSessionService.listenOnDeviceChanges(noLoop: true);
     return true;
   }
 
@@ -322,7 +322,7 @@ class SettingsProvider extends ChangeNotifier {
 
   @override
   void dispose() {
-    if (StaticData.platform.isMobile) AudioSessionService.dispose();
+    // if (StaticData.platform.isMobile) AudioSessionService.dispose();
     super.dispose();
   }
 }
