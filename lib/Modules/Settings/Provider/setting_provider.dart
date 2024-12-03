@@ -301,11 +301,15 @@ class SettingsProvider extends ChangeNotifier {
     if (microphones.equals(newMicrophones)) return true;
     microphones = newMicrophones;
 
+    /// This is to make it more plausible
+    /// If there is a new device, we select it
+    /// If not, we see if there is a non-built-in device like headSet or airpods, we select it
+    /// Finally, If none of the above we select the first one we find and we can be sure that this
+    /// will not throw as we return false if [newMicrophones.isEmpty].
+    final newMicrophone = microphones.firstWhereOrNull((element) => element.id != microphone?.id);
+    final notBuiltIn = microphones.firstWhereOrNull((element) => element.type != MicType.builtIn);
     await setMicrophone(
-      microphones.firstWhere(
-        (element) => element.type != MicType.builtIn,
-        orElse: () => microphones.first,
-      ),
+      notBuiltIn ?? newMicrophone ?? microphones.first,
       disposeSession: disposeSession,
     );
     notifyListeners();

@@ -3,6 +3,7 @@ part of '../tile.dart';
 /// Amplitude is ranging from -160 to 0 as per the [record] plugin implementation
 final amplitudeStreamProvider = StreamProvider.autoDispose<double?>(
   (ref) {
+    final recorder = AudioRecorder();
     final controller = StreamController<double?>();
 
     final enabled = ref.watch(
@@ -19,93 +20,65 @@ final amplitudeStreamProvider = StreamProvider.autoDispose<double?>(
     final inputDevice = ref.watch(settingProvider.select((p) => p.microphone?.inputDevice));
     print('inputDevice in amplitude stream provider $inputDevice');
 
-    AudioRecorder? recorder;
-
-    Future<void> disposeMic([bool exit = false]) async {
-      await recorder?.dispose();
-      recorder = null;
-
-      if (!exit) /*Future(() =>*/ controller.sink.add(null) /*)*/;
-    }
-
     /// This is to detect whether amplitude is not dead
-    // static bool _liveMic = false;
     final lastAmpReads = <double>[];
+    final interval = 50.milliseconds;
 
-    Future<void> checkForDeadStream(Amplitude event) async {
-      final current = event.current.abs().toStringAsFixed(5);
+    bool checkForDeadStream(Amplitude event) {
+      final current = event.current.abs();
 
-      if (lastAmpReads.length < 20) {
-        // print('Added to list');
-        lastAmpReads.add(double.parse(current));
+      final listLength = 1.seconds.inMilliseconds ~/ interval.inMilliseconds;
+      if (lastAmpReads.length < listLength) {
+        lastAmpReads.add(current);
+        return false;
       } else if (lastAmpReads.toSet().length == 1 && lastAmpReads.sum != 0) {
         print('----------------- Amplitude is dead');
-        await disposeMic();
+        return true;
       } else {
         lastAmpReads.clear();
-        // print('-- List cleared');
+        return false;
       }
     }
 
-    var canCall = true;
-
     Future<void> monitorMic() async {
       print('Called Monitoring Mic');
-      if (!canCall || !enabled) return;
-      canCall = false;
+      if (!enabled || inputDevice == null) return controller.sink.add(null);
       print('Monitoring Mic');
 
-      await disposeMic();
-
-      if (inputDevice == null) return;
-
-      recorder = AudioRecorder();
-      await recorder!.startStream(
+      await recorder.startStream(
         RecordConfig(
           encoder: AudioEncoder.pcm16bits,
           device: inputDevice,
         ),
       );
 
-      await for (final value in recorder!.onAmplitudeChanged(50.milliseconds)) {
+      await for (final value in recorder.onAmplitudeChanged(interval)) {
         // print('Listening ..... ${value.current.abs()}');
+        final dead = checkForDeadStream(value);
+        if (dead) {
+          ref.invalidateSelf();
+          break;
+        }
+
         controller.sink.add(value.current);
-        await checkForDeadStream(value);
       }
-      canCall = false;
     }
 
     controller.onListen = () {
       print('---------- controller.onListen -----');
-      controller.sink.add(null);
+
+      /// That was wrongly obscuring the loading state.
+      ///
+      /// As far as I experienced the loading state is the state starting
+      /// when the stream is listened to  and yet the stream first event is not ready.
+      // controller.sink.add(-1);
       monitorMic();
     };
-    ref.onAddListener(
-      () {
-        // print('---------- onAddListener');
-        // monitorMic(inputDevice);
-      },
-    );
-    ref.onCancel(
-      () {
-        // print('---------- onCancel');
-      },
-    );
-    ref.onResume(
-      () {
-        // print('---------- onResume');
-      },
-    );
-    ref.onRemoveListener(
-      () {
-        // print('---------- onRemoveListener');
-      },
-    );
 
     ref.onDispose(
-      () {
+      () async {
         print('---------- onDispose');
-        disposeMic(true);
+        await recorder.dispose();
         controller.close();
       },
     );
@@ -135,8 +108,8 @@ final amplitudePercentageProvider = Provider.autoDispose<double?>(
         print('Error in Amplitude stream provider $error with $stackTrace');
         return null;
       },
-      // loading: () => -1,
-      loading: () => null,
+      loading: () => -1,
+      // loading: () => null,
     );
   },
 );

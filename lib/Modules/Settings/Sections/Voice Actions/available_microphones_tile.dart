@@ -9,7 +9,6 @@ import '../../Models/mic_type_enum.dart';
 import '../../Models/microphone_model.dart';
 import '../../Package/settings_ui.dart';
 import '../../Provider/setting_provider.dart';
-import 'trigger_sensitivity/tile.dart';
 
 class AvailableMicrophonesTile extends AbstractSettingsTile {
   const AvailableMicrophonesTile({super.key});
@@ -40,7 +39,15 @@ class AvailableMicrophonesTile extends AbstractSettingsTile {
           trailing: IconButton(
             onPressed: () {
               ref.read(settingProvider).updateInputDevices(toast: true);
-              ref.invalidate(amplitudeStreamProvider);
+
+              /// We initially Call this method [invalidate] to make sure when we call
+              /// [updateInputDevices] that the [amplitudeStreamProvider] is reflecting the current
+              /// input device amplitude but this is not good, since we don't necessarily change
+              /// the current input device when we call [updateInputDevices] it is just possible
+              /// so now we made [amplitudeStreamProvider] watch the current
+              /// inputDevice by using [ref.watch], so whenever it changes [amplitudeStreamProvider]
+              /// will be invalidated, dispose itself and then rebuild.
+              // ref.invalidate(amplitudeStreamProvider);
             },
             icon: Icon(AdaptiveIcons.reload),
           ),
