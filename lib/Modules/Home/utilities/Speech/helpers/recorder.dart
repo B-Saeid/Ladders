@@ -21,6 +21,7 @@ abstract class Recorder {
   // static int _repeatCount = 0;
 
   static bool _canStart = true;
+  static final _interval = 200.milliseconds;
 
   static Future<bool> _start() async {
     try {
@@ -71,14 +72,14 @@ abstract class Recorder {
       _lastAmpReads.clear();
       // _liveMic = false;
 
-      _amplitudeSub = _recorder!.onAmplitudeChanged(200.milliseconds).distinct(
+      _amplitudeSub = _recorder!.onAmplitudeChanged(_interval).distinct(
         /// IN HERE: we are using [.distinct] in a really Distinct way.
         ///
         /// We could have used the [previous] and [next] arguments
         /// and if they are equal, we throw an error that will be caught in [_onErrorHandler].
         ///
         /// But since we need to detect if the amplitude is dead or not
-        /// based on the last three amplitude readings,
+        /// based on the last bunch of amplitude readings,
         /// we had to improvise a little bit.
         ///
         /// We used here [previous] rather [next] just to act proactively.
@@ -86,7 +87,7 @@ abstract class Recorder {
         (previous, _) {
           final dead = _checkForDeadStream(previous);
           if (dead) throw 'Amplitude is dead';
-          return false;
+          return false; // i.e. not equal so accept it
         },
       ).listen(
         _onAmplitudeChanged,
@@ -107,12 +108,13 @@ abstract class Recorder {
 
   static bool _checkForDeadStream(Amplitude event) {
     // RoutesBase.activeContext!.read(homeProvider).setLoading(true);
-    final current = event.current.abs().toStringAsFixed(5);
+    final current = event.current.abs();
     // print('Amplitude : $current');
 
-    if (_lastAmpReads.length < 5) {
+    final maxLength = 1.seconds.inMilliseconds ~/ _interval.inMilliseconds;
+    if (_lastAmpReads.length < maxLength) {
       print('Added to list');
-      _lastAmpReads.add(double.parse(current));
+      _lastAmpReads.add(current);
       return false;
     } else if (_lastAmpReads.toSet().length == 1 && _lastAmpReads.sum != 0) {
       return true;

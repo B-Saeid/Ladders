@@ -12,7 +12,7 @@ class _GradientBoxWidget extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final percentage = ref.watch(amplitudePercentageProvider);
-    print('Percentage is GRADIENT BOX $percentage');
+    // print('Percentage is GRADIENT BOX $percentage');
     return SizedBox(
       width: width,
       height: height,
@@ -73,7 +73,7 @@ class _GradientBoxWidget extends ConsumerWidget {
       );
 
   LinearGradient get _disabledGradient =>  LinearGradient(
-        colors: [Colors.grey.shade400, Colors.grey],
+        colors: [Colors.grey.shade400.withOpacity(0.4), Colors.grey.withOpacity(0.4)],
         begin: AlignmentDirectional.centerStart,
         end: AlignmentDirectional.centerEnd,
       );
