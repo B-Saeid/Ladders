@@ -16,24 +16,21 @@ abstract class SensitivityConstants {
     Colors.blue,
     Colors.lightGreen,
     Colors.lime,
-    Colors.red,
   ];
 
   static final _fadedColorsList = _colorsList.map((e) => e.withOpacity(0.2)).toList();
 
   // static final _colorsPercentageList = [
   //   0.2,
-  //   0.35,
+  //   0.45,
   //   0.2,
   //   0.15,
-  //   0.1,
   // ];
 
   static final _accumulatedPercentageList = [
     0.2,
-    0.55,
-    0.75,
-    0.90,
+    0.65,
+    0.85,
     1.0,
   ];
 }

@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
+import '../../../../../../Shared/Utilities/SessionData/session_data.dart';
 import '../../../../../../Shared/Widgets/neat_circular_indicator.dart';
 import '../../../settings_ui.dart';
 
@@ -23,7 +24,7 @@ class AndroidSettingsTile extends ConsumerWidget {
 
   final SettingsTileType tileType;
   final Widget? leading;
-  final Widget? title;
+  final Widget title;
   final Widget? description;
   final VoidCallback? onPressed;
   final Function(bool value)? onToggle;
@@ -150,18 +151,37 @@ class AndroidSettingsTile extends ConsumerWidget {
       ignoring: !enabled,
       child: switch (tileType) {
         SettingsTileType.switchTile => buildSwitchTile(),
-        _ => buildListTile(),
+        _ => buildListTile(ref),
       },
     );
   }
 
-  Widget buildListTile() => ListTile(
+  Widget buildListTile(WidgetRef ref) => ListTile(
         leading: leading,
-        title: title,
-        subtitle: value ?? description,
+        title: description != null && value != null
+            ? Wrap(
+                crossAxisAlignment: WrapCrossAlignment.center,
+                alignment: WrapAlignment.spaceBetween,
+                spacing: 5,
+                // runSpacing: 5,
+                children: [
+                  title,
+                  Padding(
+                    padding: EdgeInsets.only(top: 5.0.scalable(ref)),
+                    child: buildValue(ref),
+                  ),
+                ],
+              )
+            : title,
+        subtitle: description ?? value,
         onTap: onPressed,
         enabled: enabled,
         trailing: loading ? const NeatCircularIndicator() : trailing,
+      );
+
+  Widget buildValue(WidgetRef ref) => DefaultTextStyle.merge(
+        style: LiveData.textTheme(ref).bodyMedium!.copyWith(),
+        child: value!,
       );
 
   Widget buildSwitchTile() {

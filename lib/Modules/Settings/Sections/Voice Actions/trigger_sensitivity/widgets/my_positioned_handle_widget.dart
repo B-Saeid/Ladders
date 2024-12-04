@@ -152,10 +152,9 @@ class _MyPositionedHandle extends ConsumerWidget {
             print('Percentage ${offset / maxExtent}');
             ref.read(triggerPercentageProvider.notifier).state = offset / maxExtent;
           },
-          onDragEnd: (details) {
-            print('END ----- OFF ${details.offset.dx}');
-            final offset = xOffset(details.offset.dx, stackX, textDirection);
-            _setStartMargin(ref, offset);
+          onDragEnd: (_) {
+            final percentage = ref.read(triggerPercentageProvider);
+            _setStartMargin(ref, percentage.clamp(0, 1));
             // ref.read(startMarginProvider(handleExtent).notifier).setPercentage(gaugeWidth, handleWidth);
           },
           // dragAnchorStrategy: pointerDragAnchorStrategy,
@@ -193,13 +192,10 @@ class _MyPositionedHandle extends ConsumerWidget {
         TextDirection.rtl => stackX + maxExtent - globalX
       };
 
-  void _setStartMargin(WidgetRef ref, double xOffset) {
-    final double newValue = max(
-      0,
-      min(maxExtent, xOffset),
-    );
+  void _setStartMargin(WidgetRef ref, double percentage) {
+    final newValue = percentage * maxExtent;
     final currentMic = ref.read(settingProvider).microphone;
     ref.read(handlePositionProvider(maxExtent).notifier).update(newValue, currentMic?.id);
-    ref.read(triggerPercentageProvider.notifier).state = newValue / maxExtent;
+    // ref.read(triggerPercentageProvider.notifier).state = newValue / maxExtent;
   }
 }

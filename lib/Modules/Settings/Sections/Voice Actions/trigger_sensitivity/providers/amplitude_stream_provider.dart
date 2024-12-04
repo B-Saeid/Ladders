@@ -1,37 +1,37 @@
 part of '../tile.dart';
 
 /// Amplitude is ranging from -160 to 0 as per the [record] plugin implementation
+
 final amplitudeStreamProvider = StreamProvider.autoDispose<double?>(
   (ref) {
-    final recorder = AudioRecorder();
-    final controller = StreamController<double?>();
+    final inputDevice = ref.watch(settingProvider.select((p) => p.microphone?.inputDevice));
+    print('inputDevice in amplitude stream provider $inputDevice');
 
     final enabled = ref.watch(
       settingProvider.select((p) => p.enableVoiceActions || p.restOnlyTrigger),
     );
     print('Enabled in amplitude stream provider $enabled');
 
-    /// This is to ensure we listen to the correct input device
-    if (enabled) {
-      print('Calling updateInputDevices from amplitude stream provider');
-      ref.read(settingProvider).updateInputDevices();
-    }
+    final voicePrecessing = ref.watch(
+      homeProvider.select((p) => p.recognizing || p.monitoring || p.loading),
+    );
 
-    final inputDevice = ref.watch(settingProvider.select((p) => p.microphone?.inputDevice));
-    print('inputDevice in amplitude stream provider $inputDevice');
+    if (!enabled || voicePrecessing || inputDevice == null) return Stream.value(null);
+
+    final recorder = AudioRecorder();
+    // final controller = StreamController<double?>();
 
     /// This is to detect whether amplitude is not dead
     final lastAmpReads = <double>[];
     final interval = 50.milliseconds;
 
-    bool checkForDeadStream(Amplitude event) {
-      final current = event.current.abs();
-
+    bool checkForDeadStream(double current) {
       final listLength = 1.seconds.inMilliseconds ~/ interval.inMilliseconds;
       if (lastAmpReads.length < listLength) {
         lastAmpReads.add(current);
         return false;
       } else if (lastAmpReads.toSet().length == 1 && lastAmpReads.sum != 0) {
+        Toast.show(L10nR.tMicIsNotResponsiveRefreshing());
         print('----------------- Amplitude is dead');
         return true;
       } else {
@@ -40,50 +40,46 @@ final amplitudeStreamProvider = StreamProvider.autoDispose<double?>(
       }
     }
 
-    Future<void> monitorMic() async {
-      print('Called Monitoring Mic');
-      if (!enabled || inputDevice == null) return controller.sink.add(null);
-      print('Monitoring Mic');
-
-      await recorder.startStream(
-        RecordConfig(
-          encoder: AudioEncoder.pcm16bits,
-          device: inputDevice,
-        ),
-      );
-
-      await for (final value in recorder.onAmplitudeChanged(interval)) {
-        // print('Listening ..... ${value.current.abs()}');
-        final dead = checkForDeadStream(value);
-        if (dead) {
-          ref.invalidateSelf();
-          break;
-        }
-
-        controller.sink.add(value.current);
-      }
-    }
-
-    controller.onListen = () {
-      print('---------- controller.onListen -----');
-
-      /// That was wrongly obscuring the loading state.
-      ///
-      /// As far as I experienced the loading state is the state starting
-      /// when the stream is listened to  and yet the stream first event is not ready.
-      // controller.sink.add(-1);
-      monitorMic();
-    };
+    print('Calling updateInputDevices from amplitude stream provider');
+    ref.read(settingProvider).updateInputDevices().then(
+      (value) {
+        if (!value) return Stream.value(null);
+        recorder
+            .startStream(
+          RecordConfig(
+            encoder: AudioEncoder.pcm16bits,
+            device: inputDevice,
+          ),
+        )
+            .then(
+          (_) {
+            // final stream = recorder.onAmplitudeChanged(interval).map((amp) => amp.current);
+            // controller.addStream(stream);
+            ref.listenSelf(
+              (previous, next) {
+                if (next.value == null) return;
+                final dead = checkForDeadStream(next.value!);
+                if (dead) return ref.invalidateSelf();
+              },
+            );
+          },
+        );
+      },
+    );
 
     ref.onDispose(
       () async {
         print('---------- onDispose');
+        // await controller.close();
+        await recorder.stop();
         await recorder.dispose();
-        controller.close();
       },
     );
 
-    return controller.stream;
+    final stream = recorder.onAmplitudeChanged(interval).map((amp) => amp.current);
+
+    // return controller.stream;
+    return stream;
   },
 );
 

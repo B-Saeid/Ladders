@@ -73,25 +73,23 @@ class _BarsListWidget extends ConsumerWidget {
   }
 
   Color color(double amplitude, int index, int numberOfBars) {
-    // 20 , 35 , 20 , 15 , 10
-    /// These are the END POINTS of the parts
-    final firstPart = (0.2 * numberOfBars).floor(); // 20 %
-    final secondPart = ((0.2 + 0.35) * numberOfBars).floor(); // 55 %
-    final reasonablePart = ((0.2 + 0.35 + 0.2) * numberOfBars).round(); // 75 %
-    final b4lastPart = ((0.2 + 0.35 + 0.2 + 0.15) * numberOfBars).floor(); // 90 %
+    final partsList = SensitivityConstants._accumulatedPercentageList.map(
+      (e) => e * numberOfBars.round(),
+    );
+    final firstPart = partsList.elementAt(0);
+    final reasonablePart = partsList.elementAt(1);
+    final b4lastPart = partsList.elementAt(2);
 
     final Color baseColor;
 
     if (index <= firstPart) {
       baseColor = Colors.grey;
-    } else if (index > firstPart && index < secondPart) {
+    } else if (index > firstPart && index < reasonablePart) {
       baseColor = Colors.blue;
-    } else if (index >= secondPart && index < reasonablePart) {
+    } else if (index >= reasonablePart && index < b4lastPart) {
       baseColor = Colors.lightGreen;
-    } else if (index >= reasonablePart && index <= b4lastPart) {
-      baseColor = Colors.lime;
     } else {
-      baseColor = Colors.red;
+      baseColor = Colors.lime;
     }
 
     final barDBShare = SensitivityConstants.maxDBValue / numberOfBars;

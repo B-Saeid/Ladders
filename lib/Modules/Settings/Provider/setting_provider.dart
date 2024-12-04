@@ -9,6 +9,7 @@ import '../../../Shared/Services/AudioSession/audio_session_service.dart';
 import '../../../Shared/Services/Database/Hive/hive_service.dart';
 import '../../../Shared/Services/Routing/routes_base.dart';
 import '../../../Shared/Services/l10n/l10n_service.dart';
+import '../../../Shared/Utilities/SessionData/session_data.dart';
 import '../../Home/provider/home_provider.dart';
 import '../../Home/utilities/Speech/helpers/permissions.dart';
 import '../../Home/utilities/Speech/speech_service.dart';
@@ -306,16 +307,24 @@ class SettingsProvider extends ChangeNotifier {
     /// If not, we see if there is a non-built-in device like headSet or airpods, we select it
     /// Finally, If none of the above we select the first one we find and we can be sure that this
     /// will not throw as we return false if [newMicrophones.isEmpty].
+    if (userAction && !StaticData.platform.isMobile) {
+      final previousMicExists = microphones.any((element) => element.id == microphone?.id);
+      if (previousMicExists) {
+        notifyListeners();
+        return true;
+      }
+    }
+
+    final notBuiltIn = microphones.firstWhereOrNull(
+      (element) => element.type != null && element.type != MicType.builtIn,
+    );
     final newMicrophone = microphones.firstWhereOrNull((element) => element.id != microphone?.id);
-    final notBuiltIn = microphones.firstWhereOrNull((element) => element.type != MicType.builtIn);
     await setMicrophone(
       notBuiltIn ?? newMicrophone ?? microphones.first,
       disposeSession: disposeSession,
     );
     notifyListeners();
 
-    // print('Calling listenOnDeviceChanges from updateInputDevices');
-    // AudioSessionService.listenOnDeviceChanges(noLoop: true);
     return true;
   }
 

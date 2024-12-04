@@ -15,9 +15,11 @@ import '../../../../../Shared/Services/l10n/helper_widgets.dart';
 import '../../../../../Shared/Styles/adaptive_icons.dart';
 import '../../../../../Shared/Styles/app_colors.dart';
 import '../../../../../Shared/Utilities/SessionData/session_data.dart';
+import '../../../../../Shared/Widgets/custom_animated_size.dart';
 import '../../../../../Shared/Widgets/my_handle.dart';
 import '../../../../../Shared/Widgets/riverpod_helper_widgets.dart';
 import '../../../../../Shared/Widgets/text_container.dart';
+import '../../../../Home/provider/home_provider.dart';
 import '../../../Package/settings_ui.dart';
 import '../../../Provider/setting_provider.dart';
 
@@ -30,6 +32,7 @@ part 'widgets/gradient_box_widget.dart';
 part 'widgets/limit_dull_handle_widget.dart';
 part 'widgets/my_positioned_handle_widget.dart';
 part 'widgets/sensitivity_gauge_widget.dart';
+part 'widgets/tile_description_widget.dart';
 
 class TriggerSensitivityTile extends AbstractSettingsTile {
   const TriggerSensitivityTile({super.key});
@@ -37,6 +40,17 @@ class TriggerSensitivityTile extends AbstractSettingsTile {
   static bool enabled(WidgetRef ref) => ref.watch(
         settingProvider.select((p) => p.enableVoiceActions || p.restOnlyTrigger),
       );
+
+  static bool timerIsRunning(WidgetRef ref) => ref.watch(
+        homeProvider.select((p) => p.recognizing || p.monitoring || p.loading),
+      );
+
+  static bool voicePrecessing(WidgetRef ref) => ref.watch(
+        homeProvider.select((p) => p.recognizing || p.monitoring || p.loading),
+      );
+
+  @override
+  Widget? get description => const _TileDescription();
 
   static bool barsList(WidgetRef ref) => ref.watch(
         settingProvider.select((p) => p.useBarsList),
@@ -57,6 +71,7 @@ class TriggerSensitivityTile extends AbstractSettingsTile {
               _barsGradientSwitcherIcon(ref)
             ],
           ),
+          description: voicePrecessing(ref) ? description : null,
           value: Padding(
             /// This is because we do take full control in designing how the value
             /// is placed in [AppleSettingsTile] but not for the other platforms
@@ -110,11 +125,11 @@ class _BarsListIcon extends ConsumerWidget {
           padding: EdgeInsets.zero,
           shrinkWrap: true,
           scrollDirection: Axis.horizontal,
-          itemCount: 5,
+          itemCount: SensitivityConstants._colorsList.length,
           physics: const NeverScrollableScrollPhysics(),
           itemBuilder: (context, index) => Container(
             // width: dimension * _Constants._colorsPercentageList[index],
-            width: dimension / 5,
+            width: dimension / SensitivityConstants._colorsList.length,
             decoration: ShapeDecoration(
               color: enabled
                   ? SensitivityConstants._colorsList[index]

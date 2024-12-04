@@ -240,6 +240,21 @@ abstract class L10nR {
         SupportedLocale.ar => 'لا يمكن الوصول للميكروفون',
       };
 
+  static String tMicIsNotResponsiveRefreshing([WidgetRef? ref]) => switch (_currentLocale(ref)) {
+        SupportedLocale.en => 'Mic is not responsive, refreshing ...',
+        SupportedLocale.ar => 'الميكروفون لا يستجيب، إعادة المحاولة...',
+      };
+
+  static String tNotAvailableWhileRecognizing([WidgetRef? ref]) => switch (_currentLocale(ref)) {
+        SupportedLocale.en => 'Live Amplitude Meter Not available while recognizing speech',
+        SupportedLocale.ar => 'موشر درجة الصوت غير متاح أثناء التعرف على الكلام المنطوق',
+      };
+
+  static String tNotAvailableWhileMonitoring([WidgetRef? ref]) => switch (_currentLocale(ref)) {
+        SupportedLocale.en => 'Live Amplitude Meter is not available while voice monitoring',
+        SupportedLocale.ar => 'موشر درجة الصوت غير متاح أثناء المتابعة',
+      };
+
   static String tEitherRestTriggerOrVoiceActions([WidgetRef? ref]) => switch (_currentLocale(ref)) {
         SupportedLocale.en => 'Either ${tRestTriggerByMicrophone(ref)} '
             'or ${tVoiceActions()} must be ON.',
