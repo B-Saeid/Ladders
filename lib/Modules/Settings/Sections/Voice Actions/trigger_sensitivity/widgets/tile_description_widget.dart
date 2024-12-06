@@ -5,20 +5,15 @@ class _TileDescription extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final voicePrecessing = ref.watch(
-      homeProvider.select((p) => p.recognizing || p.monitoring || p.loading),
-    );
-    final restOnlyTrigger = ref.watch(
-      settingProvider.select((p) => p.restOnlyTrigger),
-    );
+    final restOnlyTrigger = ref.watch(settingProvider.select((p) => p.restOnlyTrigger));
+    final recognition = restOnlyTrigger
+        ? false
+        : ref.watch(
+            homeProvider.select((p) => p.recognizing || p.monitoring || p.loading),
+          );
+
     return CustomAnimatedSize(
-      child: voicePrecessing
-          ? Text(
-              restOnlyTrigger
-                  ? L10nR.tNotAvailableWhileMonitoring(ref)
-                  : L10nR.tNotAvailableWhileRecognizing(ref),
-            )
-          : const SizedBox(),
+      child: recognition ? Text(L10nR.tNotAvailableWhileRecognizing(ref)) : const SizedBox(),
     );
   }
 }

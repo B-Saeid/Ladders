@@ -8,7 +8,7 @@ extension Context on BuildContext {
   // In case if you face any issue using this then please wrap your widget
   // with consumer and then call your provider
 
-  T read<T>(ProviderBase<T> p) => ProviderScope.containerOf(this, listen: false).read(p);
+  T read<T>(ProviderListenable<T> p) => ProviderScope.containerOf(this, listen: false).read(p);
 
   void invalidate<T>(ProviderBase<T> p) => ProviderScope.containerOf(this, listen: false).invalidate(p);
 

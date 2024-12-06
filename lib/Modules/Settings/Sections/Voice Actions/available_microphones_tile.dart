@@ -106,6 +106,14 @@ class _InputDevicesDropDownState extends ConsumerState<_InputDevicesDropDown> {
   late final TextEditingController controller;
 
   @override
+  void didUpdateWidget(covariant _InputDevicesDropDown oldWidget) {
+    super.didUpdateWidget(oldWidget);
+    if (oldWidget.microphone != microphone) {
+      controller.text = microphone?.name ?? '';
+    }
+  }
+
+  @override
   void initState() {
     super.initState();
     controller = TextEditingController(text: microphone?.name);
@@ -153,7 +161,7 @@ class _InputDevicesDropDownState extends ConsumerState<_InputDevicesDropDown> {
           onSelected: (value) => value != null ? ref.read(settingProvider).setMicrophone(value) : null,
           trailingIcon: Icon(AdaptiveIcons.arrowDown),
           selectedTrailingIcon: Icon(AdaptiveIcons.arrowUp),
-          initialSelection: microphone,
+          // initialSelection: microphone,
 
           /// If allowed it threw:
           /// Unhandled Exception: 'package:flutter/src/rendering/object.dart': Failed assertion: line 3347 pos 14: 'renderer.parent != null': is not true.

@@ -1,5 +1,9 @@
 part of '../tile.dart';
 
+final recorderProvider = Provider<AudioRecorder>((_) => AudioRecorder());
+
+final amplitudeStateProvider = StateProvider<double?>((_) => null);
+
 /// Amplitude is ranging from -160 to 0 as per the [record] plugin implementation
 
 final amplitudeStreamProvider = StreamProvider.autoDispose<double?>(
@@ -12,14 +16,30 @@ final amplitudeStreamProvider = StreamProvider.autoDispose<double?>(
     );
     print('Enabled in amplitude stream provider $enabled');
 
-    final voicePrecessing = ref.watch(
-      homeProvider.select((p) => p.recognizing || p.monitoring || p.loading),
+    final restOnly = ref.watch(
+      settingProvider.select((p) => p.restOnlyTrigger),
     );
 
-    if (!enabled || voicePrecessing || inputDevice == null) return Stream.value(null);
+    final speechRecognition = restOnly
+        ? false
+        : ref.watch(
+            homeProvider.select((p) => p.monitoring || p.loading || p.recognizing),
+          );
 
-    final recorder = AudioRecorder();
-    // final controller = StreamController<double?>();
+    if (!enabled || speechRecognition || inputDevice == null) return Stream.value(null);
+
+    final voiceMonitoring = restOnly &&
+        ref.watch(
+          homeProvider.select((p) => p.monitoring),
+        );
+
+    if (voiceMonitoring) return ref.read(amplitudeStateProvider.notifier).stream;
+
+    final recorder = ref.read(recorderProvider);
+    final config = RecordConfig(
+      encoder: AudioEncoder.pcm16bits,
+      device: inputDevice,
+    );
 
     /// This is to detect whether amplitude is not dead
     final lastAmpReads = <double>[];
@@ -41,44 +61,28 @@ final amplitudeStreamProvider = StreamProvider.autoDispose<double?>(
     }
 
     print('Calling updateInputDevices from amplitude stream provider');
-    ref.read(settingProvider).updateInputDevices().then(
-      (value) {
-        if (!value) return Stream.value(null);
-        recorder
-            .startStream(
-          RecordConfig(
-            encoder: AudioEncoder.pcm16bits,
-            device: inputDevice,
-          ),
-        )
-            .then(
-          (_) {
-            // final stream = recorder.onAmplitudeChanged(interval).map((amp) => amp.current);
-            // controller.addStream(stream);
-            ref.listenSelf(
-              (previous, next) {
-                if (next.value == null) return;
-                final dead = checkForDeadStream(next.value!);
-                if (dead) return ref.invalidateSelf();
-              },
-            );
-          },
-        );
-      },
-    );
+    recorder.cancel().then(
+          (_) => ref.read(settingProvider).updateInputDevices().then(
+            (value) {
+              if (!value) return;
 
-    ref.onDispose(
-      () async {
-        print('---------- onDispose');
-        // await controller.close();
-        await recorder.stop();
-        await recorder.dispose();
-      },
-    );
+              recorder.startStream(config).then(
+                    (_) => ref.listenSelf(
+                      (previous, next) {
+                        if (next.value == null) return;
+                        final dead = checkForDeadStream(next.value!);
+                        if (dead) return ref.invalidateSelf();
+                      },
+                    ),
+                  );
+            },
+          ),
+        );
+
+    ref.onDispose(recorder.cancel);
 
     final stream = recorder.onAmplitudeChanged(interval).map((amp) => amp.current);
 
-    // return controller.stream;
     return stream;
   },
 );

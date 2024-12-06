@@ -152,6 +152,7 @@ abstract class Recorder {
     // print('max Amplitude : ${event.max}');
     // print('max ABS Amplitude : ${event.max.abs()}');
     final amplitude = event.current;
+    RoutesBase.activeContext!.read(amplitudeStateProvider.notifier).state = amplitude;
     final from0ToMax = max(0, amplitude + SensitivityConstants.maxDBValue);
     final double triggerPercentage = HiveService.settings.get(_inputDevice!.id) ?? 0.8;
     final currentPercentage = from0ToMax / SensitivityConstants.maxDBValue;

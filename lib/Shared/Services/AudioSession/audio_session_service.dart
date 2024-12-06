@@ -2,11 +2,11 @@ import 'dart:async';
 
 import 'package:audio_session/audio_session.dart';
 import 'package:collection/collection.dart';
-import 'package:record/record.dart';
 
 import '../../../Modules/Settings/Models/mic_type_enum.dart';
 import '../../../Modules/Settings/Models/microphone_model.dart';
 import '../../../Modules/Settings/Provider/setting_provider.dart';
+import '../../../Modules/Settings/Sections/all_tiles.dart';
 import '../../Components/Toast/toast.dart';
 import '../../Extensions/on_context.dart';
 import '../../Utilities/SessionData/session_data.dart';
@@ -15,8 +15,6 @@ import '../Routing/routes_base.dart';
 import '../l10n/assets/l10n_resources.dart';
 
 abstract class AudioSessionService {
-  static final AudioRecorder _recorder = AudioRecorder();
-
   static StreamSubscription? _sub;
 
   static bool get _isMobile => StaticData.platform.isMobile;
@@ -95,7 +93,8 @@ abstract class AudioSessionService {
     List<Microphone> oldList, {
     bool toast = false,
   }) async {
-    final permission = await _recorder.hasPermission();
+    final recorder = RoutesBase.activeContext!.read(recorderProvider);
+    final permission = await recorder.hasPermission();
 
     if (!permission) {
       print('In _updateVoiceInputs: Microphone permission is not granted');
@@ -106,7 +105,7 @@ abstract class AudioSessionService {
       (e) => '$e\n',
     )}');
 
-    final inputDevices = (await _recorder.listInputDevices())
+    final inputDevices = (await recorder.listInputDevices())
         .whereNot(
           /// This was encountered on macOS, and it was a duplicate input device
           /// representing the default mic, which is being used by the OS

@@ -1,10 +1,11 @@
 import 'package:flutter/material.dart';
-import 'package:record/record.dart';
 
+import '../../../../../Shared/Extensions/on_context.dart';
 import '../../../../../Shared/Services/Database/Hive/boxes_keys/dialogues_shown_keys.dart';
 import '../../../../../Shared/Services/Database/Hive/hive_service.dart';
 import '../../../../../Shared/Services/Permission/permissions_service.dart';
 import '../../../../../Shared/Utilities/SessionData/session_data.dart';
+import '../../../../Settings/Sections/all_tiles.dart';
 import '../speech_service.dart';
 
 abstract class PermissionsHelper {
@@ -34,7 +35,7 @@ abstract class PermissionsHelper {
   static Future<bool> _macOSCraftedMicPermission(BuildContext context) async {
     final bool microphoneOK;
     final shownBefore = HiveService.storedCache.get(DialoguesKeys.macOSCraftedMicrophone);
-    final tempRecorder = AudioRecorder();
+    final recorder = context.read(recorderProvider);
 
     /// This if block is executed in two cases :
     ///   - in the app first run after
@@ -44,13 +45,12 @@ abstract class PermissionsHelper {
       microphoneOK = await PermissionsService.showPreRequestDialogue(
         context,
         MyPermission.microphone,
-        requestMethod: tempRecorder.hasPermission,
+        requestMethod: recorder.hasPermission,
       );
       await HiveService.storedCache.put(DialoguesKeys.macOSCraftedMicrophone, true);
     } else {
-      microphoneOK = await tempRecorder.hasPermission();
+      microphoneOK = await recorder.hasPermission();
     }
-    await tempRecorder.dispose();
 
     /// Display the go to setting dialogue if microphone is denied
     ///

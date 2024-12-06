@@ -45,14 +45,20 @@ class TriggerSensitivityTile extends AbstractSettingsTile {
         homeProvider.select((p) => p.recognizing || p.monitoring || p.loading),
       );
 
-  static bool voicePrecessing(WidgetRef ref) => ref.watch(
-        homeProvider.select((p) => p.recognizing || p.monitoring || p.loading),
+  static bool restOnly(WidgetRef ref) => ref.watch(
+        settingProvider.select((p) => p.restOnlyTrigger),
       );
+
+  static bool recognition(WidgetRef ref) => restOnly(ref)
+      ? false
+      : ref.watch(
+          homeProvider.select((p) => p.recognizing || p.monitoring || p.loading),
+        );
 
   @override
   Widget? get description => const _TileDescription();
 
-  static bool barsList(WidgetRef ref) => ref.watch(
+  static bool useBarsList(WidgetRef ref) => ref.watch(
         settingProvider.select((p) => p.useBarsList),
       );
 
@@ -71,7 +77,7 @@ class TriggerSensitivityTile extends AbstractSettingsTile {
               _barsGradientSwitcherIcon(ref)
             ],
           ),
-          description: voicePrecessing(ref) ? description : null,
+          description: recognition(ref) ? description : null,
           value: Padding(
             /// This is because we do take full control in designing how the value
             /// is placed in [AppleSettingsTile] but not for the other platforms
@@ -92,7 +98,7 @@ class TriggerSensitivityTile extends AbstractSettingsTile {
 
   GestureDetector _barsGradientSwitcherIcon(WidgetRef ref) => GestureDetector(
         onTap: ref.read(settingProvider.notifier).toggleBarsList,
-        child: !barsList(ref)
+        child: !useBarsList(ref)
             ? _BarsListIcon(
                 24.scalable(ref, maxFactor: 2),
                 enabled(ref),
