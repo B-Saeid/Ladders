@@ -8,8 +8,8 @@ import '../../../Shared/Services/l10n/assets/l10n_resources.dart';
 import '../../../Shared/Utilities/SessionData/session_data.dart';
 import '../../../Shared/Widgets/custom_animated_size.dart';
 import '../../Settings/Provider/setting_provider.dart';
-import '../utilities/Speech/helpers/spoken_phrases.dart';
-import '../utilities/Speech/speech_service.dart';
+import '../utilities/TextToSpeech/spoken_phrases.dart';
+import '../utilities/TextToSpeech/tts_service.dart';
 
 class CountBeforeStart extends ConsumerWidget {
   const CountBeforeStart(this.valueListenable, this.voiced, {super.key});

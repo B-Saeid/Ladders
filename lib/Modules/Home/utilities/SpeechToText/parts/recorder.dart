@@ -1,6 +1,6 @@
 part of '../speech_service.dart';
 
-abstract class Recorder {
+abstract class _Recorder {
   @protected
   static AudioRecorder? _recorder;
 

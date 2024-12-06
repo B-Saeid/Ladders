@@ -1,9 +1,9 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-import '../../../../../Shared/Extensions/on_context.dart';
-import '../../../../../Shared/Services/Routing/routes_base.dart';
-import '../../../../../Shared/Services/l10n/assets/enums.dart';
-import '../../../../Settings/Provider/setting_provider.dart';
+import '../../../../Shared/Extensions/on_context.dart';
+import '../../../../Shared/Services/Routing/routes_base.dart';
+import '../../../../Shared/Services/l10n/assets/enums.dart';
+import '../../../Settings/Provider/setting_provider.dart';
 
 abstract class L10nSC {
   static SupportedLocale _currentLocale([WidgetRef? ref]) {

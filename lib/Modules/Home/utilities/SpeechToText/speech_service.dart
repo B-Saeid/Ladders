@@ -4,7 +4,6 @@ import 'dart:math';
 import 'package:audioplayers/audioplayers.dart';
 import 'package:collection/collection.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_tts/flutter_tts.dart';
 import 'package:record/record.dart';
 import 'package:speech_to_text/speech_recognition_error.dart';
 import 'package:speech_to_text/speech_recognition_result.dart';
@@ -23,15 +22,15 @@ import '../../../../Shared/Utilities/SessionData/session_data.dart';
 import '../../../Settings/Provider/setting_provider.dart';
 import '../../../Settings/Sections/Voice Actions/trigger_sensitivity/tile.dart';
 import '../../provider/home_provider.dart';
+import '../TextToSpeech/tts_service.dart';
 import '../dialogues.dart';
 import '../enums.dart';
 import 'helpers/permissions.dart';
-import 'helpers/spoken_phrases.dart';
 
-part 'helpers/methods.dart';
-part 'helpers/recorder.dart';
-part 'helpers/sfx_player.dart';
-part 'helpers/tts_service.dart';
+part 'parts/errors.dart';
+part 'parts/methods.dart';
+part 'parts/recorder.dart';
+part 'parts/sfx_player.dart';
 
 abstract class SpeechService {
   static final isSupported = !(StaticData.platform.isWindows || StaticData.platform.isWeb);
@@ -155,13 +154,13 @@ abstract class SpeechService {
           disposeSession: false,
         );
     if (ok) {
-      final started = await Recorder._start();
+      final started = await _Recorder._start();
       if (started) {
         await _SfxPlayer.started();
       } else {
         await _SfxPlayer.negative();
         Toast.showError(L10nR.tToastDefaultError());
-        Recorder._canStart = true;
+        _Recorder._canStart = true;
         RoutesBase.activeContext!.read(homeProvider).setLoading(false);
       }
     } else {
@@ -210,8 +209,8 @@ abstract class SpeechService {
       _Methods._gotIt = false;
       if (!_isTTS) _talkIncludesTTS = false;
       _disposed = false;
-      await Recorder._dispose();
-      Recorder._canStart = true;
+      await _Recorder._dispose();
+      _Recorder._canStart = true;
       print(' ====================== sat _canStartRecorder to TRUE =========================');
       await _SfxPlayer.started();
       RoutesBase.activeContext!.read(homeProvider).setRecognizing(true);
@@ -291,7 +290,7 @@ abstract class SpeechService {
     if (_disposed) return print('======== _disposed = true ======= _ignoring _errorListener ====');
 
     switch (error.errorMsg) {
-      case 'error_no_match':
+      case _Errors.errorNoMatch:
         Toast.showWarning(L10nR.tNoSpeechDetected());
 
         /// This is added since on iOS we encountered a message:
@@ -306,9 +305,14 @@ abstract class SpeechService {
         await _Methods._startRecorder();
 
       /// encountered on android 6 when Google app does not have permission
-      case 'error_permission':
+      case _Errors.errorPermission:
         await dispose();
         if (!_Methods._androidSpeechGoogleMicRequired()) Dialogues.showSpeechNotAvailable();
+
+      /// ALSO encountered on android 6 when app cannot access the internet
+      case _Errors.errorNetwork:
+        await dispose();
+        Dialogues.showInternetRequiredForSpeech();
 
       default:
         Toast.showError(L10nR.tToastDefaultError());
@@ -350,10 +354,10 @@ abstract class SpeechService {
   static Future<void> _restOnlyDispose() async {
     logEvent('===================== called _restOnlyDispose =====================');
     RoutesBase.activeContext!.read(homeProvider).setLoading(true);
-    await Recorder._dispose();
+    await _Recorder._dispose();
     await _SfxPlayer.negative();
     RoutesBase.activeContext!.read(homeProvider).setMonitoring(false);
-    Recorder._canStart = true;
+    _Recorder._canStart = true;
   }
 
   static bool _canDisposed = true;
@@ -375,7 +379,7 @@ abstract class SpeechService {
         return dispose();
       });
     }
-    await Recorder._dispose(ensuring: true);
+    await _Recorder._dispose(ensuring: true);
     await stop();
     RoutesBase.activeContext!.read(homeProvider).setMonitoring(false);
     if (_waitedDispose) {
@@ -389,7 +393,7 @@ abstract class SpeechService {
     1.seconds.delay.then((_) {
       _canStartSpeech = true;
       _talkIncludesTTS = false;
-      Recorder._canStart = true;
+      _Recorder._canStart = true;
       print(' ======= sat _canStartSpeech to true From dispose after 1 seconds ===============');
     });
   }

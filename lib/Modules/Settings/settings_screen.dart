@@ -5,7 +5,7 @@ import '../../Shared/Services/l10n/assets/l10n_resources.dart';
 import '../../Shared/Services/l10n/helper_widgets.dart';
 import '../../Shared/Services/l10n/l10n_service.dart';
 import '../../Shared/Utilities/Responsiveness/responsive_layout.dart';
-import '../Home/utilities/Speech/speech_service.dart';
+import '../Home/utilities/SpeechToText/speech_service.dart';
 import 'Package/settings_ui.dart';
 import 'Sections/all_tiles.dart';
 

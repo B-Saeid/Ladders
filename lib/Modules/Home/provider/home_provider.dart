@@ -13,8 +13,8 @@ import '../../../Shared/Services/Routing/routes_base.dart';
 import '../../../Shared/Services/l10n/assets/l10n_resources.dart';
 import '../../Settings/Provider/setting_provider.dart';
 import '../Widgets/count_before_start.dart';
-import '../utilities/Speech/helpers/spoken_phrases.dart';
-import '../utilities/Speech/speech_service.dart';
+import '../utilities/SpeechToText/speech_service.dart';
+import '../utilities/TextToSpeech/tts_service.dart';
 import '../utilities/enums.dart';
 
 final homeProvider = ChangeNotifierProvider((_) => HomeProvider._());

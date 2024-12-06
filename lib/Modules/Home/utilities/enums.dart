@@ -10,7 +10,7 @@ import '../../../Shared/Styles/app_colors.dart';
 import '../../../Shared/Utilities/SessionData/session_data.dart';
 import '../../../Shared/Widgets/buttons.dart';
 import '../provider/home_provider.dart';
-import 'Speech/helpers/spoken_phrases.dart';
+import 'TextToSpeech/spoken_phrases.dart';
 
 enum TotalState {
   stopped,

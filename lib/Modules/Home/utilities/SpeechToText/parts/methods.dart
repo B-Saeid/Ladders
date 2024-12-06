@@ -19,7 +19,7 @@ abstract class _Methods {
       print('==== SpeechService is _disposed ===== ignoring _startRecorder =======');
       return;
     }
-    final started = await Recorder._start();
+    final started = await _Recorder._start();
 
     if (!started) {
       Toast.showError(L10nR.tToastDefaultError());

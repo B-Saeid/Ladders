@@ -764,9 +764,21 @@ abstract class L10nR {
         SupportedLocale.en => 'Not Available',
       };
 
+  static String tInternetRequired([WidgetRef? ref]) => switch (_currentLocale(ref)) {
+        SupportedLocale.ar => 'يتطلب اتصال بالانترنت',
+        SupportedLocale.en => 'Internet Required',
+      };
+
   static String tSpeechNotAvailable([WidgetRef? ref]) => switch (_currentLocale(ref)) {
         SupportedLocale.en => 'Speech Recognition is not available on your device.',
         SupportedLocale.ar => 'التعرف على الصوت غير متوفر على جهازك.',
+      };
+
+  static String tInternetRequiredForSpeech([WidgetRef? ref]) => switch (_currentLocale(ref)) {
+        SupportedLocale.en => 'Speech Recognition often requires internet connection in order to work, '
+            'please check your internet connection.',
+        SupportedLocale.ar => 'التعرف على الصوت الكلام المنطوق يتطلب أحيانا الاتصال بالانترنت، '
+            'يرجى التحقق من الاتصال بالانترنت.',
       };
 
   static String tSpokenContentNotAvailable([WidgetRef? ref]) => switch (_currentLocale(ref)) {

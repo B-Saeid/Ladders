@@ -12,7 +12,7 @@ import '../../../Shared/Widgets/custom_animated_size.dart';
 import '../../Settings/Models/mic_type_enum.dart';
 import '../../Settings/Provider/setting_provider.dart';
 import '../provider/home_provider.dart';
-import '../utilities/Speech/speech_service.dart';
+import '../utilities/SpeechToText/speech_service.dart';
 import '../utilities/enums.dart';
 
 class StartAbortButton extends ConsumerWidget {

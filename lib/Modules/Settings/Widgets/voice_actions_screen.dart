@@ -5,7 +5,7 @@ import '../../../Shared/Services/l10n/l10n_service.dart';
 import '../../../Shared/Styles/adaptive_icons.dart';
 import '../../../Shared/Utilities/Responsiveness/responsive_layout.dart';
 import '../../../Shared/Widgets/AdaptiveListTile/adaptive_list_tile.dart';
-import '../../Home/utilities/Speech/speech_service.dart';
+import '../../Home/utilities/TextToSpeech/tts_service.dart';
 import '../../Home/utilities/dialogues.dart';
 import '../../Home/utilities/enums.dart';
 import '../Provider/setting_provider.dart';

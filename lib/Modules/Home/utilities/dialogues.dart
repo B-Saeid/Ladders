@@ -27,6 +27,16 @@ abstract class Dialogues {
         ),
       );
 
+  static Future<void> showInternetRequiredForSpeech([BuildContext? context]) => showAdaptiveDialog(
+        context: context ?? RoutesBase.activeContext!,
+        builder: (context) => MyDialogue(
+          title: L10nR.tInternetRequired(),
+          content: L10nR.tInternetRequiredForSpeech(),
+          actionTitle: L10nR.tDiscard(),
+          actionFunction: Navigator.of(context).pop,
+        ),
+      );
+
   static Future<void> showSpokenContentNotAvailable([BuildContext? context]) => showAdaptiveDialog(
         context: context ?? RoutesBase.activeContext!,
         builder: (context) => MyDialogue(

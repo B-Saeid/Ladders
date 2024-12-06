@@ -1,4 +1,16 @@
-part of '../speech_service.dart';
+import 'package:collection/collection.dart';
+import 'package:flutter/foundation.dart';
+import 'package:flutter_tts/flutter_tts.dart';
+
+import '../../../../Shared/Extensions/on_context.dart';
+import '../../../../Shared/Extensions/time_package.dart';
+import '../../../../Shared/Services/Routing/routes_base.dart';
+import '../../../../Shared/Utilities/SessionData/session_data.dart';
+import '../../../Settings/Provider/setting_provider.dart';
+import '../SpeechToText/speech_service.dart';
+import '../dialogues.dart';
+
+export 'spoken_phrases.dart';
 
 enum TTSState {
   playing,
@@ -82,8 +94,11 @@ abstract class TTSService {
 
     await _setLocaleID();
 
+    /// TODO: Try This out on ios Since It lags in the first speak call
     // /// This is to warm up the TTS.
-    // speak('');
+    // await _flutterTts.setVolume(0);
+    // await speak('Text To Speech Initialized');
+    // await _flutterTts.setVolume(1);
     SpeechService.resetTTS();
   }
 
